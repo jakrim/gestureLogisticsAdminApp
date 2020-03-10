@@ -3,6 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import AuthScreen from './screens/AuthScreen';
 
 import GNavigator from './navigation/GNavigator';
 import Card from './components/Card';
@@ -16,6 +19,8 @@ const fetchFonts = () => {
     'dm-sans-regularItalic': require('./assets/fonts/DMSans-RegularItalic.ttf')
   });
 };
+
+const AuthStack = createStackNavigator();
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -31,11 +36,11 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Card style={styles.cardContainer}>
-        <Text>Here's Text SAMPLE TEXT</Text>
-      </Card>
-    </View>
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        <AuthStack.Screen name='AuthScreen' component={AuthScreen} />
+      </AuthStack.Navigator>
+    </NavigationContainer>
   );
 }
 
