@@ -6,6 +6,9 @@ import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from './screens/AuthScreen';
+import HomeScreen from './screens/HomeScreen';
+
+import { Auth, Home } from './navigation/GNavigator';
 
 import database from './database';
 
@@ -27,11 +30,12 @@ const fetchFonts = () => {
 //   setDatabaseConnect(true);
 // };
 
-const AuthStack = createStackNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [databaseConnect, setDatabaseConnect] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   while (!fontLoaded && !databaseConnect) {
     return (
@@ -46,10 +50,24 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <AuthStack.Navigator>
-        <AuthStack.Screen name='AuthScreen' component={AuthScreen} />
-      </AuthStack.Navigator>
+      <Stack.Navigator>
+        {!isLoggedIn ? (
+          <Stack.Screen name='SignIn' component={Auth} />
+        ) : (
+          // <Stack.Screen name='SignIn' component={AuthScreen} />
+          <>
+            <Stack.Screen name='Home' component={Home} />
+            {/* <Stack.Screen name='Settings' component={SettingsScreen} /> */}
+          </>
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
+
+    // <NavigationContainer>
+    //   <AuthStack.Navigator>
+    //     <AuthStack.Screen name='AuthScreen' component={AuthScreen} />
+    //   </AuthStack.Navigator>
+    // </NavigationContainer>
   );
 }
 

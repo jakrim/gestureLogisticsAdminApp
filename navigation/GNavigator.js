@@ -4,13 +4,19 @@ import { moduleName } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from '../screens/AuthScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const AuthStack = createStackNavigator();
+const HomeStack = createStackNavigator();
 
-export default () => {
-  <NavigationContainer>
-    <AuthStack.Navigator>
-      <AuthStack.Screen name='AuthScreen' component={AuthScreen} />
-    </AuthStack.Navigator>
-  </NavigationContainer>;
-};
+export const Auth = () => (
+  <AuthStack.Navigator>
+    <AuthStack.Screen name='AuthScreen' component={AuthScreen} />
+  </AuthStack.Navigator>
+);
+
+export const Home = () => (
+  <HomeStack.Navigator>
+    <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
+  </HomeStack.Navigator>
+);
