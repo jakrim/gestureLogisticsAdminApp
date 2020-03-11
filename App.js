@@ -7,8 +7,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from './screens/AuthScreen';
 
-import GNavigator from './navigation/GNavigator';
-import Card from './components/Card';
+import database from './database';
+
+// import GNavigator from './navigation/GNavigator';
+// import Card from './components/Card';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -20,15 +22,22 @@ const fetchFonts = () => {
   });
 };
 
+// const connectDB = () => {
+//   database();
+//   setDatabaseConnect(true);
+// };
+
 const AuthStack = createStackNavigator();
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [databaseConnect, setDatabaseConnect] = useState(false);
 
-  while (!fontLoaded) {
+  while (!fontLoaded && !databaseConnect) {
     return (
       <AppLoading
         startAsync={fetchFonts}
+        // startAsync={connectDB}
         onFinish={() => setFontLoaded(true)}
         onError={err => console.log(err)}
       />
