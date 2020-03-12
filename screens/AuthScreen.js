@@ -8,7 +8,8 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet
+  StyleSheet,
+  Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 // import { useDispatch } from 'react-redux';
@@ -106,7 +107,7 @@ const AuthScreen = props => {
   return (
     <KeyboardAvoidingView
       style={styles.screen}
-      keyboardVerticalOffset={50}
+      keyboardVerticalOffset={70}
       behavior='padding'
     >
       <TouchableWithoutFeedback
@@ -115,9 +116,12 @@ const AuthScreen = props => {
         }}
       >
         <LinearGradient
-          colors={[Colors.lightTeal, Colors.primaryColor]}
+          colors={[Colors.primaryColor, Colors.lightTeal]}
           style={styles.gradient}
         >
+          <View style={styles.image}>
+            <Image source={require('../assets/logo.png')} />
+          </View>
           <Card style={styles.authContainer}>
             <ScrollView>
               <Input
@@ -129,22 +133,26 @@ const AuthScreen = props => {
                 email
                 autoCapitalize='none'
                 errorText='Please enter a valid email address.'
-                // onInputChange={inputChangeHandler}
+                onInputChange={() => {}}
                 initalValue=''
               />
               <Input
                 id='password'
                 label='Password'
                 keyboardType='default' //Default Keyboard
+                secureTextEntry
                 required
                 minLength={5}
                 autoCapitalize='none'
                 errorText='Please enter a valid password.'
-                // onInputChange={inputChangeHandler}
+                onInputChange={() => {}}
                 initalValue=''
               />
               <View style={styles.buttonContainer}>
-                <Button title='Login' /*onPress={authHandler}*/ />
+                <Button
+                  title='Login'
+                  color={Colors.lightPurp} /*onPress={authHandler}*/
+                />
               </View>
             </ScrollView>
           </Card>
@@ -160,17 +168,29 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    justifyContent: 'center',
+    paddingVertical: 50,
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
+  image: {
+    paddingVertical: 30,
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+    // maxWidth: 150
+    // maxHeight: 150
+  },
   authContainer: {
+    justifyContent: 'flex-start',
+    opacity: 0.85,
     width: '80%',
     maxWidth: 400,
     maxHeight: 400,
     padding: 20
   },
   buttonContainer: {
-    marginTop: 10
+    marginTop: 15
   }
 });
 
