@@ -50,7 +50,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator headerMode='none'>
         {!isLoggedIn ? (
           <Stack.Screen name='SignIn' component={Auth} />
         ) : (

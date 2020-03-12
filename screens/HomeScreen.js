@@ -1,10 +1,16 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, Button, StyleSheet } from 'react-native';
 
-const HomeScreen = props => {
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.screen}>
-      <Text>HomeScreen</Text>
+      <Text>Home Screen</Text>
+      <Button
+        title='Go to Order Details Screen'
+        onPress={() => {
+          navigation.push('OrderDetailsScreen');
+        }}
+      />
     </View>
   );
 };

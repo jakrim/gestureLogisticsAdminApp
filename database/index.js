@@ -16,4 +16,4 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-console.log('HERE"S FIREBASE', firebase);
+// console.log('HERE"S FIREBASE', firebase);
