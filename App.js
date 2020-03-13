@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import authReducer from './store/reducers/auth';
-import { Auth, Home } from './navigation/GNavigator';
+import { Auth, Home, DrawerMenu } from './navigation/GNavigator';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -45,8 +45,8 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator headerMode='none'>
+          <Stack.Screen name='Home' component={DrawerMenu} />
           <Stack.Screen name='SignIn' component={Auth} />
-          <Stack.Screen name='Home' component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-const OrderDetailsScreen = props => {
+const OrdersScreen = props => {
   return (
     <View style={styles.screen}>
       <Text>Orders Screen</Text>
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default OrderDetailsScreen;
+export default OrdersScreen;
