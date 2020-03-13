@@ -1,7 +1,5 @@
 import React from 'react';
-import { moduleName } from 'react-native';
 
-// import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from '../screens/AuthScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -21,7 +19,6 @@ export const Auth = () => (
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
-        // paddingTop: 25,
         fontSize: 25,
         fontFamily: 'dm-sans-bold'
       }
