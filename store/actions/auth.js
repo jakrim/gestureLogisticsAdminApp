@@ -1,7 +1,7 @@
 import { Keys } from '../../api-key';
 
 export const SIGNIN = 'SIGNIN';
-export const IS_LOGGED_IN = 'IS_LOGGED_IN';
+// export const AUTHENTICATE = 'AUTHENTICATE';
 
 export const signin = (email, password) => {
   return async dispatch => {
@@ -19,7 +19,6 @@ export const signin = (email, password) => {
     );
 
     if (!response.ok) {
-      // throw new Error('Sign in went wrong');
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
       let message = 'Something went wrong!';
@@ -32,7 +31,44 @@ export const signin = (email, password) => {
     }
 
     const resData = await response.json();
-    console.log(resData);
-    dispatch({ type: SIGNIN, token: resData.idToken, userId: resData.localId });
+    // console.log(resData);
+    if (resData.localId) {
+      dispatch({
+        type: SIGNIN,
+        token: resData.idToken,
+        userId: resData.localId
+      });
+    }
+
+    // if (!resData.localId) {
+    //   return;
+    // }
   };
 };
+
+// export const authenticate = userId => {
+//   return async (dispatch, getState) => {
+//     // const userId = getState().auth.userId;
+
+//     const response = await fetch(
+//       `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=${userId}`,
+//       {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           userId
+//         })
+//       }
+//     );
+//     console.log(response);
+
+//     if (response.status === 401) {
+//       // throw new Error('Sign in went wrong');
+//       const errorResData = await response.json();
+//       const errorId = errorResData.error.message;
+
+//       throw new Error(message);
+
+//     dispatch({ type: AUTHENTICATE, userId: resData.localId });
+//   };
+// };

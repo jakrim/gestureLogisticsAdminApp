@@ -1,19 +1,53 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  Text,
+  View,
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const OrdersScreen = props => {
+import Colors from '../constants/Colors';
+import { getOrderData } from '../helpers/apiHelpers';
+
+const OrdersScreen = ({ navigation }) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getOrderData();
+      // const data = await response.json();
+      const items = response.data.result.data;
+      console.log(items);
+    };
+  }, []);
+
   return (
-    <View style={styles.screen}>
-      <Text>Orders Screen</Text>
-    </View>
+    <LinearGradient
+      colors={[Colors.primaryColor, Colors.lightTeal]}
+      style={styles.gradient}
+    >
+      <FlatList />
+      <View>
+        <Text>Home Screen</Text>
+        <Button
+          title='Go to Order Details Screen'
+          onPress={() => {
+            navigation.push('OrderDetailsScreen');
+          }}
+        />
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  gradient: {
     flex: 1,
+    // paddingVertical: 50,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: '100%'
   }
 });
 

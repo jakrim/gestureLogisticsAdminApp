@@ -77,7 +77,7 @@ const AuthScreen = props => {
           formState.inputValues.password
         )
       );
-      props.navigation.navigate('Home');
+      props.navigation.navigate('OrderStack');
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -139,6 +139,7 @@ const AuthScreen = props => {
                 errorText='Please enter a valid password.'
                 onInputChange={inputChangeHandler}
                 initalValue=''
+                keyboardShouldPersistTaps='never'
               />
               <View style={styles.buttonContainer}>
                 {isLoading ? (

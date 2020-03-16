@@ -1,4 +1,4 @@
-import { SIGNIN, IS_LOGGED_IN } from '../actions/auth';
+import { SIGNIN } from '../actions/auth';
 
 const initialState = {
   loggedIn: false,
