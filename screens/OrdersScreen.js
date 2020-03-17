@@ -16,6 +16,7 @@ const OrdersScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await getOrderData();
+      // .then(res => res.json()).then
       // const data = await response.json();
       const items = response.data.result.data;
       console.log(items);
