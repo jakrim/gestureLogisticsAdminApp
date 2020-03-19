@@ -120,29 +120,21 @@ const OrdersScreen = props => {
         refreshing={isRefreshing}
         data={orders}
         keyExtractor={item => item.key}
-        renderItem={itemData => {
-          {
-            console.log(
-              `HERE"S ITEMDATA.ITEM.recipient_name`,
-              itemData.item.recipient_name
-            );
-          }
-          return (
-            <OrderItem
-              order_Id={itemData.item.orderId}
-              product_name={itemData.item.product_name}
-              address_string={itemData.item.address_string}
-              address_string_2={itemData.item.address_string_2}
-              zone={itemData.item.zone}
-              onSelect={() => {
-                selectItemHandler(
-                  itemData.item.orderId,
-                  itemData.item.product_name
-                );
-              }}
-            />
-          );
-        }}
+        renderItem={itemData => (
+          <OrderItem
+            order_Id={itemData.item.orderId}
+            product_name={itemData.item.product_name}
+            address_string={itemData.item.address_string}
+            address_string_2={itemData.item.address_string_2}
+            zone={itemData.item.zone}
+            onSelect={() => {
+              selectItemHandler(
+                itemData.item.orderId,
+                itemData.item.product_name
+              );
+            }}
+          ></OrderItem>
+        )}
       />
       {/* <View>
         <Text>Home Screen</Text>

@@ -27,14 +27,22 @@ const OrderItem = props => {
             {/* <View style={styles.imageContainer}>
               <Image style={styles.image} source={{ uri: props.image }} />
             </View> */}
-            <View style={styles.details}>
+            <View style={styles.orderDetails}>
               <Text style={styles.title}>{props.product_name}</Text>
-              <Text style={styles.title}>{props.address_string}</Text>
+              <Text style={styles.address}>{props.address_string}</Text>
               <Text style={styles.address}>{props.address_string_2}</Text>
-
-              <Text style={styles.title}>{props.zone}</Text>
             </View>
-            <View style={styles.actions}>{props.children}</View>
+            {/* <View style={styles.actions}>{props.children}</View> */}
+          </View>
+          <View style={styles.orderDetails2}>
+            <Text style={styles.orderDetails2Text}>
+              <Text style={{ fontFamily: 'dm-sans-bold' }}>Zone: </Text>
+              {props.zone}
+            </Text>
+            <Text style={styles.orderDetails2Text}>
+              <Text style={{ fontFamily: 'dm-sans-bold' }}>Order ID: </Text>
+              {props.order_Id}
+            </Text>
           </View>
         </View>
       </TouchableComp>
@@ -44,7 +52,8 @@ const OrderItem = props => {
 
 const styles = StyleSheet.create({
   product: {
-    height: 300,
+    height: 160,
+    width: 300,
     margin: 20,
     backgroundColor: Colors.backgroundFeed
   },
@@ -63,29 +72,40 @@ const styles = StyleSheet.create({
   //   width: '100%',
   //   height: '100%'
   // },
-  details: {
-    alignItems: 'center',
+  orderDetails: {
+    alignItems: 'flex-start',
     // height: '17%',
     padding: 10,
-    backgroundColor: Colors.primaryColor
+    backgroundColor: Colors.backgroundFeed
   },
   title: {
     fontFamily: 'dm-sans-bold',
     fontSize: 18,
     marginVertical: 5,
-    color: Colors.backgroundFeed
+    color: Colors.primaryColor
   },
   address: {
     fontFamily: 'dm-sans-regular',
+    fontSize: 15,
+    color: Colors.primaryColor
+  },
+  orderDetails2: {
+    paddingTop: 25,
+    paddingHorizontal: 10,
+    justifyContent: 'flex-end'
+    // alignItems: 'flex-end',
+  },
+  orderDetails2Text: {
+    fontFamily: 'dm-sans-regular',
     fontSize: 14,
-    color: Colors.backgroundFeed
+    color: Colors.primaryColor
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    height: '23%',
-    paddingHorizontal: 20
+    alignItems: 'center'
+    // height: '23%',
+    // paddingHorizontal: 20
   }
 });
 
