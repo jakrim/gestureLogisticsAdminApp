@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Text,
   View,
@@ -8,28 +8,143 @@ import {
   StyleSheet
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch } from 'react-redux';
+import { BallIndicator } from 'react-native-indicators';
 
+import * as ordersActions from '../store/actions/orders';
+import OrderItem from '../components/OrderItem';
 import Colors from '../constants/Colors';
-import { getOrderData } from '../helpers/apiHelpers';
 
-const OrdersScreen = ({ navigation }) => {
+const OrdersScreen = props => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState();
+  const orders = useSelector(state => state.orders.orders);
+  const dispatch = useDispatch();
+
+  const { navigation } = props;
+
+  const loadOrders = useCallback(async () => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(ordersActions.fetchOrders());
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setError]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await getOrderData();
-      // .then(res => res.json()).then
-      // const data = await response.json();
-      const items = response.data.result.data;
-      console.log(items);
-    };
-  }, []);
+    const willFocusSub = props.navigation.addListener('willFocus', loadOrders);
+
+    return willFocusSub;
+  }, [navigation, loadOrders]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadOrders().then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch, loadOrders]);
+
+  if (error) {
+    return (
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <View style={styles.centered}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: Colors.darkPurp
+            }}
+          >
+            An error occurred!
+          </Text>
+          {!isLoading ? (
+            <Button
+              title='Try again'
+              onPress={loadOrders}
+              color={Colors.LightColorText}
+            />
+          ) : (
+            <BallIndicator color={Colors.LightColorText} />
+          )}
+        </View>
+      </LinearGradient>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <View style={styles.centered}>
+          <BallIndicator color={Colors.LightColorText} />
+        </View>
+      </LinearGradient>
+    );
+  }
+
+  if (!isLoading && orders.length === 0) {
+    return (
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <View style={styles.centered}>
+          <Text>No orders found!</Text>
+        </View>
+      </LinearGradient>
+    );
+  }
+
+  const selectItemHandler = (id, name) => {
+    navigation.navigate('OrderDetailsScreen', {
+      orderId: id,
+      product_name: name
+    });
+  };
 
   return (
     <LinearGradient
       colors={[Colors.primaryColor, Colors.lightTeal]}
       style={styles.gradient}
     >
-      <FlatList />
-      <View>
+      <FlatList
+        onRefresh={loadOrders}
+        refreshing={isRefreshing}
+        data={orders}
+        keyExtractor={item => item.key}
+        renderItem={itemData => {
+          {
+            console.log(
+              `HERE"S ITEMDATA.ITEM.recipient_name`,
+              itemData.item.recipient_name
+            );
+          }
+          return (
+            <OrderItem
+              order_Id={itemData.item.orderId}
+              product_name={itemData.item.product_name}
+              address_string={itemData.item.address_string}
+              address_string_2={itemData.item.address_string_2}
+              zone={itemData.item.zone}
+              onSelect={() => {
+                selectItemHandler(
+                  itemData.item.orderId,
+                  itemData.item.product_name
+                );
+              }}
+            />
+          );
+        }}
+      />
+      {/* <View>
         <Text>Home Screen</Text>
         <Button
           title='Go to Order Details Screen'
@@ -37,18 +152,23 @@ const OrdersScreen = ({ navigation }) => {
             navigation.push('OrderDetailsScreen');
           }}
         />
-      </View>
+      </View> */}
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   gradient: {
-    flex: 1,
+    // flex: 1,
     // paddingVertical: 50,
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%'
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

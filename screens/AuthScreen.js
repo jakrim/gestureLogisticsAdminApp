@@ -115,7 +115,7 @@ const AuthScreen = props => {
             <Image source={require('../assets/logo.png')} />
           </View>
           <Card style={styles.authContainer}>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
               <Input
                 id='email'
                 label='E-Mail'

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import Colors from '../constants/Colors';
 import { BallIndicator } from 'react-native-indicators';
 
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import * as authActions from '../store/actions/auth';
 
 const LoadingScreen = props => {
@@ -11,23 +11,27 @@ const LoadingScreen = props => {
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
+  const message = useSelector(state => state.auth.message);
+
   useEffect(() => {
     try {
       setIsLoading(true);
       dispatch(authActions.authenticate());
-      props.navigation.navigate('OrdersScreen');
+      setTimeout(() => {
+        props.navigation.navigate('OrdersScreen');
+      }, 1000);
     } catch (err) {
-      setError(err.message);
-      props.navigation.navigate('SignIn');
+      setError(message);
+      setTimeout(() => {
+        props.navigation.navigate('SignIn');
+      }, 1000);
       setIsLoading(false);
     }
   });
 
   useEffect(() => {
     if (error) {
-      Alert.alert('You are unauthorized to use this application!', error, [
-        { text: 'Okay' }
-      ]);
+      Alert.alert(message, error, [{ text: 'Okay' }]);
     }
   }, [error]);
 
@@ -36,6 +40,9 @@ const LoadingScreen = props => {
       <Text style={styles.text}>
         Authenticating with{' '}
         <Text style={{ color: Colors.primaryColor }}>Gesture</Text>
+        {/* <Text style={{ color: Colors.primaryColor, fontSize: 40 }}>
+          {error}
+        </Text> */}
       </Text>
       {isLoading && <BallIndicator color={Colors.primaryColor} />}
     </View>

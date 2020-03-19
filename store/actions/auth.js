@@ -31,14 +31,11 @@ export const signin = (email, password) => {
     }
 
     const resData = await response.json();
-    // console.log(resData);
-    // if (resData.localId) {
     dispatch({
       type: SIGNIN,
       token: resData.idToken,
       userId: resData.localId
     });
-    // }
   };
 };
 
@@ -59,16 +56,21 @@ export const authenticate = () => {
 
     const resData = await response.json();
 
-    console.log(`HERE'S RESPONSE`, resData);
-    console.log(`HERE'S RESPONSE MESSAGE`, resData.result.data.message);
+    // console.log(`HERE'S RESPONSE`, resData);
+    // console.log(`HERE'S RESPONSE MESSAGE`, resData.result.data.message);
 
-    // if (response.status === 401) {
-    //   // throw new Error('Sign in went wrong');
-    //   const errorResData = await response.json();
-    //   const errorId = errorResData.error.message;
+    // throw new Error('Sign in went wrong');
+    // const errorResData = await response.json();
+    // const errorId = errorResData.error.message;
 
-    //   throw new Error(message);
+    // throw new Error(message);
 
-    dispatch({ type: AUTHENTICATE });
+    const resMessage = resData.result.data.message;
+    // if (response.status === 200) {
+    //   console.log(`here's message `, errorResMessage);
+    // throw new Error(errorResMessage);
+    // }
+
+    dispatch({ type: AUTHENTICATE, message: resMessage });
   };
 };

@@ -1,5 +1,5 @@
 export default {
-  darkPurp: ' #2B07A0',
+  darkPurp: '#2b07a0',
   lightPurp: '#8460CB',
   darkTeal: '#4083E3',
   lightTeal: '#42B9E7',
