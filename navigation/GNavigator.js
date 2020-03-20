@@ -3,6 +3,7 @@ import { Platform, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import LogoTitle from '../components/LogoTitle';
 import AuthScreen from '../screens/AuthScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import OrdersScreen from '../screens/OrdersScreen';
@@ -59,6 +60,7 @@ export const OrderStack = ({ navigation }) => (
       name='OrdersScreen'
       component={OrdersScreen}
       options={{
+        headerTitle: props => <LogoTitle {...props} />,
         headerLeft: () => (
           <Ionicons
             style={styles.headerButtons}

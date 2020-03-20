@@ -20,6 +20,7 @@ const OrdersScreen = props => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const orders = useSelector(state => state.orders.orders);
+  console.log('orders', orders);
   const dispatch = useDispatch();
 
   const { navigation } = props;
@@ -84,7 +85,7 @@ const OrdersScreen = props => {
         style={styles.gradient}
       >
         <View style={styles.centered}>
-          <BallIndicator color={Colors.LightColorText} />
+          <BallIndicator color={Colors.backgroundFeed} />
         </View>
       </LinearGradient>
     );
@@ -119,40 +120,52 @@ const OrdersScreen = props => {
         onRefresh={loadOrders}
         refreshing={isRefreshing}
         data={orders}
-        keyExtractor={item => item.key}
-        renderItem={itemData => (
-          <OrderItem
-            order_Id={itemData.item.orderId}
-            product_name={itemData.item.product_name}
-            address_string={itemData.item.address_string}
-            address_string_2={itemData.item.address_string_2}
-            zone={itemData.item.zone}
-            onSelect={() => {
-              selectItemHandler(
-                itemData.item.orderId,
-                itemData.item.product_name
-              );
-            }}
-          ></OrderItem>
-        )}
+        keyExtractor={item => item.orderId}
+        renderItem={itemData => {
+          if (!itemData.item.schedule) {
+            return (
+              <OrderItem
+                order_Id={itemData.item.orderId}
+                product_name={itemData.item.product_name}
+                address_string={itemData.item.address_string}
+                time_order_placed={itemData.item.time_order_placed}
+                address_string_2={itemData.item.address_string_2}
+                zone={itemData.item.zone}
+                onSelect={() => {
+                  selectItemHandler(
+                    itemData.item.orderId,
+                    itemData.item.product_name
+                  );
+                }}
+              ></OrderItem>
+            );
+          } else {
+            return (
+              <OrderItem
+                order_Id={itemData.item.orderId}
+                product_name={itemData.item.product_name}
+                address_string={itemData.item.address_string}
+                time_order_placed={itemData.item.time_order_placed}
+                schedule={itemData.item.schedule}
+                address_string_2={itemData.item.address_string_2}
+                zone={itemData.item.zone}
+                onSelect={() => {
+                  selectItemHandler(
+                    itemData.item.orderId,
+                    itemData.item.product_name
+                  );
+                }}
+              ></OrderItem>
+            );
+          }
+        }}
       />
-      {/* <View>
-        <Text>Home Screen</Text>
-        <Button
-          title='Go to Order Details Screen'
-          onPress={() => {
-            navigation.push('OrderDetailsScreen');
-          }}
-        />
-      </View> */}
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   gradient: {
-    // flex: 1,
-    // paddingVertical: 50,
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%'

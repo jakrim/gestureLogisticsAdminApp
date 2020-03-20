@@ -11,6 +11,7 @@ import {
 
 import Card from './Card';
 import Colors from '../constants/Colors';
+var moment = require('moment-timezone');
 
 const OrderItem = props => {
   let TouchableComp = TouchableOpacity;
@@ -18,6 +19,42 @@ const OrderItem = props => {
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableComp = TouchableNativeFeedback;
   }
+
+  // function convertMS(milliseconds) {
+  //   const dateObj = new Date(milliseconds * 1000);
+  //   let hours = dateObj.getUTCHours();
+  //   // let minutes = dateObj.getUTCMinutes();
+  //   let seconds = dateObj.getUTCSeconds();
+  //   let formattedTime =
+  //     hours.toString().padStart(2, '0') +
+  //     ':' +
+  //     // minutes.toString().padStart(2, '0') +
+  //     ':' +
+  //     seconds.toString().padStart(2, '0');
+
+  //   var AmOrPm = hours >= 12 ? 'pm' : 'am';
+  //   hours = hours % 12 || 12;
+  //   var minutes = dt.getMinutes();
+  //   var finalTime = 'Time  - ' + hours + ':' + minutes + ' ' + AmOrPm;
+
+  //   return finalTime;
+  // }
+  // var dt = new Date();
+  // var hours = dt.getHours();
+
+  // console.log('hours', finalTime);
+
+  var scheduleDate = new Date(props.schedule).toUTCString();
+
+  var myTimezone = 'America/Toronto';
+  var myDatetimeFormat = 'hh:mma z MM/DD';
+  var myDatetimeString = moment(scheduleDate)
+    .tz(myTimezone)
+    .format(myDatetimeFormat);
+  console.log('myDatetimeString', myDatetimeString);
+
+  // const time = new Date();
+  // console.log(Date(time.toString()));
 
   return (
     <Card style={styles.product}>
@@ -28,9 +65,20 @@ const OrderItem = props => {
               <Image style={styles.image} source={{ uri: props.image }} />
             </View> */}
             <View style={styles.orderDetails}>
-              <Text style={styles.title}>{props.product_name}</Text>
+              <Text style={styles.productName}>{props.product_name}</Text>
               <Text style={styles.address}>{props.address_string}</Text>
               <Text style={styles.address}>{props.address_string_2}</Text>
+              {props.schedule ? (
+                <Text style={styles.scheduled}>
+                  Schedule:{'\n'}
+                  <Text style={{ fontFamily: 'dm-sans-regular' }}>
+                    {/* {convertMS(props.schedule)} */}
+                    {myDatetimeString}
+                  </Text>
+                </Text>
+              ) : (
+                <Text style={styles.scheduled}>On Demand</Text>
+              )}
             </View>
             {/* <View style={styles.actions}>{props.children}</View> */}
           </View>
@@ -38,6 +86,9 @@ const OrderItem = props => {
             <Text style={styles.orderDetails2Text}>
               <Text style={{ fontFamily: 'dm-sans-bold' }}>Zone: </Text>
               {props.zone}
+            </Text>
+            <Text style={styles.orderDetails2Text}>
+              {/* {convertMS(props.time_order_placed)} */}
             </Text>
             <Text style={styles.orderDetails2Text}>
               <Text style={{ fontFamily: 'dm-sans-bold' }}>Order ID: </Text>
@@ -52,9 +103,9 @@ const OrderItem = props => {
 
 const styles = StyleSheet.create({
   product: {
-    height: 160,
+    height: 200,
     width: 300,
-    margin: 20,
+    margin: 15,
     backgroundColor: Colors.backgroundFeed
   },
   touchable: {
@@ -78,10 +129,10 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.backgroundFeed
   },
-  title: {
+  productName: {
     fontFamily: 'dm-sans-bold',
     fontSize: 18,
-    marginVertical: 5,
+    // marginVertical: 5,
     color: Colors.primaryColor
   },
   address: {
@@ -89,8 +140,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.primaryColor
   },
+  scheduled: {
+    fontFamily: 'dm-sans-bold',
+    fontSize: 15,
+    color: Colors.primaryColor
+  },
   orderDetails2: {
-    paddingTop: 25,
+    paddingTop: 15,
     paddingHorizontal: 10,
     justifyContent: 'flex-end'
     // alignItems: 'flex-end',
