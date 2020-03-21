@@ -40,6 +40,13 @@ export const Auth = () => (
       component={AuthScreen}
       style={{ height: 80 }}
     />
+    <AuthStack.Screen
+      name='LoadingScreen'
+      component={LoadingScreen}
+      options={{
+        headerShown: false
+      }}
+    />
   </AuthStack.Navigator>
 );
 
@@ -49,13 +56,6 @@ export const OrderStack = ({ navigation }) => (
       headerTintColor: Colors.primaryColor
     }}
   >
-    <HomeStack.Screen
-      name='LoadingScreen'
-      component={LoadingScreen}
-      options={{
-        headerShown: false
-      }}
-    />
     <HomeStack.Screen
       name='OrdersScreen'
       component={OrdersScreen}

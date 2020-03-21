@@ -9,7 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import authReducer from './store/reducers/auth';
 import ordersReducer from './store/reducers/orders';
-import { Auth, Home, DrawerMenu } from './navigation/GNavigator';
+import { Auth, DrawerMenu } from './navigation/GNavigator';
 
 const fetchFonts = () => {
   return Font.loadAsync({

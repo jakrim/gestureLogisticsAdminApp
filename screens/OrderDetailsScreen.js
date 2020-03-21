@@ -1,10 +1,21 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Scrollview, Text, View, Button, StyleSheet } from 'react-native';
 
-const OrderDetailsScreen = props => {
+import { useSelector, useDispatch } from 'react-redux';
+
+import Colors from '../constants/Colors';
+
+const OrderDetailsScreen = (props, { route }) => {
+  const orderId = route.params.orderId;
+  const selectedOrder = useSelector(state =>
+    state.orders.orders.find(order => order.orderId === orderId)
+  );
+  const dispatch = useDispatch();
+
   return (
     <View style={styles.screen}>
       <Text>Order Details Screen</Text>
+      <Text>{selectedOrder}</Text>
     </View>
   );
 };

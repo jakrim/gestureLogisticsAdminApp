@@ -77,7 +77,7 @@ const AuthScreen = props => {
           formState.inputValues.password
         )
       );
-      props.navigation.navigate('OrderStack');
+      props.navigation.navigate('LoadingScreen');
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -127,6 +127,8 @@ const AuthScreen = props => {
                 errorText='Please enter a valid email address.'
                 onInputChange={inputChangeHandler}
                 initalValue=''
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.password.focus()}
               />
               <Input
                 id='password'
@@ -140,6 +142,9 @@ const AuthScreen = props => {
                 onInputChange={inputChangeHandler}
                 initalValue=''
                 keyboardShouldPersistTaps='never'
+                inputRef={ref => (this.password = ref)}
+
+                // label={"Field 2"}
               />
               <View style={styles.buttonContainer}>
                 {isLoading ? (

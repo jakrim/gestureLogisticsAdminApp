@@ -20,7 +20,6 @@ const OrdersScreen = props => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const orders = useSelector(state => state.orders.orders);
-  console.log('orders', orders);
   const dispatch = useDispatch();
 
   const { navigation } = props;
@@ -37,7 +36,7 @@ const OrdersScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const willFocusSub = props.navigation.addListener('willFocus', loadOrders);
+    const willFocusSub = navigation.addListener('willFocus', loadOrders);
 
     return willFocusSub;
   }, [navigation, loadOrders]);
@@ -117,6 +116,7 @@ const OrdersScreen = props => {
       style={styles.gradient}
     >
       <FlatList
+        scrollIndicatorInsets={{ right: 1 }}
         onRefresh={loadOrders}
         refreshing={isRefreshing}
         data={orders}
@@ -166,6 +166,7 @@ const OrdersScreen = props => {
 
 const styles = StyleSheet.create({
   gradient: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%'

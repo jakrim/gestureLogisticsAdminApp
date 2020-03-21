@@ -20,59 +20,26 @@ const OrderItem = props => {
     TouchableComp = TouchableNativeFeedback;
   }
 
-  // function convertMS(milliseconds) {
-  //   const dateObj = new Date(milliseconds * 1000);
-  //   let hours = dateObj.getUTCHours();
-  //   // let minutes = dateObj.getUTCMinutes();
-  //   let seconds = dateObj.getUTCSeconds();
-  //   let formattedTime =
-  //     hours.toString().padStart(2, '0') +
-  //     ':' +
-  //     // minutes.toString().padStart(2, '0') +
-  //     ':' +
-  //     seconds.toString().padStart(2, '0');
-
-  //   var AmOrPm = hours >= 12 ? 'pm' : 'am';
-  //   hours = hours % 12 || 12;
-  //   var minutes = dt.getMinutes();
-  //   var finalTime = 'Time  - ' + hours + ':' + minutes + ' ' + AmOrPm;
-
-  //   return finalTime;
-  // }
-  // var dt = new Date();
-  // var hours = dt.getHours();
-
-  // console.log('hours', finalTime);
-
-  var scheduleDate = new Date(props.schedule).toUTCString();
-
+  var scheduleDate = new Date(props.schedule);
   var myTimezone = 'America/Toronto';
   var myDatetimeFormat = 'hh:mma z MM/DD';
   var myDatetimeString = moment(scheduleDate)
     .tz(myTimezone)
     .format(myDatetimeFormat);
-  console.log('myDatetimeString', myDatetimeString);
-
-  // const time = new Date();
-  // console.log(Date(time.toString()));
 
   return (
     <Card style={styles.product}>
       <TouchableComp onPress={props.onSelect} useForeground>
         <View style={styles.touchable}>
           <View>
-            {/* <View style={styles.imageContainer}>
-              <Image style={styles.image} source={{ uri: props.image }} />
-            </View> */}
             <View style={styles.orderDetails}>
               <Text style={styles.productName}>{props.product_name}</Text>
               <Text style={styles.address}>{props.address_string}</Text>
               <Text style={styles.address}>{props.address_string_2}</Text>
               {props.schedule ? (
                 <Text style={styles.scheduled}>
-                  Schedule:{'\n'}
+                  Time:{' '}
                   <Text style={{ fontFamily: 'dm-sans-regular' }}>
-                    {/* {convertMS(props.schedule)} */}
                     {myDatetimeString}
                   </Text>
                 </Text>
@@ -88,9 +55,6 @@ const OrderItem = props => {
               {props.zone}
             </Text>
             <Text style={styles.orderDetails2Text}>
-              {/* {convertMS(props.time_order_placed)} */}
-            </Text>
-            <Text style={styles.orderDetails2Text}>
               <Text style={{ fontFamily: 'dm-sans-bold' }}>Order ID: </Text>
               {props.order_Id}
             </Text>
@@ -103,7 +67,7 @@ const OrderItem = props => {
 
 const styles = StyleSheet.create({
   product: {
-    height: 200,
+    height: 180,
     width: 300,
     margin: 15,
     backgroundColor: Colors.backgroundFeed
@@ -112,19 +76,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden'
   },
-  // imageContainer: {
-  //   width: '100%',
-  //   height: '60%',
-  //   borderTopLeftRadius: 10,
-  //   borderTopRightRadius: 10,
-  //   overflow: 'hidden'
-  // },
-  // image: {
-  //   width: '100%',
-  //   height: '100%'
-  // },
   orderDetails: {
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
     // height: '17%',
     padding: 10,
     backgroundColor: Colors.backgroundFeed
@@ -141,15 +94,15 @@ const styles = StyleSheet.create({
     color: Colors.primaryColor
   },
   scheduled: {
+    paddingTop: 5,
     fontFamily: 'dm-sans-bold',
     fontSize: 15,
     color: Colors.primaryColor
   },
   orderDetails2: {
-    paddingTop: 15,
     paddingHorizontal: 10,
-    justifyContent: 'flex-end'
-    // alignItems: 'flex-end',
+    paddingVertical: 25,
+    alignItems: 'flex-end'
   },
   orderDetails2Text: {
     fontFamily: 'dm-sans-regular',
@@ -163,6 +116,17 @@ const styles = StyleSheet.create({
     // height: '23%',
     // paddingHorizontal: 20
   }
+  // imageContainer: {
+  //   width: '100%',
+  //   height: '60%',
+  //   borderTopLeftRadius: 10,
+  //   borderTopRightRadius: 10,
+  //   overflow: 'hidden'
+  // },
+  // image: {
+  //   width: '100%',
+  //   height: '100%'
+  // },
 });
 
 export default OrderItem;

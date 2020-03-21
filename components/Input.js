@@ -72,6 +72,8 @@ const Input = props => {
         value={inputState.value}
         onChangeText={textChangeHandler}
         onBlur={lostFocusHandler}
+        ref={props.inputRef}
+        onSubmitEditing={props.onSubmitEditing}
       />
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>

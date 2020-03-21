@@ -18,7 +18,7 @@ const LoadingScreen = props => {
       setIsLoading(true);
       dispatch(authActions.authenticate());
       setTimeout(() => {
-        props.navigation.navigate('OrdersScreen');
+        props.navigation.navigate('OrderStack');
       }, 1000);
     } catch (err) {
       setError(message);
