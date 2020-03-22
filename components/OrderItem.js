@@ -67,8 +67,8 @@ const OrderItem = props => {
 
 const styles = StyleSheet.create({
   product: {
-    height: 180,
-    width: 300,
+    height: 160,
+    width: 320,
     margin: 15,
     backgroundColor: Colors.backgroundFeed
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   orderDetails2: {
     paddingHorizontal: 10,
-    paddingVertical: 25,
+    paddingVertical: 10,
     alignItems: 'flex-end'
   },
   orderDetails2Text: {
