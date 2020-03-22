@@ -10,6 +10,7 @@ export default (state = initialState, action) => {
       return {
         orders: action.orders
       };
+    default:
+      return state;
   }
-  return state;
 };

@@ -74,8 +74,11 @@ export const OrderStack = ({ navigation }) => (
         ),
         headerStyle: {
           backgroundColor:
-            Platform.OS === 'android' ? Colors.primaryColor : 'white'
+            Platform.OS === 'android' ? Colors.primaryColor : 'white',
+          shadowColor: 'transparent',
+          elevation: 0
         },
+        // headerTitleAlign: 'center',
         headerTintColor:
           Platform.OS === 'android' ? 'white' : Colors.primaryColor
       }}
