@@ -57,7 +57,7 @@ export const OrderStack = ({ navigation }) => (
     }}
   >
     <HomeStack.Screen
-      name='OrdersScreen'
+      name='Orders'
       component={OrdersScreen}
       options={{
         headerTitle: props => <LogoTitle {...props} />,
@@ -83,6 +83,7 @@ export const OrderStack = ({ navigation }) => (
     <HomeStack.Screen
       name='OrderDetailsScreen'
       component={OrderDetailsScreen}
+      options={{ headerTitle: 'Order Details' }}
     />
   </HomeStack.Navigator>
 );
@@ -94,9 +95,10 @@ export const GRunnerStack = ({ navigation }) => (
     }}
   >
     <GRunner.Screen
-      name='GRunnersScreen'
+      name='GRunners'
       component={GRunnersScreen}
       options={{
+        headerTitle: props => <LogoTitle {...props} />,
         headerLeft: () => (
           <Ionicons
             style={styles.headerButtons}
@@ -116,7 +118,7 @@ export const GRunnerStack = ({ navigation }) => (
           Platform.OS === 'android' ? 'white' : Colors.primaryColor
       }}
     />
-    <GRunner.Screen name='GRunnerScreen' component={GRunnerScreen} />
+    <GRunner.Screen name='GRunner' component={GRunnerScreen} />
   </GRunner.Navigator>
 );
 

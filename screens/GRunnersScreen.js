@@ -8,7 +8,7 @@ const GRunnersScreen = ({ navigation }) => {
       <Button
         title='Go to Individual GRunner Screen'
         onPress={() => {
-          navigation.push('GRunnerScreen');
+          navigation.push('GRunner');
         }}
       />
     </View>
