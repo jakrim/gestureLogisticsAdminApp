@@ -9,6 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import authReducer from './store/reducers/auth';
 import ordersReducer from './store/reducers/orders';
+import gRunnerReducer from './store/reducers/gRunner';
 import { Auth, DrawerMenu } from './navigation/GNavigator';
 
 const fetchFonts = () => {
@@ -23,7 +24,8 @@ const fetchFonts = () => {
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  orders: ordersReducer
+  orders: ordersReducer,
+  gRunners: gRunnerReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -47,8 +49,8 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator headerMode='none'>
-          <Stack.Screen name='SignIn' component={Auth} />
           <Stack.Screen name='OrderStack' component={DrawerMenu} />
+          <Stack.Screen name='SignIn' component={Auth} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
