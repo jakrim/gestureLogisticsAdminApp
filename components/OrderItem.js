@@ -11,7 +11,7 @@ import {
 
 import Card from './Card';
 import Colors from '../constants/Colors';
-var moment = require('moment-timezone');
+import MillisToDate from './MillisToDate';
 
 const OrderItem = props => {
   let TouchableComp = TouchableOpacity;
@@ -19,13 +19,6 @@ const OrderItem = props => {
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableComp = TouchableNativeFeedback;
   }
-
-  var scheduleDate = new Date(props.schedule);
-  var myTimezone = 'America/Toronto';
-  var myDatetimeFormat = 'hh:mma z MM/DD';
-  var myDatetimeString = moment(scheduleDate)
-    .tz(myTimezone)
-    .format(myDatetimeFormat);
 
   return (
     <Card style={styles.product}>
@@ -40,7 +33,7 @@ const OrderItem = props => {
                 <Text style={styles.scheduled}>
                   Time:{' '}
                   <Text style={{ fontFamily: 'dm-sans-regular' }}>
-                    {myDatetimeString}
+                    {MillisToDate(props.schedule)}
                   </Text>
                 </Text>
               ) : (

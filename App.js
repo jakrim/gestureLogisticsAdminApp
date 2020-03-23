@@ -47,8 +47,8 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator headerMode='none'>
-          <Stack.Screen name='OrderStack' component={DrawerMenu} />
           <Stack.Screen name='SignIn' component={Auth} />
+          <Stack.Screen name='OrderStack' component={DrawerMenu} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
