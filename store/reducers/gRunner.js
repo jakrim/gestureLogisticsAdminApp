@@ -1,4 +1,4 @@
-import { SET_GRUNNERS } from '../actions/orders';
+import { SET_GRUNNERS, SET_GRUNNER } from '../actions/gRunner';
 
 const initialState = {
   gRunners: []
@@ -9,6 +9,11 @@ export default (state = initialState, action) => {
     case SET_GRUNNERS:
       return {
         gRunners: action.gRunners
+      };
+    case SET_GRUNNER:
+      return {
+        gRunner: action.gRunner,
+        uid: action.uid
       };
     default:
       return state;

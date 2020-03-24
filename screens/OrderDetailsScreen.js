@@ -41,11 +41,18 @@ const OrderDetailsScreen = props => {
               <Text
                 style={{
                   ...styles.recipient,
-                  fontFamily: 'dm-sans-bold',
-                  color: Colors.darkPurp
+                  ...styles.accent
                 }}
               >
-                Recipient: {selectedOrder.recipient_name}
+                Recipient:{' '}
+                <Text
+                  style={{
+                    fontFamily: 'dm-sans-regular',
+                    color: Colors.primaryColor
+                  }}
+                >
+                  {selectedOrder.recipient_name}
+                </Text>
               </Text>
             </Text>
             {selectedOrder.schedule ? (
@@ -111,19 +118,11 @@ const OrderDetailsScreen = props => {
           {/* BEGIN PRODUCT STYLES/VIEW */}
           <View style={styles.productContainer}>
             <Text style={styles.product}>
-              <Text
-                style={{ fontFamily: 'dm-sans-bold', color: Colors.darkPurp }}
-              >
-                Product:{' '}
-              </Text>
+              <Text style={styles.accent}>Product: </Text>
               {selectedOrder.product_name}
             </Text>
             <Text style={styles.product}>
-              <Text
-                style={{ fontFamily: 'dm-sans-bold', color: Colors.darkPurp }}
-              >
-                Category:{' '}
-              </Text>{' '}
+              <Text style={styles.accent}>Category: </Text>{' '}
               {selectedOrder.category_name}
             </Text>
           </View>
@@ -131,15 +130,7 @@ const OrderDetailsScreen = props => {
           {/* BEGIN SENDER STYLES/VIEW */}
           <View style={styles.senderContainer}>
             <Text style={styles.sender}>
-              <Text
-                style={{
-                  ...styles.sender,
-                  fontFamily: 'dm-sans-bold',
-                  color: Colors.darkPurp
-                }}
-              >
-                Sender:{' '}
-              </Text>
+              <Text style={styles.accent}>Sender: </Text>
               {selectedOrder.sender_name}
             </Text>
           </View>
@@ -210,12 +201,15 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     padding: 10,
-    width: 350,
-    height: 400
+    width: 350
   },
   touchableButton: {
     padding: 5,
     flexDirection: 'row'
+  },
+  accent: {
+    fontFamily: 'dm-sans-bold',
+    color: Colors.darkPurp
   },
   recipientContainer: {
     margin: 10

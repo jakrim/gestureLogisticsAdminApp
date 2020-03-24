@@ -20,6 +20,10 @@ const OrderItem = props => {
     TouchableComp = TouchableNativeFeedback;
   }
 
+  const B = props => (
+    <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
+  );
+
   return (
     <Card style={styles.product}>
       <TouchableComp onPress={props.onSelect} useForeground>
@@ -44,11 +48,11 @@ const OrderItem = props => {
           </View>
           <View style={styles.orderDetails2}>
             <Text style={styles.orderDetails2Text}>
-              <Text style={{ fontFamily: 'dm-sans-bold' }}>Zone: </Text>
+              <B>Zone: </B>
               {props.zone}
             </Text>
             <Text style={styles.orderDetails2Text}>
-              <Text style={{ fontFamily: 'dm-sans-bold' }}>Order ID: </Text>
+              <B>Order ID: </B>
               {props.order_Id}
             </Text>
           </View>
@@ -60,7 +64,7 @@ const OrderItem = props => {
 
 const styles = StyleSheet.create({
   product: {
-    height: 160,
+    height: 170,
     width: 320,
     margin: 15,
     backgroundColor: Colors.backgroundFeed
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
   productName: {
     fontFamily: 'dm-sans-bold',
     fontSize: 18,
-    // marginVertical: 5,
+    paddingBottom: 5,
     color: Colors.primaryColor
   },
   address: {

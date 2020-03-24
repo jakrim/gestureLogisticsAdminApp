@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
 
 import * as gRunnerActions from '../store/actions/gRunner';
-import OrderItem from '../components/OrderItem';
+import GrunnerItem from '../components/GrunnerItem';
 import Colors from '../constants/Colors';
 
 const GRunnersScreen = props => {
@@ -20,6 +20,7 @@ const GRunnersScreen = props => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const gRunners = useSelector(state => state.gRunners.gRunners);
+  console.log('gRunners', gRunners);
   const dispatch = useDispatch();
 
   const { navigation } = props;
@@ -39,14 +40,20 @@ const GRunnersScreen = props => {
     const willFocusSub = navigation.addListener('willFocus', loadGrunners);
 
     return willFocusSub;
-  }, [navigation, loadOrders]);
+  }, [navigation, loadGrunners]);
 
   useEffect(() => {
     setIsLoading(true);
-    loadOrders().then(() => {
+    loadGrunners().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadOrders]);
+  }, [dispatch, loadGrunners]);
+
+  const selectItemHandler = uid => {
+    navigation.navigate('GRunner', {
+      uid
+    });
+  };
 
   if (error) {
     return (
@@ -97,18 +104,11 @@ const GRunnersScreen = props => {
         style={styles.gradient}
       >
         <View style={styles.centered}>
-          <Text>No orders found!</Text>
+          <Text>No G-runners found!</Text>
         </View>
       </LinearGradient>
     );
   }
-
-  const selectItemHandler = (id, name) => {
-    navigation.navigate('OrderDetailsScreen', {
-      orderId: id,
-      product_name: name
-    });
-  };
 
   return (
     <LinearGradient
@@ -117,26 +117,25 @@ const GRunnersScreen = props => {
     >
       <FlatList
         scrollIndicatorInsets={{ right: 1 }}
-        onRefresh={loadOrders}
+        onRefresh={loadGrunners}
         refreshing={isRefreshing}
-        data={orders}
-        keyExtractor={item => item.orderId}
+        data={gRunners}
+        keyExtractor={item => `${item.uid}`}
         renderItem={itemData => (
-          <OrderItem
-            order_Id={itemData.item.orderId}
-            product_name={itemData.item.product_name}
-            address_string={itemData.item.address_string}
-            time_order_placed={itemData.item.time_order_placed}
-            schedule={itemData.item.schedule}
-            address_string_2={itemData.item.address_string_2}
-            zone={itemData.item.zone}
+          <GrunnerItem
+            uid={itemData.item.uid}
+            public_courier_id={itemData.item.public_courier_id}
+            os={itemData.item.os}
+            full_name={itemData.item.first_name.concat(
+              ' ' + itemData.item.last_name
+            )}
+            current_zone={itemData.item.current_zone}
+            current_status={itemData.item.current_status}
+            current_order={itemData.item.current_order}
             onSelect={() => {
-              selectItemHandler(
-                itemData.item.orderId,
-                itemData.item.product_name
-              );
+              selectItemHandler(itemData.item.uid);
             }}
-          ></OrderItem>
+          ></GrunnerItem>
         )}
       />
     </LinearGradient>

@@ -1,4 +1,4 @@
-export class Grunner {
+export class Grunners {
   constructor(
     uid,
     current_order,
@@ -17,5 +17,23 @@ export class Grunner {
     this.last_name = last_name;
     this.os = os;
     this.public_courier_id = public_courier_id;
+  }
+}
+
+export class Grunner {
+  constructor(
+    publicCourierId,
+    profileImageUrl,
+    lastName,
+    firstName,
+    currentStatus,
+    isLock
+  ) {
+    (this.publicCourierId = publicCourierId),
+      (this.profileImageUrl = profileImageUrl),
+      (this.lastName = lastName),
+      (this.firstName = firstName),
+      (this.currentStatus = currentStatus),
+      (this.isLock = isLock);
   }
 }
