@@ -49,7 +49,7 @@ const GRunnerItem = props => {
                 </Text>
               )}
               <Ionicons
-                name={Platform.OS === 'android' ? 'logo-android' : 'logo-apple'}
+                name={props.os === 'iOS' ? 'logo-apple' : 'logo-android'}
                 size={20}
                 color='black'
                 style={styles.callTxt}
@@ -61,10 +61,20 @@ const GRunnerItem = props => {
               <B>Zone: </B>
               {props.current_zone}
             </Text>
-            <Text style={styles.gRunnerDetails2Text}>
-              <B>Order ID: </B>
-              {props.current_order}
-            </Text>
+            {props.current_order !== null ? (
+              <Text style={styles.gRunnerDetails2Text}>
+                <B>Order ID: </B>
+                {props.current_order}
+              </Text>
+            ) : (
+              <Text
+                style={
+                  (styles.gRunnerDetails2Text, { color: Colors.accentColor })
+                }
+              >
+                No current Order
+              </Text>
+            )}
           </View>
         </View>
       </TouchableComp>

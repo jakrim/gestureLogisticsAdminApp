@@ -20,7 +20,7 @@ const GRunnersScreen = props => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const gRunners = useSelector(state => state.gRunners.gRunners);
-  console.log('gRunners', gRunners);
+
   const dispatch = useDispatch();
 
   const { navigation } = props;
@@ -40,7 +40,7 @@ const GRunnersScreen = props => {
     const willFocusSub = navigation.addListener('willFocus', loadGrunners);
 
     return willFocusSub;
-  }, [navigation, loadGrunners]);
+  }, [navigation, loadGrunners, setIsLoading]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -92,19 +92,6 @@ const GRunnersScreen = props => {
       >
         <View style={styles.centered}>
           <BallIndicator color={Colors.backgroundFeed} />
-        </View>
-      </LinearGradient>
-    );
-  }
-
-  if (!isLoading && gRunners.length === 0) {
-    return (
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <View style={styles.centered}>
-          <Text>No G-runners found!</Text>
         </View>
       </LinearGradient>
     );

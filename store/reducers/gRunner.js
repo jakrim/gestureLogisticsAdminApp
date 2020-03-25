@@ -1,19 +1,21 @@
 import { SET_GRUNNERS, SET_GRUNNER } from '../actions/gRunner';
 
 const initialState = {
-  gRunners: []
+  gRunners: [],
+  gRunner: []
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_GRUNNERS:
       return {
+        ...state,
         gRunners: action.gRunners
       };
     case SET_GRUNNER:
       return {
-        gRunner: action.gRunner,
-        uid: action.uid
+        ...state,
+        gRunner: action.gRunner
       };
     default:
       return state;

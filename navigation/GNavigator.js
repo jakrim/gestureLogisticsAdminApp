@@ -9,7 +9,8 @@ import LoadingScreen from '../screens/LoadingScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 import GRunnersScreen from '../screens/GRunnersScreen';
-import GRunnerScreen from '../screens/GRunnerScreen';
+import GRunnerScreen from '../screens/GRunnerDetailsScreen';
+import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -63,8 +64,19 @@ export const OrderStack = ({ navigation }) => (
         headerTitle: props => <LogoTitle {...props} />,
         headerLeft: () => (
           <Ionicons
-            style={styles.headerButtons}
+            style={styles.headerButtonLeft}
             name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+            color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+            size={25}
+            onPress={() => {
+              navigation.toggleDrawer();
+            }}
+          />
+        ),
+        headerRight: () => (
+          <Ionicons
+            style={styles.headerButtonRight}
+            name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
             color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
             size={25}
             onPress={() => {
@@ -104,7 +116,7 @@ export const GRunnerStack = ({ navigation }) => (
         headerTitle: props => <LogoTitle {...props} />,
         headerLeft: () => (
           <Ionicons
-            style={styles.headerButtons}
+            style={styles.headerButtonLeft}
             name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
             color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
             size={25}
@@ -115,13 +127,25 @@ export const GRunnerStack = ({ navigation }) => (
         ),
         headerStyle: {
           backgroundColor:
-            Platform.OS === 'android' ? Colors.primaryColor : 'white'
+            Platform.OS === 'android' ? Colors.primaryColor : 'white',
+          shadowColor: 'transparent',
+          elevation: 0
         },
+        // headerTitleAlign: 'center',
         headerTintColor:
           Platform.OS === 'android' ? 'white' : Colors.primaryColor
       }}
     />
-    <GRunner.Screen name='GRunner' component={GRunnerScreen} />
+    <GRunner.Screen
+      name='GRunner'
+      component={GRunnerScreen}
+      options={{ headerTitle: 'GRunner' }}
+    />
+    <GRunner.Screen
+      name='PaymentHistoryScreen'
+      component={PaymentHistoryScreen}
+      options={{ headerTitle: 'Payment History' }}
+    />
   </GRunner.Navigator>
 );
 
@@ -133,7 +157,10 @@ export const DrawerMenu = () => (
 );
 
 const styles = StyleSheet.create({
-  headerButtons: {
+  headerButtonLeft: {
     paddingLeft: 15
+  },
+  headerButtonRight: {
+    paddingRight: 15
   }
 });

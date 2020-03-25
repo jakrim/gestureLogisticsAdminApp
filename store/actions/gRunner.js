@@ -48,7 +48,7 @@ export const fetchGrunner = uid => {
   return async dispatch => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_grunner?${uid}`
+        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_grunner?uid=${uid}`
       );
 
       if (!response.ok) {
@@ -56,29 +56,12 @@ export const fetchGrunner = uid => {
       }
 
       const resData = await response.json();
-      const gRunnerArr = [];
 
       const gRunner = resData.result.data;
 
-      for (const key in gRunner) {
-        gRunnerArr.push(
-          new Grunner(
-            gRunner[key].uid,
-            gRunner[key].current_order,
-            gRunner[key].current_status,
-            gRunner[key].current_zone,
-            gRunner[key].first_name,
-            gRunner[key].last_name,
-            gRunner[key].os,
-            gRunner[key].public_courier_id
-          )
-        );
-      }
-
       dispatch({
         type: SET_GRUNNER,
-        gRunner: gRunnerArr,
-        uid: gRunnerArr.uid
+        gRunner: gRunner
       });
     } catch (err) {
       console.log('ERROR IN FETCHING GRUNNER!', err);

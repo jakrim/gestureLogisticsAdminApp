@@ -33,8 +33,6 @@ const OrderDetailsScreen = props => {
     >
       <Card style={styles.card}>
         <ScrollView>
-          {/* <Text style={styles.description}>{selectedProduct.description}</Text> */}
-
           {/* BEGIN RECIPIENT STYLES/VIEW */}
           <View style={styles.recipientContainer}>
             <Text style={styles.recipientRow}>
