@@ -29,7 +29,6 @@ const B = props => (
 
 const GRunnerDetailsScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
@@ -40,13 +39,11 @@ const GRunnerDetailsScreen = props => {
 
   const loadGrunner = useCallback(async () => {
     setError(null);
-    setIsRefreshing(true);
     try {
       await dispatch(gRunnerActions.fetchGrunner(uid));
     } catch (err) {
       setError(err.message);
     }
-    setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
@@ -105,6 +102,12 @@ const GRunnerDetailsScreen = props => {
       </LinearGradient>
     );
   }
+
+  const selectItemHandler = uid => {
+    navigation.navigate('PaymentHistoryScreen', {
+      uid
+    });
+  };
 
   return (
     <LinearGradient
@@ -178,7 +181,7 @@ const GRunnerDetailsScreen = props => {
             <MainButton
               style={styles.button}
               onPress={() => {
-                navigation.navigate('PaymentHistoryScreen');
+                selectItemHandler(gRunner.publicCourierId);
               }}
             >
               Payment History

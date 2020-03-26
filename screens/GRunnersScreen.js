@@ -19,9 +19,8 @@ const GRunnersScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
-  const gRunners = useSelector(state => state.gRunners.gRunners);
-
   const dispatch = useDispatch();
+  const gRunners = useSelector(state => state.gRunners.gRunners);
 
   const { navigation } = props;
 

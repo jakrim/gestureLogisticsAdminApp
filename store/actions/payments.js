@@ -1,6 +1,6 @@
 import { Payment } from '../../models/Payment';
 
-const SET_PAYMENTS = 'SET_PAYMENTS';
+export const SET_PAYMENTS = 'SET_PAYMENTS';
 
 export const fetchPayments = uid => {
   return async dispatch => {
@@ -17,6 +17,7 @@ export const fetchPayments = uid => {
 
       const loadPayments = [];
       const payments = resData.result.data;
+      // console.log('payments', payments);
 
       for (const key in payments) {
         loadPayments.push(

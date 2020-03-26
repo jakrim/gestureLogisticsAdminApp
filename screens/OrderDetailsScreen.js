@@ -33,75 +33,104 @@ const OrderDetailsScreen = props => {
     >
       <Card style={styles.card}>
         <ScrollView>
+          {/* BEGIN PRODUCT STYLES/VIEW */}
+          <View style={styles.productContainer}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'baseline'
+              }}
+            >
+              <Text style={styles.textHeader}>Delivery Item</Text>
+              {selectedOrder.schedule ? (
+                <Text style={styles.scheduledTime}>Scheduled</Text>
+              ) : (
+                <Text
+                  style={(styles.scheduledTime, { color: Colors.accentColor })}
+                >
+                  On Demand
+                </Text>
+              )}
+            </View>
+            <Text style={styles.product}>
+              <Text style={styles.accent}>Product: </Text>
+              {selectedOrder.product_name}
+            </Text>
+            <Text style={styles.product}>
+              <Text style={styles.accent}>Category: </Text>
+              {selectedOrder.category_name}
+            </Text>
+          </View>
+          {selectedOrder.schedule ? (
+            <Text style={styles.scheduledTime}>
+              Scheduled For: {MillisToDate(selectedOrder.schedule)}
+            </Text>
+          ) : null}
+
           {/* BEGIN RECIPIENT STYLES/VIEW */}
+          <Text style={styles.textHeader}>Delivering To</Text>
           <View style={styles.recipientContainer}>
             <Text style={styles.recipientRow}>
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
+                size={24}
+                color='#0644AD'
+                style={styles.callTxt}
+              />
               <Text
                 style={{
-                  ...styles.recipient,
-                  ...styles.accent
+                  fontFamily: 'dm-sans-regular',
+                  color: Colors.primaryColor
                 }}
               >
-                Recipient:{' '}
-                <Text
-                  style={{
-                    fontFamily: 'dm-sans-regular',
-                    color: Colors.primaryColor
-                  }}
-                >
-                  {selectedOrder.recipient_name}
-                </Text>
+                {'   '}
+                {selectedOrder.recipient_name}
               </Text>
             </Text>
-            {selectedOrder.schedule ? (
-              <Text style={styles.recipientRow}>
-                {MillisToDate(selectedOrder.schedule)}
-              </Text>
-            ) : null}
           </View>
-          <View style={styles.recipientContainer}>
-            <TouchableOpacity
-              onPress={() => makeCall(selectedOrder.recipient_phone_number)}
-              activeOpacity={0.7}
-              style={styles.touchableButton}
-            >
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
-                size={20}
-                color='#0644AD'
-                style={styles.callTxt}
-              />
-              <Text style={{ color: '#0644AD', fontSize: 18 }}>
-                {'  '}
-                {selectedOrder.recipient_phone_number}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                sendEmail(
-                  `${selectedOrder.recipient_email}`,
-                  `Here's an example SUBJECT`,
-                  `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
-                  { cc: 'daniel@yourgesture.com' }
-                ).then(() => {
-                  console.log('Your email was successfully sent!');
-                });
-              }}
-              activeOpacity={0.7}
-              style={styles.touchableButton}
-            >
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
-                size={23}
-                color='#0644AD'
-                style={styles.callTxt}
-              />
-              <Text style={{ color: '#0644AD', fontSize: 18 }}>
-                {'  '}
-                {selectedOrder.recipient_email}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={() => makeCall(selectedOrder.recipient_phone_number)}
+            activeOpacity={0.7}
+            style={styles.touchableButton}
+          >
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
+              size={24}
+              color='#0644AD'
+              style={styles.callTxt}
+            />
+            <Text style={{ color: '#0644AD', fontSize: 18 }}>
+              {'  '}
+              {selectedOrder.recipient_phone_number}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              sendEmail(
+                `${selectedOrder.recipient_email}`,
+                `Here's an example SUBJECT`,
+                `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
+                { cc: 'daniel@yourgesture.com' }
+              ).then(() => {
+                console.log('Your email was successfully sent!');
+              });
+            }}
+            activeOpacity={0.7}
+            style={styles.touchableButton}
+          >
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
+              size={24}
+              color='#0644AD'
+              style={styles.callTxt}
+            />
+            <Text style={{ color: '#0644AD', fontSize: 18 }}>
+              {'  '}
+              {selectedOrder.recipient_email}
+            </Text>
+          </TouchableOpacity>
+
           <View style={styles.recipientContainer}>
             <Text style={styles.recipient}>
               {selectedOrder.address_string_2} {selectedOrder.address_string}
@@ -110,18 +139,6 @@ const OrderDetailsScreen = props => {
               {selectedOrder.delivery_note}
               {'\n'}
               {selectedOrder.zone}
-            </Text>
-          </View>
-
-          {/* BEGIN PRODUCT STYLES/VIEW */}
-          <View style={styles.productContainer}>
-            <Text style={styles.product}>
-              <Text style={styles.accent}>Product: </Text>
-              {selectedOrder.product_name}
-            </Text>
-            <Text style={styles.product}>
-              <Text style={styles.accent}>Category: </Text>{' '}
-              {selectedOrder.category_name}
             </Text>
           </View>
 
@@ -197,7 +214,7 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   card: {
-    flex: 1,
+    flex: 2,
     padding: 10,
     width: 350
   },
@@ -205,12 +222,35 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row'
   },
+  textHeader: {
+    padding: 10,
+    paddingBottom: 5,
+    fontFamily: 'dm-sans-bold',
+    fontSize: 24
+  },
+  productContainer: {
+    padding: 10,
+    paddingBottom: 25
+  },
+  product: {
+    fontSize: 18,
+    color: Colors.primaryColor,
+    paddingTop: 10,
+    fontFamily: 'dm-sans-regular'
+  },
+  scheduledTime: {
+    fontFamily: 'dm-sans-bold',
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center'
+  },
   accent: {
     fontFamily: 'dm-sans-bold',
     color: Colors.darkPurp
   },
   recipientContainer: {
-    margin: 10
+    padding: 5,
+    paddingHorizontal: 10
   },
   recipient: {
     fontFamily: 'dm-sans-regular',
@@ -221,17 +261,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     fontFamily: 'dm-sans-regular',
     fontSize: 18,
-    color: Colors.primaryColor
-  },
-  productContainer: {
-    margin: 10
-  },
-  product: {
-    fontSize: 18,
-    color: Colors.primaryColor,
-    textAlign: 'center',
-    paddingTop: 10,
-    fontFamily: 'dm-sans-regular'
+    // paddingBottom: 4,
+    color: Colors.darkPurp
   },
   senderContainer: {
     paddingTop: 20,
