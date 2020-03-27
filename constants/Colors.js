@@ -8,5 +8,6 @@ export default {
   backgroundFeed: '#F3F3F3',
   SignatureFrameDividingHorizontalLine: '#E6E6E6',
   LightColorText: '#979797',
-  DarkColorText: '#2B2B2B'
+  DarkColorText: '#2B2B2B',
+  delayRed: '#cb0000'
 };
