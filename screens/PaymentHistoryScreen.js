@@ -15,7 +15,6 @@ const PaymentHistoryScreen = props => {
   const dispatch = useDispatch();
 
   const payments = useSelector(state => state.payments.payments);
-  // console.log('payments', payments);
 
   const { navigation, route } = props;
   const uid = route.params.uid;
@@ -86,12 +85,10 @@ const PaymentHistoryScreen = props => {
     );
   }
 
-  const selectItemHandler = uid => {
-    // navigation.navigate('OrderDetailsScreen', {
-    //   orderId: uid,
-    //   product_name: name
-    // });
-    console.log('selected', uid);
+  const selectItemHandler = orderId => {
+    navigation.navigate('PaymentOrderScreen', {
+      orderId
+    });
   };
 
   return (
@@ -115,7 +112,7 @@ const PaymentHistoryScreen = props => {
             delivery_completed_note={itemData.item.delivery_completed_note}
             delivery_compeleted_time={itemData.item.delivery_compeleted_time}
             onSelect={() => {
-              selectItemHandler(itemData.item.uid);
+              selectItemHandler(itemData.item.orderId);
             }}
           ></PaymentItem>
         )}

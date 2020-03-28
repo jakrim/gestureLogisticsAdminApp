@@ -52,18 +52,16 @@ const PaymentItem = props => {
             justifyContent: 'space-between'
           }}
         >
-          <View>
-            <View style={styles.pay}>
-              <Text style={styles.paymentText}>
-                <B>Payment: </B> {props.payment}
-              </Text>
-              <Text style={styles.paymentText}>
-                <B>Bonus: </B> {props.bonus}
-              </Text>
-              <Text style={styles.paymentText}>
-                <B>Tip: </B> {props.tip}
-              </Text>
-            </View>
+          <View style={styles.pay}>
+            <Text style={styles.paymentText}>
+              <B>Payment: </B> {props.payment}
+            </Text>
+            <Text style={styles.paymentText}>
+              <B>Bonus: </B> {props.bonus}
+            </Text>
+            <Text style={styles.paymentText}>
+              <B>Tip: </B> {props.tip}
+            </Text>
           </View>
           <View style={styles.details}>
             <Text style={styles.paymentText}>

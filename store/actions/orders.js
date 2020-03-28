@@ -1,6 +1,7 @@
 import { onDemandOrder, scheduledOrder } from '../../models/Order';
 
 export const SET_ORDERS = 'SET_ORDERS';
+export const SET_ORDER = 'SET_ORDER';
 
 export const fetchOrders = () => {
   return async dispatch => {
@@ -18,9 +19,9 @@ export const fetchOrders = () => {
       const loadedOrders = [];
       const orders = resData.result.data;
 
-      for (const key in orders) {
-        if (!orders[key].schedule) {
-          loadedOrders.push(
+      if (!order.schedule) {
+        for (const key in order) {
+          loadedOrder.push(
             new onDemandOrder(
               orders[key].address_coordinates,
               orders[key].address_string,
@@ -40,7 +41,9 @@ export const fetchOrders = () => {
               orders[key].zone
             )
           );
-        } else {
+        }
+      } else {
+        for (const key in orders) {
           loadedOrders.push(
             new scheduledOrder(
               orders[key].address_coordinates,
@@ -71,6 +74,78 @@ export const fetchOrders = () => {
       });
     } catch (err) {
       console.log('ERROR IN FETCHING ORDERS', err);
+    }
+  };
+};
+
+export const fetchOrder = orderId => {
+  return async dispatch => {
+    try {
+      const response = await fetch(
+        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_order?orderId=${orderId}`
+      );
+
+      const resData = await response.json();
+
+      const order = resData.result.data;
+
+      const loadedOrder = [];
+
+      if (!order.schedule) {
+        for (const key in order) {
+          loadedOrder.push(
+            new onDemandOrder(
+              order[key].address_coordinates,
+              order[key].address_string,
+              order[key].address_string_2,
+              order[key].category_name,
+              order[key].delivery_note,
+              order[key].orderId,
+              order[key].os,
+              order[key].product_name,
+              order[key].recipient_email,
+              order[key].recipient_name,
+              order[key].recipient_phone_number,
+              order[key].sender_email,
+              order[key].sender_name,
+              order[key].sender_phone_number,
+              order[key].time_order_placed,
+              order[key].zone
+            )
+          );
+        }
+      } else {
+        for (const key in order) {
+          loadedOrder.push(
+            new scheduledOrder(
+              order[key].address_coordinates,
+              order[key].address_string,
+              order[key].address_string_2,
+              order[key].category_name,
+              order[key].delivery_note,
+              order[key].orderId,
+              order[key].os,
+              order[key].product_name,
+              order[key].recipient_email,
+              order[key].recipient_name,
+              order[key].recipient_phone_number,
+              order[key].schedule,
+              order[key].sender_email,
+              order[key].sender_name,
+              order[key].sender_phone_number,
+              order[key].time_order_placed,
+              order[key].zone
+            )
+          );
+        }
+      }
+
+      dispatch({
+        type: SET_ORDER,
+        order: order
+      });
+    } catch (err) {
+      console.log('ERROR in fetching order', err);
     }
   };
 };

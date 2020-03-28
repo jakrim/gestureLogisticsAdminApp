@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
     fontFamily: 'dm-sans-regular',
     paddingTop: 30,
     fontSize: 18,
+
     marginHorizontal: 20,
     color: Colors.primaryColor
   },

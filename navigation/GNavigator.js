@@ -11,6 +11,7 @@ import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 import GRunnersScreen from '../screens/GRunnersScreen';
 import GRunnerScreen from '../screens/GRunnerDetailsScreen';
 import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
+import PaymentOrderScreen from '../screens/PaymentOrderScreen';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -146,13 +147,18 @@ export const GRunnerStack = ({ navigation }) => (
       component={PaymentHistoryScreen}
       options={{ headerTitle: 'Payment History' }}
     />
+    <GRunner.Screen
+      name='PaymentOrderScreen'
+      component={PaymentOrderScreen}
+      options={{ headerTitle: 'Order Details' }}
+    />
   </GRunner.Navigator>
 );
 
 export const DrawerMenu = () => (
   <Drawer.Navigator initialRouteName='LoadingScreen' drawerType='slide'>
-    <Drawer.Screen name='OrderStack' component={OrderStack} />
     <Drawer.Screen name='GRunnerStack' component={GRunnerStack} />
+    <Drawer.Screen name='OrderStack' component={OrderStack} />
   </Drawer.Navigator>
 );
 

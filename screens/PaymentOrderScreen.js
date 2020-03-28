@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ScrollView,
   Text,
@@ -10,9 +10,11 @@ import {
   StyleSheet
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { BallIndicator } from 'react-native-indicators';
 import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
+import * as orderActions from '../store/actions/orders';
 import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import makeCall from '../components/PhoneCall';
@@ -20,12 +22,81 @@ import sendEmail from '../components/Email';
 import MillisToDate from '../components/MillisToDate';
 import ButtonStyle from '../components/ButtonStyle';
 
-const OrderDetailsScreen = props => {
-  const { route } = props;
+const PaymentOrderScreen = props => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
+  const { navigation, route } = props;
+
+  const order = useSelector(state => state.orders.order);
   const orderId = route.params.orderId;
-  const selectedOrder = useSelector(state =>
-    state.orders.orders.find(order => order.orderId === orderId)
-  );
+
+  const loadOrder = useCallback(async () => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(orderActions.fetchOrder(orderId));
+    } catch (err) {
+      setError('HERES ERRPR <ESSAGE', err.message);
+    }
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    const willFocusSub = navigation.addListener('willFocus', loadOrder);
+
+    return willFocusSub;
+  }, [navigation, loadOrder, setIsLoading]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadOrder().then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch, loadOrder]);
+
+  if (error) {
+    return (
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <View style={styles.centered}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: Colors.darkPurp
+            }}
+          >
+            An error occurred!
+          </Text>
+          {!isLoading ? (
+            <Button
+              title='Try again'
+              onPress={loadOrder}
+              color={Colors.LightColorText}
+            />
+          ) : (
+            <BallIndicator color={Colors.LightColorText} />
+          )}
+        </View>
+      </LinearGradient>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <View style={styles.centered}>
+          <BallIndicator color={Colors.backgroundFeed} />
+        </View>
+      </LinearGradient>
+    );
+  }
 
   return (
     <LinearGradient
@@ -44,7 +115,7 @@ const OrderDetailsScreen = props => {
               }}
             >
               <Text style={styles.textHeader}>Delivery Item</Text>
-              {selectedOrder.schedule ? (
+              {/* {!!selectedOrder.schedule ? (
                 <Text style={styles.scheduledTime}>Scheduled</Text>
               ) : (
                 <Text
@@ -52,22 +123,22 @@ const OrderDetailsScreen = props => {
                 >
                   On Demand
                 </Text>
-              )}
+              )} */}
             </View>
             <Text style={styles.product}>
               <Text style={styles.accent}>Product: </Text>
-              {selectedOrder.product_name}
+              {order.product_name}
             </Text>
             <Text style={styles.product}>
               <Text style={styles.accent}>Category: </Text>
-              {selectedOrder.category_name}
+              {order.category_name}
             </Text>
           </View>
-          {selectedOrder.schedule ? (
+          {/* {!!order.schedule ? (
             <Text style={styles.scheduledTime}>
-              Scheduled For: {MillisToDate(selectedOrder.schedule)}
+              Scheduled For: {MillisToDate(order.schedule)}
             </Text>
-          ) : null}
+          ) : null} */}
 
           {/* BEGIN RECIPIENT STYLES/VIEW */}
           <Text style={styles.textHeader}>Delivering To</Text>
@@ -85,11 +156,11 @@ const OrderDetailsScreen = props => {
                 }}
               >
                 {'  '}
-                {selectedOrder.recipient_name}
+                {order.recipient_name}
               </Text>
             </Text>
             <TouchableOpacity
-              onPress={() => makeCall(selectedOrder.recipient_phone_number)}
+              onPress={() => makeCall(order.recipient_phone_number)}
               activeOpacity={0.7}
             >
               <Text style={styles.recipientRow}>
@@ -101,14 +172,14 @@ const OrderDetailsScreen = props => {
                 />
                 <Text style={{ color: '#0644AD', fontSize: 18 }}>
                   {'  '}
-                  {selectedOrder.recipient_phone_number}
+                  {order.recipient_phone_number}
                 </Text>
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 sendEmail(
-                  `${selectedOrder.recipient_email}`,
+                  `${order.recipient_email}`,
                   `Here's an example SUBJECT`,
                   `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
                   { cc: 'daniel@yourgesture.com' }
@@ -127,7 +198,7 @@ const OrderDetailsScreen = props => {
                 />
                 <Text style={{ color: '#0644AD', fontSize: 18 }}>
                   {'  '}
-                  {selectedOrder.recipient_email}
+                  {order.recipient_email}
                 </Text>
               </Text>
             </TouchableOpacity>
@@ -144,8 +215,7 @@ const OrderDetailsScreen = props => {
                 }}
               >
                 {'   '}
-                {selectedOrder.address_string} ~{' '}
-                {selectedOrder.address_string_2}
+                {order.address_string} ~ {order.address_string_2}
               </Text>
             </Text>
 
@@ -162,7 +232,7 @@ const OrderDetailsScreen = props => {
                 }}
               >
                 {'  '}
-                {selectedOrder.delivery_note}
+                {order.delivery_note}
               </Text>
             </Text>
           </View>
@@ -183,12 +253,12 @@ const OrderDetailsScreen = props => {
                 }}
               >
                 {'  '}
-                {selectedOrder.sender_name}
+                {order.sender_name}
               </Text>
             </Text>
 
             <TouchableOpacity
-              onPress={() => makeCall(selectedOrder.recipient_phone_number)}
+              onPress={() => makeCall(order.recipient_phone_number)}
               activeOpacity={0.7}
             >
               <Text style={styles.recipientRow}>
@@ -200,14 +270,14 @@ const OrderDetailsScreen = props => {
                 />
                 <Text style={{ color: '#0644AD', fontSize: 18 }}>
                   {'  '}
-                  {selectedOrder.sender_phone_number}
+                  {order.sender_phone_number}
                 </Text>
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 sendEmail(
-                  `${selectedOrder.recipient_email}`,
+                  `${order.recipient_email}`,
                   `Here's an example SUBJECT`,
                   `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
                   { cc: 'daniel@yourgesture.com' }
@@ -226,7 +296,7 @@ const OrderDetailsScreen = props => {
                 />
                 <Text style={{ color: '#0644AD', fontSize: 18 }}>
                   {'  '}
-                  {selectedOrder.sender_email}
+                  {order.sender_email}
                 </Text>
               </Text>
             </TouchableOpacity>
@@ -235,11 +305,9 @@ const OrderDetailsScreen = props => {
           <Text style={styles.textHeader}>Order Details</Text>
 
           <View style={styles.orderDetailsContainer}>
+            <Text style={styles.recipientRow}>Order ID: {order.orderId}</Text>
             <Text style={styles.recipientRow}>
-              Order ID: {selectedOrder.orderId}
-            </Text>
-            <Text style={styles.recipientRow}>
-              Order Placed: {MillisToDate(selectedOrder.time_order_placed)}
+              Order Placed: {MillisToDate(order.time_order_placed)}
             </Text>
           </View>
           <ButtonStyle style={styles.button}>DELAY</ButtonStyle>
@@ -312,4 +380,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default OrderDetailsScreen;
+export default PaymentOrderScreen;
