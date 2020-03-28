@@ -19,9 +19,9 @@ export const fetchOrders = () => {
       const loadedOrders = [];
       const orders = resData.result.data;
 
-      if (!order.schedule) {
-        for (const key in order) {
-          loadedOrder.push(
+      if (!orders.schedule) {
+        for (const key in orders) {
+          loadedOrders.push(
             new onDemandOrder(
               orders[key].address_coordinates,
               orders[key].address_string,

@@ -33,9 +33,7 @@ const Input = props => {
   const { onInputChange, id } = props;
 
   useEffect(() => {
-    if (inputState.touched) {
-      onInputChange(id, inputState.value, inputState.isValid);
-    }
+    onInputChange(id, inputState.value, inputState.isValid);
   }, [inputState, onInputChange, id]);
 
   const textChangeHandler = text => {
@@ -75,7 +73,7 @@ const Input = props => {
         ref={props.inputRef}
         onSubmitEditing={props.onSubmitEditing}
       />
-      {!inputState.isValid && inputState.touched && (
+      {!inputState.isValid && (inputState.touched || props.formHasSubmitted) && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{props.errorText}</Text>
         </View>

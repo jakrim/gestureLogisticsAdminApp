@@ -30,6 +30,7 @@ const PaymentOrderScreen = props => {
   const { navigation, route } = props;
 
   const order = useSelector(state => state.orders.order);
+
   const orderId = route.params.orderId;
 
   const loadOrder = useCallback(async () => {

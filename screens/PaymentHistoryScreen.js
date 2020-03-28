@@ -98,6 +98,7 @@ const PaymentHistoryScreen = props => {
     >
       <FlatList
         scrollIndicatorInsets={{ right: 1 }}
+        showsVerticalScrollIndicator={false}
         onRefresh={loadPayments}
         refreshing={isRefreshing}
         data={payments}

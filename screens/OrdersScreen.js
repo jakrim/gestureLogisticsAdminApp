@@ -26,12 +26,14 @@ const OrdersScreen = props => {
 
   const loadOrders = useCallback(async () => {
     setError(null);
+    setIsLoading(true);
     setIsRefreshing(true);
     try {
       await dispatch(ordersActions.fetchOrders());
     } catch (err) {
       setError(err.message);
     }
+    setIsLoading(false);
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
@@ -116,6 +118,7 @@ const OrdersScreen = props => {
       style={styles.gradient}
     >
       <FlatList
+        showsVerticalScrollIndicator={false}
         scrollIndicatorInsets={{ right: 1 }}
         onRefresh={loadOrders}
         refreshing={isRefreshing}

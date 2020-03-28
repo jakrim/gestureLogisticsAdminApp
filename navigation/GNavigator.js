@@ -157,8 +157,8 @@ export const GRunnerStack = ({ navigation }) => (
 
 export const DrawerMenu = () => (
   <Drawer.Navigator initialRouteName='LoadingScreen' drawerType='slide'>
-    <Drawer.Screen name='GRunnerStack' component={GRunnerStack} />
     <Drawer.Screen name='OrderStack' component={OrderStack} />
+    <Drawer.Screen name='GRunnerStack' component={GRunnerStack} />
   </Drawer.Navigator>
 );
 

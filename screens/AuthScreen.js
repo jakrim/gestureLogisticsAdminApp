@@ -47,6 +47,7 @@ const formReducer = (state, action) => {
 const AuthScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const [formHasSubmitted, setFormHasSubmitted] = useState(false);
   const dispatch = useDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -71,13 +72,19 @@ const AuthScreen = props => {
     setError(null);
     setIsLoading(true);
     try {
-      await dispatch(
-        authActions.signin(
-          formState.inputValues.email,
-          formState.inputValues.password
-        )
-      );
-      props.navigation.navigate('LoadingScreen');
+      if (!formState.formIsValid) {
+        setFormHasSubmitted(true);
+        setIsLoading(false);
+        return;
+      } else {
+        await dispatch(
+          authActions.signin(
+            formState.inputValues.email,
+            formState.inputValues.password
+          )
+        );
+        props.navigation.navigate('LoadingScreen');
+      }
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -102,65 +109,60 @@ const AuthScreen = props => {
       keyboardVerticalOffset={50}
       behavior='padding'
     >
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
       >
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.image}>
-            <Image source={require('../assets/logo.png')} />
-          </View>
-          <Card style={styles.authContainer}>
-            <ScrollView keyboardShouldPersistTaps='always'>
-              <Input
-                id='email'
-                label='E-Mail'
-                keyboardType='email-address'
-                required
-                returnKeyType='next'
-                email
-                autoCapitalize='none'
-                errorText='Please enter a valid email address.'
-                onInputChange={inputChangeHandler}
-                initalValue=''
-                blurOnSubmit={false}
-                onSubmitEditing={() => this.password.focus()}
-              />
-              <Input
-                id='password'
-                label='Password'
-                keyboardType='default' //Default Keyboard
-                secureTextEntry
-                required
-                minLength={5}
-                autoCapitalize='none'
-                errorText='Please enter a valid password.'
-                onInputChange={inputChangeHandler}
-                initalValue=''
-                keyboardShouldPersistTaps='never'
-                inputRef={ref => (this.password = ref)}
-
-                // label={"Field 2"}
-              />
-              <View style={styles.buttonContainer}>
-                {isLoading ? (
-                  <ActivityIndicator size='small' color={Colors.primaryColor} />
-                ) : (
-                  <Button
-                    title='Login'
-                    color={Colors.lightPurp}
-                    onPress={authHandler}
-                  />
-                )}
-              </View>
-            </ScrollView>
-          </Card>
-        </LinearGradient>
-      </TouchableWithoutFeedback>
+        <View style={styles.image}>
+          <Image source={require('../assets/logo.png')} />
+        </View>
+        <Card style={styles.authContainer}>
+          <ScrollView keyboardShouldPersistTaps='always'>
+            <Input
+              id='email'
+              label='E-Mail'
+              keyboardType='email-address'
+              required
+              returnKeyType='next'
+              email
+              autoCapitalize='none'
+              errorText='Please enter a valid email address.'
+              onInputChange={inputChangeHandler}
+              initalValue=''
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.password.focus()}
+              formHasSubmitted={formHasSubmitted}
+            />
+            <Input
+              id='password'
+              label='Password'
+              keyboardType='default' //Default Keyboard
+              secureTextEntry
+              required
+              minLength={5}
+              autoCapitalize='none'
+              errorText='Please enter a valid password.'
+              onInputChange={inputChangeHandler}
+              keyboardShouldPersistTaps='handled'
+              inputRef={ref => (password = ref)}
+              initalValue=''
+              formHasSubmitted={formHasSubmitted}
+            />
+            <View style={styles.buttonContainer}>
+              {isLoading ? (
+                <ActivityIndicator size='small' color={Colors.primaryColor} />
+              ) : (
+                <Button
+                  title='Login'
+                  type='button'
+                  color={Colors.lightPurp}
+                  onPress={authHandler}
+                />
+              )}
+            </View>
+          </ScrollView>
+        </Card>
+      </LinearGradient>
     </KeyboardAvoidingView>
   );
 };

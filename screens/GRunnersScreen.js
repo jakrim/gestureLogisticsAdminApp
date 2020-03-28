@@ -26,11 +26,13 @@ const GRunnersScreen = props => {
 
   const loadGrunners = useCallback(async () => {
     setError(null);
+    setIsLoading(true);
     setIsRefreshing(true);
     try {
       await dispatch(gRunnerActions.fetchGrunners());
     } catch (err) {
       setError(err.message);
+      setIsLoading(false);
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
@@ -103,6 +105,7 @@ const GRunnersScreen = props => {
     >
       <FlatList
         scrollIndicatorInsets={{ right: 1 }}
+        showsVerticalScrollIndicator={false}
         onRefresh={loadGrunners}
         refreshing={isRefreshing}
         data={gRunners}

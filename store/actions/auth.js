@@ -21,6 +21,7 @@ export const signin = (email, password) => {
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
+      console.log('signin -> errorId', errorId);
       let message = 'Something went wrong!';
       if (errorId === 'EMAIL_NOT_FOUND') {
         message = 'Your email is unauthorized to use this app!';

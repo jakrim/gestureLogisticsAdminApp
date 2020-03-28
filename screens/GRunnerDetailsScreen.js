@@ -38,11 +38,13 @@ const GRunnerDetailsScreen = props => {
   const uid = route.params.uid;
 
   const loadGrunner = useCallback(async () => {
+    setIsLoading(true);
     setError(null);
     try {
       await dispatch(gRunnerActions.fetchGrunner(uid));
     } catch (err) {
       setError(err.message);
+      setIsLoading(false);
     }
   }, [dispatch, setIsLoading, setError]);
 

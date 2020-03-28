@@ -9,10 +9,12 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDERS:
       return {
+        ...state,
         orders: action.orders
       };
     case SET_ORDER:
       return {
+        ...state,
         order: action.order
       };
     default:
