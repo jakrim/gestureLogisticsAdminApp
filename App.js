@@ -11,7 +11,7 @@ import authReducer from './store/reducers/auth';
 import ordersReducer from './store/reducers/orders';
 import gRunnerReducer from './store/reducers/gRunner';
 import paymentsReducer from './store/reducers/payments';
-import { Auth, DrawerMenu } from './navigation/GNavigator';
+import { Startup, Auth, DrawerMenu } from './navigation/GNavigator';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -51,6 +51,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator headerMode='none'>
+          <Stack.Screen name='StartupScreen' component={Startup} />
           <Stack.Screen name='SignIn' component={Auth} />
           <Stack.Screen name='OrderStack' component={DrawerMenu} />
         </Stack.Navigator>

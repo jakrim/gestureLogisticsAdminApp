@@ -1,7 +1,14 @@
 import { Keys } from '../../api-key';
+import { AsyncStorage } from 'react-native';
 
 export const SIGNIN = 'SIGNIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
+export const SIGNEDIN = 'SIGNEDIN';
+export const LOGOUT = 'LOGOUT';
+
+export const signedIn = (userId, token) => {
+  return { type: SIGNEDIN, userId, token };
+};
 
 export const signin = (email, password) => {
   return async dispatch => {
@@ -32,12 +39,23 @@ export const signin = (email, password) => {
     }
 
     const resData = await response.json();
-    dispatch({
-      type: SIGNIN,
-      token: resData.idToken,
-      userId: resData.localId
-    });
+    dispatch(signedIn(resData.localId, resData.idToken));
+    const expirationDate = new Date(
+      new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    );
+    saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
+};
+
+const saveDataToStorage = (token, userId, expirationDate) => {
+  AsyncStorage.setItem(
+    'userData',
+    JSON.stringify({
+      token,
+      userId,
+      expiryDate: expirationDate.toISOString()
+    })
+  );
 };
 
 export const authenticate = () => {
@@ -57,21 +75,12 @@ export const authenticate = () => {
 
     const resData = await response.json();
 
-    // console.log(`HERE'S RESPONSE`, resData);
-    // console.log(`HERE'S RESPONSE MESSAGE`, resData.result.data.message);
-
-    // throw new Error('Sign in went wrong');
-    // const errorResData = await response.json();
-    // const errorId = errorResData.error.message;
-
-    // throw new Error(message);
-
     const resMessage = resData.result.data.message;
-    // if (response.status === 200) {
-    //   console.log(`here's message `, errorResMessage);
-    // throw new Error(errorResMessage);
-    // }
 
     dispatch({ type: AUTHENTICATE, message: resMessage });
   };
+};
+
+export const logout = () => {
+  return { type: LOGOUT };
 };

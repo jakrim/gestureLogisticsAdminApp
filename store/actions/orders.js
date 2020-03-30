@@ -18,6 +18,7 @@ export const fetchOrders = () => {
 
       const loadedOrders = [];
       const orders = resData.result.data;
+      // console.log('fetchOrders -> orders', resData.data);
 
       if (!orders.schedule) {
         for (const key in orders) {

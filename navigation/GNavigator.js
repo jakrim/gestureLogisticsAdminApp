@@ -1,9 +1,23 @@
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  SafeAreaView,
+  Linking,
+  Text,
+  Button,
+  View
+} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem
+} from '@react-navigation/drawer';
 
 import LogoTitle from '../components/LogoTitle';
+import StartupScreen from '../screens/StartupScreen';
 import AuthScreen from '../screens/AuthScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import OrdersScreen from '../screens/OrdersScreen';
@@ -14,11 +28,25 @@ import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
 import PaymentOrderScreen from '../screens/PaymentOrderScreen';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import * as authActions from '../store/actions/auth';
+import {
+  LogoComponent,
+  OrdersStackComponent,
+  LogoutComponent
+} from './DrawerComponents';
 
+const StartupStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const GRunner = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+export const Startup = () => (
+  <StartupStack.Navigator>
+    <StartupStack.Screen name='StartupScreen' component={StartupScreen} />
+  </StartupStack.Navigator>
+);
 
 export const Auth = () => (
   <AuthStack.Navigator
@@ -132,7 +160,6 @@ export const GRunnerStack = ({ navigation }) => (
           shadowColor: 'transparent',
           elevation: 0
         },
-        // headerTitleAlign: 'center',
         headerTintColor:
           Platform.OS === 'android' ? 'white' : Colors.primaryColor
       }}
@@ -155,8 +182,38 @@ export const GRunnerStack = ({ navigation }) => (
   </GRunner.Navigator>
 );
 
+export const CustomDrawerContent = props => (
+  <DrawerContentScrollView {...props}>
+    <DrawerItemList {...props} />
+  </DrawerContentScrollView>
+);
+
 export const DrawerMenu = () => (
-  <Drawer.Navigator initialRouteName='LoadingScreen' drawerType='slide'>
+  <Drawer.Navigator
+    drawerContent={props => (
+      <View style={{ flex: 1, paddingTop: 60 }}>
+        <LogoComponent {...props} />
+        <CustomDrawerContent
+          // contentContainerStyle={{}}
+          {...props}
+          // drawerIcon={({ focused, color, size }) => (
+          //   <Ionicons color={color} size={size} name='ios-pin' />
+          // )}
+        />
+        <LogoutComponent {...props} />
+      </View>
+    )}
+    initialRouteName='OrderStack'
+    drawerType='slide'
+    drawerContentOptions={{
+      activeTintColor: Colors.primaryColor,
+      itemStyle: { paddingVertical: 10 },
+      labelStyle: {
+        fontSize: 18,
+        fontFamily: 'dm-sans-boldItalic'
+      }
+    }}
+  >
     <Drawer.Screen name='OrderStack' component={OrderStack} />
     <Drawer.Screen name='GRunnerStack' component={GRunnerStack} />
   </Drawer.Navigator>
