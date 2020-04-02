@@ -5,6 +5,7 @@ import {
   View,
   Button,
   TouchableOpacity,
+  TouchableNativeFeedback,
   Linking,
   Platform,
   StyleSheet
@@ -18,7 +19,7 @@ import Card from '../components/Card';
 import makeCall from '../components/PhoneCall';
 import sendEmail from '../components/Email';
 import MillisToDate from '../components/MillisToDate';
-import ButtonStyle from '../components/ButtonStyle';
+import StyledButton from '../components/StyledButton';
 
 const OrderDetailsScreen = props => {
   const { route } = props;
@@ -26,6 +27,14 @@ const OrderDetailsScreen = props => {
   const selectedOrder = useSelector(state =>
     state.orders.orders.find(order => order.orderId === orderId)
   );
+
+  let TouchableComp = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableComp = TouchableNativeFeedback;
+  }
+
+  console.log('selectedOrder.schedule', selectedOrder.schedule);
 
   return (
     <LinearGradient
@@ -88,7 +97,7 @@ const OrderDetailsScreen = props => {
                 {selectedOrder.recipient_name}
               </Text>
             </Text>
-            <TouchableOpacity
+            <TouchableComp
               onPress={() => makeCall(selectedOrder.recipient_phone_number)}
               activeOpacity={0.7}
             >
@@ -104,8 +113,8 @@ const OrderDetailsScreen = props => {
                   {selectedOrder.recipient_phone_number}
                 </Text>
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableComp>
+            <TouchableComp
               onPress={() => {
                 sendEmail(
                   `${selectedOrder.recipient_email}`,
@@ -130,7 +139,7 @@ const OrderDetailsScreen = props => {
                   {selectedOrder.recipient_email}
                 </Text>
               </Text>
-            </TouchableOpacity>
+            </TouchableComp>
             <Text style={styles.recipientRow}>
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-pin' : 'ios-pin'}
@@ -187,7 +196,7 @@ const OrderDetailsScreen = props => {
               </Text>
             </Text>
 
-            <TouchableOpacity
+            <TouchableComp
               onPress={() => makeCall(selectedOrder.recipient_phone_number)}
               activeOpacity={0.7}
             >
@@ -203,8 +212,8 @@ const OrderDetailsScreen = props => {
                   {selectedOrder.sender_phone_number}
                 </Text>
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableComp>
+            <TouchableComp
               onPress={() => {
                 sendEmail(
                   `${selectedOrder.recipient_email}`,
@@ -229,7 +238,7 @@ const OrderDetailsScreen = props => {
                   {selectedOrder.sender_email}
                 </Text>
               </Text>
-            </TouchableOpacity>
+            </TouchableComp>
           </View>
           {/* Order Details */}
           <Text style={styles.textHeader}>Order Details</Text>
@@ -242,7 +251,7 @@ const OrderDetailsScreen = props => {
               Order Placed: {MillisToDate(selectedOrder.time_order_placed)}
             </Text>
           </View>
-          <ButtonStyle style={styles.button}>DELAY</ButtonStyle>
+          <StyledButton style={styles.button}>DELAY</StyledButton>
         </ScrollView>
       </Card>
     </LinearGradient>

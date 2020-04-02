@@ -11,6 +11,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
 
+import ErrorBoundary from '../components/ErrorBoundary';
+import StyledModal from '../components/StyledModal';
+import StyledButton from '../components/StyledButton';
 import * as ordersActions from '../store/actions/orders';
 import OrderItem from '../components/OrderItem';
 import Colors from '../constants/Colors';
@@ -63,14 +66,12 @@ const OrdersScreen = props => {
               color: Colors.darkPurp
             }}
           >
-            An error occurred!
+            An error occurred in fetching orders!
           </Text>
           {!isLoading ? (
-            <Button
-              title='Try again'
-              onPress={loadOrders}
-              color={Colors.LightColorText}
-            />
+            <StyledButton onPress={loadOrders} color={Colors.LightColorText}>
+              Try again
+            </StyledButton>
           ) : (
             <BallIndicator color={Colors.LightColorText} />
           )}
@@ -99,7 +100,22 @@ const OrdersScreen = props => {
         style={styles.gradient}
       >
         <View style={styles.centered}>
-          <Text>No orders found!</Text>
+          <Text style={styles.errorText}>
+            An error occurred in fetching orders! Please email
+            jesse@yourgesture.com or Slack Jesse Krim
+          </Text>
+
+          {!isLoading ? (
+            <StyledButton
+              onPress={loadOrders}
+              color={Colors.backgroundFeed}
+              style={styles.button}
+            >
+              Try again
+            </StyledButton>
+          ) : (
+            <BallIndicator color={Colors.LightColorText} />
+          )}
         </View>
       </LinearGradient>
     );
@@ -113,57 +129,60 @@ const OrdersScreen = props => {
   };
 
   return (
-    <LinearGradient
-      colors={[Colors.primaryColor, Colors.lightTeal]}
-      style={styles.gradient}
-    >
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        scrollIndicatorInsets={{ right: 1 }}
-        onRefresh={loadOrders}
-        refreshing={isRefreshing}
-        data={orders}
-        keyExtractor={item => item.orderId}
-        renderItem={itemData => {
-          if (!itemData.item.schedule) {
-            return (
-              <OrderItem
-                order_Id={itemData.item.orderId}
-                product_name={itemData.item.product_name}
-                address_string={itemData.item.address_string}
-                time_order_placed={itemData.item.time_order_placed}
-                address_string_2={itemData.item.address_string_2}
-                zone={itemData.item.zone}
-                onSelect={() => {
-                  selectItemHandler(
-                    itemData.item.orderId,
-                    itemData.item.product_name
-                  );
-                }}
-              ></OrderItem>
-            );
-          } else {
-            return (
-              <OrderItem
-                order_Id={itemData.item.orderId}
-                product_name={itemData.item.product_name}
-                address_string={itemData.item.address_string}
-                time_order_placed={itemData.item.time_order_placed}
-                schedule={itemData.item.schedule}
-                address_string_2={itemData.item.address_string_2}
-                zone={itemData.item.zone}
-                onSelect={() => {
-                  selectItemHandler(
-                    itemData.item.orderId,
-                    itemData.item.product_name
-                  );
-                }}
-              ></OrderItem>
-            );
-          }
-        }}
-      />
-    </LinearGradient>
+    <ErrorBoundary>
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          scrollIndicatorInsets={{ right: 1 }}
+          onRefresh={loadOrders}
+          initialNumToRender={10}
+          refreshing={isRefreshing}
+          data={orders}
+          keyExtractor={item => item.orderId}
+          renderItem={itemData => {
+            if (!itemData.item.schedule) {
+              return (
+                <OrderItem
+                  order_Id={itemData.item.orderId}
+                  product_name={itemData.item.product_name}
+                  address_string={itemData.item.address_string}
+                  time_order_placed={itemData.item.time_order_placed}
+                  address_string_2={itemData.item.address_string_2}
+                  zone={itemData.item.zone}
+                  onSelect={() => {
+                    selectItemHandler(
+                      itemData.item.orderId,
+                      itemData.item.product_name
+                    );
+                  }}
+                ></OrderItem>
+              );
+            } else {
+              return (
+                <OrderItem
+                  order_Id={itemData.item.orderId}
+                  product_name={itemData.item.product_name}
+                  address_string={itemData.item.address_string}
+                  time_order_placed={itemData.item.time_order_placed}
+                  schedule={itemData.item.schedule}
+                  address_string_2={itemData.item.address_string_2}
+                  zone={itemData.item.zone}
+                  onSelect={() => {
+                    selectItemHandler(
+                      itemData.item.orderId,
+                      itemData.item.product_name
+                    );
+                  }}
+                ></OrderItem>
+              );
+            }
+          }}
+        />
+      </LinearGradient>
+    </ErrorBoundary>
   );
 };
 
@@ -177,7 +196,18 @@ const styles = StyleSheet.create({
   centered: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 10
+  },
+  errorText: {
+    textAlign: 'center',
+    fontFamily: 'dm-sans-regular',
+    fontSize: 18,
+    color: Colors.backgroundFeed,
+    padding: 10
+  },
+  button: {
+    backgroundColor: Colors.accentColor
   }
 });
 

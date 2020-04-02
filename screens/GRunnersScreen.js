@@ -48,7 +48,7 @@ const GRunnersScreen = props => {
     loadGrunners().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadGrunners]);
+  }, [dispatch, loadGrunners, setIsLoading]);
 
   const selectItemHandler = uid => {
     navigation.navigate('GRunner', {
@@ -107,9 +107,10 @@ const GRunnersScreen = props => {
         scrollIndicatorInsets={{ right: 1 }}
         showsVerticalScrollIndicator={false}
         onRefresh={loadGrunners}
+        initialNumToRender={10}
         refreshing={isRefreshing}
         data={gRunners}
-        keyExtractor={item => `${item.uid}`}
+        keyExtractor={gRunner => `${gRunner.public_courier_id}`}
         renderItem={itemData => (
           <GrunnerItem
             uid={itemData.item.uid}

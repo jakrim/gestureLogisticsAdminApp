@@ -6,18 +6,25 @@ import {
   AsyncStorage
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { CommonActions } from '@react-navigation/native';
 
 import * as authActions from '../store/actions/auth';
 import Colors from '../constants/Colors';
 
 const StartupScreen = props => {
+  const { navigation } = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData');
       if (!userData) {
-        props.navigation.navigate('SignIn');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: 'SignIn', screen: 'Login' }]
+          })
+        );
         return;
       }
       const transformedData = JSON.parse(userData);
@@ -26,11 +33,22 @@ const StartupScreen = props => {
       const expirationDate = new Date(expiryDate);
 
       if (expirationDate <= new Date() || !token || !userId) {
-        props.navigation.navigate('SignIn');
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{ name: 'SignIn', screen: 'Login' }]
+          })
+        );
+        // props.navigation.reset();
         return;
       }
 
-      props.navigation.navigate('OrderStack');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: 'OrderStack' }]
+        })
+      );
       dispatch(authActions.authenticate(userId, token));
     };
 

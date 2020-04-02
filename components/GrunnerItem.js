@@ -39,7 +39,7 @@ const GRunnerItem = props => {
                 <B>UID: </B>
                 {props.uid}
               </Text>
-              {props.current_status === 'Online' ? (
+              {props.current_status === 'online' ? (
                 <Text style={{ ...styles.gRunnerDetails, color: 'green' }}>
                   {props.current_status}
                 </Text>
@@ -57,6 +57,36 @@ const GRunnerItem = props => {
             </View>
           </View>
           <View style={styles.gRunnerDetails2}>
+            <View style={{ flexDirection: 'row' }}>
+              {props.isLock ? (
+                <Ionicons
+                  name={Platform.OS === 'android' ? 'md-lock' : 'ios-lock'}
+                  size={16}
+                  color={Colors.delayRed}
+                />
+              ) : (
+                <Ionicons
+                  name={Platform.OS === 'android' ? 'md-unlock' : 'ios-unlock'}
+                  size={16}
+                  color='green'
+                />
+              )}
+              {props.isLock ? (
+                <Text
+                  style={
+                    (styles.gRunnerDetails2Text, { color: Colors.delayRed })
+                  }
+                >
+                  {' '}
+                  Locked
+                </Text>
+              ) : (
+                <Text style={(styles.gRunnerDetails2Text, { color: 'green' })}>
+                  {' '}
+                  Unlocked
+                </Text>
+              )}
+            </View>
             <Text style={styles.gRunnerDetails2Text}>
               <B>Zone: </B>
               {props.current_zone}
@@ -84,7 +114,7 @@ const GRunnerItem = props => {
 
 const styles = StyleSheet.create({
   card: {
-    height: 172,
+    height: 190,
     width: 320,
     margin: 15,
     backgroundColor: Colors.backgroundFeed

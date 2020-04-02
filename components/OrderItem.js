@@ -23,6 +23,7 @@ const OrderItem = props => {
   const B = props => (
     <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
   );
+  console.log('props.schedule', props.schedule);
 
   return (
     <Card style={styles.product}>
@@ -32,8 +33,13 @@ const OrderItem = props => {
             <View style={styles.orderDetails}>
               <Text style={styles.productName}>{props.product_name}</Text>
               <Text style={styles.address}>{props.address_string}</Text>
-              <Text style={styles.address}>{props.address_string_2}</Text>
-              {props.schedule ? (
+
+              {props.address_string_2 === null ? (
+                <Text style={styles.address}>{props.address_string_2}</Text>
+              ) : (
+                <Text></Text>
+              )}
+              {props.schedule === null ? (
                 <Text style={styles.scheduled}>
                   Time:{' '}
                   <Text style={{ fontFamily: 'dm-sans-regular' }}>
@@ -65,7 +71,7 @@ const OrderItem = props => {
 const styles = StyleSheet.create({
   product: {
     height: 170,
-    width: 320,
+    width: 340,
     margin: 15,
     backgroundColor: Colors.backgroundFeed
   },
@@ -87,7 +93,7 @@ const styles = StyleSheet.create({
   },
   address: {
     fontFamily: 'dm-sans-regular',
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.primaryColor
   },
   scheduled: {

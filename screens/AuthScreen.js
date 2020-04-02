@@ -21,6 +21,18 @@ import * as authActions from '../store/actions/auth';
 
 const FORM_INPUT_UPDATE = 'FORM_UPDATE';
 
+const initialState = {
+  inputValues: {
+    email: '',
+    password: ''
+  },
+  inputValidities: {
+    email: false,
+    password: false
+  },
+  formIsValid: false
+};
+
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
@@ -42,6 +54,10 @@ const formReducer = (state, action) => {
     };
   }
   return state;
+};
+
+const resetInputs = () => {
+  formState = initialState;
 };
 
 const AuthScreen = props => {
@@ -83,6 +99,7 @@ const AuthScreen = props => {
             formState.inputValues.password
           )
         );
+
         props.navigation.navigate('LoadingScreen');
       }
     } catch (err) {
@@ -157,6 +174,7 @@ const AuthScreen = props => {
                   type='button'
                   color={Colors.lightPurp}
                   onPress={authHandler}
+                  onPressIn={resetInputs}
                 />
               )}
             </View>

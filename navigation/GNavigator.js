@@ -6,6 +6,7 @@ import {
   Linking,
   Text,
   Button,
+  Modal,
   View
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +18,7 @@ import {
 } from '@react-navigation/drawer';
 
 import LogoTitle from '../components/LogoTitle';
+import StyledModal from '../components/StyledModal';
 import StartupScreen from '../screens/StartupScreen';
 import AuthScreen from '../screens/AuthScreen';
 import LoadingScreen from '../screens/LoadingScreen';
@@ -66,7 +68,7 @@ export const Auth = () => (
     }}
   >
     <AuthStack.Screen
-      name='G-Manager Login'
+      name='Login'
       component={AuthScreen}
       style={{ height: 80 }}
     />
@@ -102,17 +104,7 @@ export const OrderStack = ({ navigation }) => (
             }}
           />
         ),
-        headerRight: () => (
-          <Ionicons
-            style={styles.headerButtonRight}
-            name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
-            color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
-            size={25}
-            onPress={() => {
-              navigation.toggleDrawer();
-            }}
-          />
-        ),
+        headerRight: () => <StyledModal style={styles.modalButton} />,
         headerStyle: {
           backgroundColor:
             Platform.OS === 'android' ? Colors.primaryColor : 'white',
@@ -151,6 +143,21 @@ export const GRunnerStack = ({ navigation }) => (
             size={25}
             onPress={() => {
               navigation.toggleDrawer();
+            }}
+          />
+        ),
+        headerRight: () => (
+          <Ionicons
+            style={styles.headerButtonRight}
+            name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
+            color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+            size={25}
+            onPress={() => {
+              return (
+                <View>
+                  <StyledModal />
+                </View>
+              );
             }}
           />
         ),
@@ -224,6 +231,9 @@ const styles = StyleSheet.create({
     paddingLeft: 15
   },
   headerButtonRight: {
+    paddingRight: 15
+  },
+  modalButton: {
     paddingRight: 15
   }
 });

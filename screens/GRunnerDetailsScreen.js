@@ -19,7 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as gRunnerActions from '../store/actions/gRunner';
 import Colors from '../constants/Colors';
 import Card from '../components/Card';
-import MainButton from '../components/ButtonStyle';
+import StyledButton from '../components/StyledButton';
 
 const B = props => (
   <Text {...props} style={{ fontFamily: 'dm-sans-bold', ...props.style }}>
@@ -129,15 +129,6 @@ const GRunnerDetailsScreen = props => {
           </Text>
           {gRunner.currentStatus === 'online' ? (
             <View style={styles.status}>
-              {/* <Ionicons
-                name={
-                  Platform.OS === 'android'
-                    ? 'md-radio-button-on'
-                    : 'ios-radio-button-on'
-                }
-                size={20}
-                color='black'
-              /> */}
               <Text
                 style={{
                   color: 'green',
@@ -147,47 +138,66 @@ const GRunnerDetailsScreen = props => {
                   fontSize: 18
                 }}
               >
-                {gRunner.currentStatus}
+                {gRunner.currentStatus} NOT HERE
               </Text>
             </View>
           ) : (
             <View style={styles.status}>
-              {/* <Ionicons
-                name={
-                  Platform.OS === 'android'
-                    ? 'md-radio-button-off'
-                    : 'ios-radio-button-off'
-                }
-                size={20}
-                color='black'
-              /> */}
               <Text
                 style={{
                   color: 'red',
                   textAlign: 'center',
                   fontFamily: 'dm-sans-bold',
-                  padding: 4,
+                  paddingTop: 4,
                   fontSize: 18
                 }}
               >
-                {gRunner.currentStatus}
+                {gRunner.currentStatus} HERE
               </Text>
             </View>
           )}
-          <Text style={styles.description}>{gRunner.isLock}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingLeft: 10,
+              alignItems: 'center'
+            }}
+          >
+            {gRunner.isLock ? (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-lock' : 'ios-lock'}
+                size={20}
+                color={Colors.delayRed}
+              />
+            ) : (
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-unlock' : 'ios-unlock'}
+                size={20}
+                color='green'
+              />
+            )}
+            {gRunner.isLock ? (
+              <Text style={(styles.isLock, { color: Colors.delayRed })}>
+                {' '}
+                Locked
+              </Text>
+            ) : (
+              <Text style={(styles.isLock, { color: 'green' })}> Unlocked</Text>
+            )}
+          </View>
           <Text style={styles.description}>
             <B style={{ color: 'black', fontSize: 14 }}>CID: </B>
             {gRunner.publicCourierId}
           </Text>
           <View style={styles.buttonContainer}>
-            <MainButton
+            <StyledButton
               style={styles.button}
               onPress={() => {
                 selectItemHandler(gRunner.publicCourierId);
               }}
             >
               Payment History
-            </MainButton>
+            </StyledButton>
           </View>
         </ScrollView>
       </Card>
@@ -233,12 +243,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1
   },
+  isLock: {
+    fontSize: 18,
+    fontFamily: 'dm-sans-regular',
+    padding: 10
+  },
   description: {
     fontFamily: 'dm-sans-regular',
-    paddingTop: 30,
+    paddingTop: 5,
     fontSize: 18,
-
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     color: Colors.primaryColor
   },
   buttonContainer: {

@@ -7,7 +7,7 @@ export const fetchOrders = () => {
   return async dispatch => {
     try {
       const response = await fetch(
-        'https://us-central1-gesture-dev.cloudfunctions.net/logistics_orders'
+        'https://us-central1-gesture-dev.cloudfunctions.net/logPendingOrders'
       );
 
       if (!response.ok) {
@@ -17,7 +17,7 @@ export const fetchOrders = () => {
       const resData = await response.json();
 
       const loadedOrders = [];
-      const orders = resData.result.data;
+      const orders = resData.data;
       // console.log('fetchOrders -> orders', resData.data);
 
       if (!orders.schedule) {
@@ -83,7 +83,7 @@ export const fetchOrder = orderId => {
   return async dispatch => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_order?orderId=${orderId}`
+        `https://us-central1-gesture-dev.cloudfunctions.net/logisticsOrder?uid=1234324&orderId=${orderId}`
       );
 
       const resData = await response.json();
@@ -149,4 +149,8 @@ export const fetchOrder = orderId => {
       console.log('ERROR in fetching order', err);
     }
   };
+};
+
+export const setFilters = filterSettings => {
+  return { type: SET_FILTERS, filters: filterSettings };
 };

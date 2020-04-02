@@ -7,7 +7,7 @@ export const fetchGrunners = () => {
   return async dispatch => {
     try {
       const response = await fetch(
-        'https://us-central1-gesture-dev.cloudfunctions.net/logistics_grunners'
+        'https://us-central1-gesture-dev.cloudfunctions.net/logisticsGRunners'
       );
 
       if (!response.ok) {

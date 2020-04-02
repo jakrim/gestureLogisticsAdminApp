@@ -5,6 +5,7 @@ import {
   View,
   Button,
   TouchableOpacity,
+  TouchableNativeFeedback,
   Linking,
   Platform,
   StyleSheet
@@ -20,7 +21,7 @@ import Card from '../components/Card';
 import makeCall from '../components/PhoneCall';
 import sendEmail from '../components/Email';
 import MillisToDate from '../components/MillisToDate';
-import ButtonStyle from '../components/ButtonStyle';
+import StyledButton from '../components/StyledButton';
 
 const PaymentOrderScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +29,12 @@ const PaymentOrderScreen = props => {
   const [error, setError] = useState();
   const dispatch = useDispatch();
   const { navigation, route } = props;
+
+  let TouchableComp = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableComp = TouchableNativeFeedback;
+  }
 
   const order = useSelector(state => state.orders.order);
 
@@ -160,7 +167,7 @@ const PaymentOrderScreen = props => {
                 {order.recipient_name}
               </Text>
             </Text>
-            <TouchableOpacity
+            <TouchableComp
               onPress={() => makeCall(order.recipient_phone_number)}
               activeOpacity={0.7}
             >
@@ -176,8 +183,8 @@ const PaymentOrderScreen = props => {
                   {order.recipient_phone_number}
                 </Text>
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableComp>
+            <TouchableComp
               onPress={() => {
                 sendEmail(
                   `${order.recipient_email}`,
@@ -202,7 +209,7 @@ const PaymentOrderScreen = props => {
                   {order.recipient_email}
                 </Text>
               </Text>
-            </TouchableOpacity>
+            </TouchableComp>
             <Text style={styles.recipientRow}>
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-pin' : 'ios-pin'}
@@ -258,7 +265,7 @@ const PaymentOrderScreen = props => {
               </Text>
             </Text>
 
-            <TouchableOpacity
+            <TouchableComp
               onPress={() => makeCall(order.recipient_phone_number)}
               activeOpacity={0.7}
             >
@@ -274,8 +281,8 @@ const PaymentOrderScreen = props => {
                   {order.sender_phone_number}
                 </Text>
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableComp>
+            <TouchableComp
               onPress={() => {
                 sendEmail(
                   `${order.recipient_email}`,
@@ -300,7 +307,7 @@ const PaymentOrderScreen = props => {
                   {order.sender_email}
                 </Text>
               </Text>
-            </TouchableOpacity>
+            </TouchableComp>
           </View>
           {/* Order Details */}
           <Text style={styles.textHeader}>Order Details</Text>
@@ -311,7 +318,7 @@ const PaymentOrderScreen = props => {
               Order Placed: {MillisToDate(order.time_order_placed)}
             </Text>
           </View>
-          <ButtonStyle style={styles.button}>DELAY</ButtonStyle>
+          <StyledButton style={styles.button}>DELAY</StyledButton>
         </ScrollView>
       </Card>
     </LinearGradient>

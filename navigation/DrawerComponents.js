@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Platform,
   SafeAreaView,
@@ -6,7 +6,10 @@ import {
   Text,
   Button,
   Image,
-  View
+  TouchableHighlight,
+  View,
+  Modal,
+  StyleSheet
 } from 'react-native';
 import { DrawerItem } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
@@ -80,7 +83,7 @@ export const LogoutComponent = props => {
                 color={Colors.darkTeal}
                 onPress={() => {
                   dispatch(authActions.logout());
-                  props.navigation.navigate('SignIn', { screen: 'AuthScreen' });
+                  props.navigation.navigate('SignIn', { screen: 'Login' });
                 }}
               />
             </View>

@@ -10,7 +10,7 @@ import {
 
 import Colors from '../constants/Colors';
 
-const MainButton = props => {
+const StyledButton = props => {
   let ButtonComponent = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MainButton;
+export default StyledButton;
