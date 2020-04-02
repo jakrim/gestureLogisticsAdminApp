@@ -83,7 +83,7 @@ export const LogoutComponent = props => {
                 color={Colors.darkTeal}
                 onPress={() => {
                   dispatch(authActions.logout());
-                  props.navigation.navigate('SignIn', { screen: 'Login' });
+                  // props.navigation.navigate('SignIn', { screen: 'Login' });
                 }}
               />
             </View>

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from '@react-navigation/compat';
 
-import MainNavigator from './GNavigator';
+import { MainNavigator } from './GNavigator';
 
-const NavigationContainer = props => {
+const NavContainer = props => {
   const navRef = useRef();
   const isAuth = useSelector(state => !!state.auth.token);
+
   useEffect(() => {
     if (!isAuth) {
       navRef.current.dispatch(
@@ -19,4 +20,4 @@ const NavigationContainer = props => {
   return <MainNavigator ref={navRef} />;
 };
 
-export default NavigationContainer;
+export default NavContainer;

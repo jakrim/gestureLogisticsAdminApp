@@ -4,14 +4,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import authReducer from './store/reducers/auth';
 import ordersReducer from './store/reducers/orders';
 import gRunnerReducer from './store/reducers/gRunner';
 import paymentsReducer from './store/reducers/payments';
-import { Startup, Auth, DrawerMenu } from './navigation/GNavigator';
+import NavContainer from './navigation/NavContainer';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -32,9 +30,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
-const Stack = createStackNavigator();
-
-export default function App() {
+const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   while (!fontLoaded) {
@@ -49,13 +45,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator headerMode='none'>
-          <Stack.Screen name='StartupScreen' component={Startup} />
-          <Stack.Screen name='SignIn' component={Auth} />
-          <Stack.Screen name='OrderStack' component={DrawerMenu} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <NavContainer />
     </Provider>
   );
-}
+};
+
+export default App;

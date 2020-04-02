@@ -10,6 +10,7 @@ import {
   View
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -38,6 +39,7 @@ import {
   LogoutComponent
 } from './DrawerComponents';
 
+const MainStack = createStackNavigator();
 const StartupStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
@@ -224,6 +226,16 @@ export const DrawerMenu = () => (
     <Drawer.Screen name='OrderStack' component={OrderStack} />
     <Drawer.Screen name='GRunnerStack' component={GRunnerStack} />
   </Drawer.Navigator>
+);
+
+export const MainNavigator = () => (
+  <NavigationContainer>
+    <MainStack.Navigator headerMode='none'>
+      <MainStack.Screen name='StartupScreen' component={Startup} />
+      <MainStack.Screen name='SignIn' component={Auth} />
+      <MainStack.Screen name='OrderStack' component={DrawerMenu} />
+    </MainStack.Navigator>
+  </NavigationContainer>
 );
 
 const styles = StyleSheet.create({
