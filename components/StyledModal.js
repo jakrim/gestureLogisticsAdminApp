@@ -113,17 +113,17 @@ const StyledModal = props => {
             console.log('Closed');
           }}
         >
-          <ScrollView>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Ionicons
-                  name={Platform.OS === 'android' ? 'md-close' : 'ios-close'}
-                  size={30}
-                  style={{ position: 'absolute', top: 10, right: 20 }}
-                  onPress={() => setModalVisible(!modalVisible)}
-                />
-                <Text style={styles.modalText}>Filter Data:</Text>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Ionicons
+                name={Platform.OS === 'android' ? 'md-close' : 'ios-close'}
+                size={30}
+                style={{ position: 'absolute', top: 10, right: 20 }}
+                onPress={() => setModalVisible(!modalVisible)}
+              />
+              <Text style={styles.modalText}>Filter Data:</Text>
 
+              <ScrollView horizontal={false}>
                 <FilterSwitch
                   label='Cities'
                   state={isZone}
@@ -140,17 +140,17 @@ const StyledModal = props => {
                   state={isOnDemand}
                   onChange={newValue => setIsOnDemand(newValue)}
                 />
-                <View style={styles.buttonContainer}>
-                  <StyledButton
-                    style={{ backgroundColor: Colors.accentColor }}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text style={styles.textStyle}>Confirm Settings</Text>
-                  </StyledButton>
-                </View>
+              </ScrollView>
+              <View style={styles.buttonContainer}>
+                <StyledButton
+                  style={{ backgroundColor: Colors.accentColor }}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Confirm Settings</Text>
+                </StyledButton>
               </View>
             </View>
-          </ScrollView>
+          </View>
         </Modal>
       </View>
     </>
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '80%',
+    width: '75%',
     marginVertical: 15
   }
 });

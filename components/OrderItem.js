@@ -23,7 +23,7 @@ const OrderItem = props => {
   const B = props => (
     <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
   );
-  console.log('props.schedule', props.schedule);
+  // console.log('props.schedule', props.schedule);
 
   return (
     <Card style={styles.product}>
@@ -34,12 +34,12 @@ const OrderItem = props => {
               <Text style={styles.productName}>{props.product_name}</Text>
               <Text style={styles.address}>{props.address_string}</Text>
 
-              {props.address_string_2 === null ? (
+              {props.address_string_2 ? (
                 <Text style={styles.address}>{props.address_string_2}</Text>
               ) : (
                 <Text></Text>
               )}
-              {props.schedule === null ? (
+              {props.schedule ? (
                 <Text style={styles.scheduled}>
                   Time:{' '}
                   <Text style={{ fontFamily: 'dm-sans-regular' }}>

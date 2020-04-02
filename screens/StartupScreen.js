@@ -43,13 +43,15 @@ const StartupScreen = props => {
         return;
       }
 
+      const expirationTime = expirationDate.getTime() - new Date().getTime();
+
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
           routes: [{ name: 'OrderStack' }]
         })
       );
-      dispatch(authActions.authenticate(userId, token));
+      dispatch(authActions.signedIn(userId, token, expirationTime));
     };
 
     tryLogin();

@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: Platform.OS === 'android' ? '60%' : '90%',
+    width: '70%',
     marginVertical: 5
   }
 });

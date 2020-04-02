@@ -124,9 +124,7 @@ const GRunnerDetailsScreen = props => {
               source={{ uri: gRunner.profileImageUrl }}
             />
           </View>
-          <Text style={styles.gRunnerName}>
-            {gRunner.firstName} {gRunner.lastName}
-          </Text>
+          <Text style={styles.gRunnerName}>{gRunner.full_name}</Text>
           {gRunner.currentStatus === 'online' ? (
             <View style={styles.status}>
               <Text
