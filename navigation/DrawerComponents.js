@@ -37,29 +37,6 @@ export const LogoComponent = props => (
     />
   </View>
 );
-
-export const OrdersStackComponent = props => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        paddingBottom: 50,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-      }}
-    >
-      <TouchableOpacity
-        style={{ backgroundColor: '#aaa', width: '100%', alignItems: 'center' }}
-        onPress={() => {
-          props.navigation.navigate('OrderStack');
-        }}
-      >
-        <Text>Orders Screen</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
 export const LogoutComponent = props => {
   const dispatch = useDispatch();
   return (

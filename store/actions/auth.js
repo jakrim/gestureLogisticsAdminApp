@@ -5,8 +5,13 @@ export const SIGNIN = 'SIGNIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const SIGNEDIN = 'SIGNEDIN';
 export const LOGOUT = 'LOGOUT';
+export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
 
 let timer;
+
+export const setDidTryAL = () => {
+  return { type: SET_DID_TRY_AL };
+};
 
 export const signedIn = (userId, token, expiryTime) => {
   return dispatch => {
@@ -58,17 +63,6 @@ export const signin = (email, password) => {
   };
 };
 
-const saveDataToStorage = (token, userId, expirationDate) => {
-  AsyncStorage.setItem(
-    'userData',
-    JSON.stringify({
-      token,
-      userId,
-      expiryDate: expirationDate.toISOString()
-    })
-  );
-};
-
 export const authenticate = () => {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
@@ -113,4 +107,15 @@ const setLogoutTimer = expirationTime => {
       dispatch(logout());
     }, expirationTime / 1000);
   };
+};
+
+const saveDataToStorage = (token, userId, expirationDate) => {
+  AsyncStorage.setItem(
+    'userData',
+    JSON.stringify({
+      token,
+      userId,
+      expiryDate: expirationDate.toISOString()
+    })
+  );
 };

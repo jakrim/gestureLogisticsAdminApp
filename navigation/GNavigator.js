@@ -20,7 +20,7 @@ import {
 
 import LogoTitle from '../components/LogoTitle';
 import StyledModal from '../components/StyledModal';
-import StartupScreen from '../screens/StartupScreen';
+
 import AuthScreen from '../screens/AuthScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import OrdersScreen from '../screens/OrdersScreen';
@@ -33,26 +33,14 @@ import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import * as authActions from '../store/actions/auth';
-import {
-  LogoComponent,
-  OrdersStackComponent,
-  LogoutComponent
-} from './DrawerComponents';
+import { LogoComponent, LogoutComponent } from './DrawerComponents';
 
-const MainStack = createStackNavigator();
-const StartupStack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const HomeStack = createStackNavigator();
-const GRunner = createStackNavigator();
+const OrderStack = createStackNavigator();
+const GRunnerStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-export const Startup = () => (
-  <StartupStack.Navigator>
-    <StartupStack.Screen name='StartupScreen' component={StartupScreen} />
-  </StartupStack.Navigator>
-);
-
-export const Auth = () => (
+export const AuthNavigator = () => (
   <AuthStack.Navigator
     screenOptions={{
       headerStyle: {
@@ -84,13 +72,13 @@ export const Auth = () => (
   </AuthStack.Navigator>
 );
 
-export const OrderStack = ({ navigation }) => (
-  <HomeStack.Navigator
+const OrderNavigator = ({ navigation }) => (
+  <OrderStack.Navigator
     screenOptions={{
       headerTintColor: Colors.primaryColor
     }}
   >
-    <HomeStack.Screen
+    <OrderStack.Screen
       name='Orders'
       component={OrdersScreen}
       options={{
@@ -118,21 +106,21 @@ export const OrderStack = ({ navigation }) => (
           Platform.OS === 'android' ? 'white' : Colors.primaryColor
       }}
     />
-    <HomeStack.Screen
+    <OrderStack.Screen
       name='OrderDetailsScreen'
       component={OrderDetailsScreen}
       options={{ headerTitle: 'Order Details' }}
     />
-  </HomeStack.Navigator>
+  </OrderStack.Navigator>
 );
 
-export const GRunnerStack = ({ navigation }) => (
-  <GRunner.Navigator
+export const GRunnerNavigator = ({ navigation }) => (
+  <GRunnerStack.Navigator
     screenOptions={{
       headerTintColor: Colors.primaryColor
     }}
   >
-    <GRunner.Screen
+    <GRunnerStack.Screen
       name='GRunners'
       component={GRunnersScreen}
       options={{
@@ -155,11 +143,7 @@ export const GRunnerStack = ({ navigation }) => (
             color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
             size={25}
             onPress={() => {
-              return (
-                <View>
-                  <StyledModal />
-                </View>
-              );
+              return <StyledModal />;
             }}
           />
         ),
@@ -173,31 +157,31 @@ export const GRunnerStack = ({ navigation }) => (
           Platform.OS === 'android' ? 'white' : Colors.primaryColor
       }}
     />
-    <GRunner.Screen
+    <GRunnerStack.Screen
       name='GRunner'
       component={GRunnerScreen}
       options={{ headerTitle: 'GRunner' }}
     />
-    <GRunner.Screen
+    <GRunnerStack.Screen
       name='PaymentHistoryScreen'
       component={PaymentHistoryScreen}
       options={{ headerTitle: 'Payment History' }}
     />
-    <GRunner.Screen
+    <GRunnerStack.Screen
       name='PaymentOrderScreen'
       component={PaymentOrderScreen}
       options={{ headerTitle: 'Order Details' }}
     />
-  </GRunner.Navigator>
+  </GRunnerStack.Navigator>
 );
 
-export const CustomDrawerContent = props => (
+const CustomDrawerContent = props => (
   <DrawerContentScrollView {...props}>
     <DrawerItemList {...props} />
   </DrawerContentScrollView>
 );
 
-export const DrawerMenu = () => (
+export const GestureNavigator = () => (
   <Drawer.Navigator
     drawerContent={props => (
       <View style={{ flex: 1, paddingTop: 60 }}>
@@ -209,6 +193,7 @@ export const DrawerMenu = () => (
           //   <Ionicons color={color} size={size} name='ios-pin' />
           // )}
         />
+        {/* <DrawerItemList {...props} /> */}
         <LogoutComponent {...props} />
       </View>
     )}
@@ -223,19 +208,9 @@ export const DrawerMenu = () => (
       }
     }}
   >
-    <Drawer.Screen name='OrderStack' component={OrderStack} />
-    <Drawer.Screen name='GRunnerStack' component={GRunnerStack} />
+    <Drawer.Screen name='OrderStack' component={OrderNavigator} />
+    <Drawer.Screen name='GRunnerStack' component={GRunnerNavigator} />
   </Drawer.Navigator>
-);
-
-export const MainNavigator = () => (
-  <NavigationContainer>
-    <MainStack.Navigator headerMode='none'>
-      <MainStack.Screen name='StartupScreen' component={Startup} />
-      <MainStack.Screen name='SignIn' component={Auth} />
-      <MainStack.Screen name='OrderStack' component={DrawerMenu} />
-    </MainStack.Navigator>
-  </NavigationContainer>
 );
 
 const styles = StyleSheet.create({

@@ -41,9 +41,9 @@ const OrdersScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const willFocusSub = navigation.addListener('willFocus', loadOrders);
+    const unsubscribe = navigation.addListener('focus', loadOrders);
 
-    return willFocusSub;
+    return () => unsubscribe();
   }, [navigation, loadOrders]);
 
   useEffect(() => {

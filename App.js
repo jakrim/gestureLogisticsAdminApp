@@ -9,7 +9,16 @@ import authReducer from './store/reducers/auth';
 import ordersReducer from './store/reducers/orders';
 import gRunnerReducer from './store/reducers/gRunner';
 import paymentsReducer from './store/reducers/payments';
-import NavContainer from './navigation/NavContainer';
+import AppNavigator from './navigation/AppNavigator';
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  orders: ordersReducer,
+  gRunners: gRunnerReducer,
+  payments: paymentsReducer
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -21,16 +30,7 @@ const fetchFonts = () => {
   });
 };
 
-const rootReducer = combineReducers({
-  auth: authReducer,
-  orders: ordersReducer,
-  gRunners: gRunnerReducer,
-  payments: paymentsReducer
-});
-
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-
-const App = () => {
+export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   while (!fontLoaded) {
@@ -38,16 +38,14 @@ const App = () => {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setFontLoaded(true)}
-        onError={err => console.log(err)}
+        onError={err => console.log('Error in Loading Fonts', err)}
       />
     );
   }
 
   return (
     <Provider store={store}>
-      <NavContainer />
+      <AppNavigator />
     </Provider>
   );
-};
-
-export default App;
+}

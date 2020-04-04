@@ -31,9 +31,9 @@ const PaymentHistoryScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const willFocusSub = navigation.addListener('willFocus', loadPayments);
+    const unsubscribe = navigation.addListener('focus', loadPayments);
 
-    return willFocusSub;
+    return () => unsubscribe();
   }, [navigation, loadPayments, setIsLoading]);
 
   useEffect(() => {

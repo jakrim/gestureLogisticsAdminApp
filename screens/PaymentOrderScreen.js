@@ -52,9 +52,9 @@ const PaymentOrderScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const willFocusSub = navigation.addListener('willFocus', loadOrder);
+    const unsubscribe = navigation.addListener('focus', loadOrder);
 
-    return willFocusSub;
+    return () => unsubscribe();
   }, [navigation, loadOrder, setIsLoading]);
 
   useEffect(() => {

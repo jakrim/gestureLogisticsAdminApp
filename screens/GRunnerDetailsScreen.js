@@ -49,9 +49,9 @@ const GRunnerDetailsScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const willFocusSub = navigation.addListener('willFocus', loadGrunner);
+    const unsubscribe = navigation.addListener('focus', loadGrunner);
 
-    return willFocusSub;
+    return () => unsubscribe();
   }, [navigation, loadGrunner]);
 
   useEffect(() => {
