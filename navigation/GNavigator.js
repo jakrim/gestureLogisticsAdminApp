@@ -40,6 +40,32 @@ const OrderStack = createStackNavigator();
 const GRunnerStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+const headerOptions = props => {
+  return {
+    headerTitle: props => <LogoTitle {...props} />,
+    headerLeft: () => (
+      <Ionicons
+        style={styles.headerButtonLeft}
+        name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
+        color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+        size={25}
+        onPress={() => {
+          props.navigation.toggleDrawer();
+        }}
+      />
+    ),
+    headerRight: () => <StyledModal style={styles.modalButton} />,
+    headerStyle: {
+      backgroundColor:
+        Platform.OS === 'android' ? Colors.primaryColor : 'white',
+      shadowColor: 'transparent',
+      elevation: 0
+    },
+    // headerTitleAlign: 'center',
+    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor
+  };
+};
+
 export const AuthNavigator = () => (
   <AuthStack.Navigator
     screenOptions={{
@@ -73,38 +99,11 @@ export const AuthNavigator = () => (
 );
 
 const OrderNavigator = ({ navigation }) => (
-  <OrderStack.Navigator
-    screenOptions={{
-      headerTintColor: Colors.primaryColor
-    }}
-  >
+  <OrderStack.Navigator>
     <OrderStack.Screen
       name='Orders'
       component={OrdersScreen}
-      options={{
-        headerTitle: props => <LogoTitle {...props} />,
-        headerLeft: () => (
-          <Ionicons
-            style={styles.headerButtonLeft}
-            name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-            color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
-            size={25}
-            onPress={() => {
-              navigation.toggleDrawer();
-            }}
-          />
-        ),
-        headerRight: () => <StyledModal style={styles.modalButton} />,
-        headerStyle: {
-          backgroundColor:
-            Platform.OS === 'android' ? Colors.primaryColor : 'white',
-          shadowColor: 'transparent',
-          elevation: 0
-        },
-        // headerTitleAlign: 'center',
-        headerTintColor:
-          Platform.OS === 'android' ? 'white' : Colors.primaryColor
-      }}
+      options={headerOptions}
     />
     <OrderStack.Screen
       name='OrderDetailsScreen'
@@ -115,47 +114,11 @@ const OrderNavigator = ({ navigation }) => (
 );
 
 export const GRunnerNavigator = ({ navigation }) => (
-  <GRunnerStack.Navigator
-    screenOptions={{
-      headerTintColor: Colors.primaryColor
-    }}
-  >
+  <GRunnerStack.Navigator>
     <GRunnerStack.Screen
       name='GRunners'
       component={GRunnersScreen}
-      options={{
-        headerTitle: props => <LogoTitle {...props} />,
-        headerLeft: () => (
-          <Ionicons
-            style={styles.headerButtonLeft}
-            name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-            color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
-            size={25}
-            onPress={() => {
-              navigation.toggleDrawer();
-            }}
-          />
-        ),
-        headerRight: () => (
-          <Ionicons
-            style={styles.headerButtonRight}
-            name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
-            color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
-            size={25}
-            onPress={() => {
-              return <StyledModal />;
-            }}
-          />
-        ),
-        headerStyle: {
-          backgroundColor:
-            Platform.OS === 'android' ? Colors.primaryColor : 'white',
-          shadowColor: 'transparent',
-          elevation: 0
-        },
-        headerTintColor:
-          Platform.OS === 'android' ? 'white' : Colors.primaryColor
-      }}
+      options={headerOptions}
     />
     <GRunnerStack.Screen
       name='GRunner'
@@ -175,25 +138,12 @@ export const GRunnerNavigator = ({ navigation }) => (
   </GRunnerStack.Navigator>
 );
 
-const CustomDrawerContent = props => (
-  <DrawerContentScrollView {...props}>
-    <DrawerItemList {...props} />
-  </DrawerContentScrollView>
-);
-
 export const GestureNavigator = () => (
   <Drawer.Navigator
     drawerContent={props => (
       <View style={{ flex: 1, paddingTop: 60 }}>
         <LogoComponent {...props} />
-        <CustomDrawerContent
-          // contentContainerStyle={{}}
-          {...props}
-          // drawerIcon={({ focused, color, size }) => (
-          //   <Ionicons color={color} size={size} name='ios-pin' />
-          // )}
-        />
-        {/* <DrawerItemList {...props} /> */}
+        <DrawerItemList {...props} />
         <LogoutComponent {...props} />
       </View>
     )}

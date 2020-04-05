@@ -141,12 +141,12 @@ const OrdersScreen = props => {
           initialNumToRender={10}
           refreshing={isRefreshing}
           data={orders}
-          keyExtractor={item => item.orderId}
+          keyExtractor={item => item.time_order_placed.toString()}
           renderItem={itemData => {
             if (!itemData.item.schedule) {
               return (
                 <OrderItem
-                  order_Id={itemData.item.orderId}
+                  order_Id={itemData.item.orderID}
                   product_name={itemData.item.product_name}
                   address_string={itemData.item.address_string}
                   time_order_placed={itemData.item.time_order_placed}
@@ -163,7 +163,7 @@ const OrdersScreen = props => {
             } else {
               return (
                 <OrderItem
-                  order_Id={itemData.item.orderId}
+                  order_Id={itemData.item.orderID}
                   product_name={itemData.item.product_name}
                   address_string={itemData.item.address_string}
                   time_order_placed={itemData.item.time_order_placed}

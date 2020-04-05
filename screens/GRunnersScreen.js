@@ -110,7 +110,7 @@ const GRunnersScreen = props => {
         initialNumToRender={10}
         refreshing={isRefreshing}
         data={gRunners}
-        keyExtractor={gRunner => `${gRunner.public_courier_id}`}
+        keyExtractor={gRunner => gRunner.public_courier_id}
         renderItem={itemData => {
           // console.log('itemData.item', itemData);
           return (

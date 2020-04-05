@@ -23,7 +23,7 @@ const LoadingScreen = props => {
     } catch (err) {
       setError(message);
       setTimeout(() => {
-        props.navigation.navigate('SignIn');
+        props.navigation.navigate('Login');
       }, 1000);
       setIsLoading(false);
     }

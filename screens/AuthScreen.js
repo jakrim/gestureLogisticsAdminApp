@@ -99,8 +99,6 @@ const AuthScreen = props => {
             formState.inputValues.password
           )
         );
-
-        props.navigation.navigate('LoadingScreen');
       }
     } catch (err) {
       setError(err.message);
@@ -126,61 +124,67 @@ const AuthScreen = props => {
       keyboardVerticalOffset={50}
       behavior='padding'
     >
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
       >
-        <View style={styles.image}>
-          <Image source={require('../assets/logo.png')} />
-        </View>
-        <Card style={styles.authContainer}>
-          <ScrollView keyboardShouldPersistTaps='always'>
-            <Input
-              id='email'
-              label='E-Mail'
-              keyboardType='email-address'
-              required
-              returnKeyType='next'
-              email
-              autoCapitalize='none'
-              errorText='Please enter a valid email address.'
-              onInputChange={inputChangeHandler}
-              initalValue=''
-              blurOnSubmit={false}
-              onSubmitEditing={() => this.password.focus()}
-              formHasSubmitted={formHasSubmitted}
-            />
-            <Input
-              id='password'
-              label='Password'
-              keyboardType='default' //Default Keyboard
-              secureTextEntry
-              required
-              minLength={5}
-              autoCapitalize='none'
-              errorText='Please enter a valid password.'
-              onInputChange={inputChangeHandler}
-              keyboardShouldPersistTaps='handled'
-              inputRef={ref => (password = ref)}
-              initalValue=''
-              formHasSubmitted={formHasSubmitted}
-            />
-            <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size='small' color={Colors.primaryColor} />
-              ) : (
-                <Button
-                  title='Login'
-                  type='button'
-                  color={Colors.lightPurp}
-                  onPress={authHandler}
-                  onPressIn={resetInputs}
-                />
-              )}
-            </View>
-          </ScrollView>
-        </Card>
-      </LinearGradient>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.image}>
+            <Image source={require('../assets/logo.png')} />
+          </View>
+          <Card style={styles.authContainer}>
+            <ScrollView keyboardShouldPersistTaps='always'>
+              <Input
+                id='email'
+                label='E-Mail'
+                keyboardType='email-address'
+                required
+                returnKeyType='next'
+                email
+                autoCapitalize='none'
+                errorText='Please enter a valid email address.'
+                onInputChange={inputChangeHandler}
+                initalValue=''
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.password.focus()}
+                formHasSubmitted={formHasSubmitted}
+              />
+              <Input
+                id='password'
+                label='Password'
+                keyboardType='default' //Default Keyboard
+                secureTextEntry
+                required
+                minLength={5}
+                autoCapitalize='none'
+                errorText='Please enter a valid password.'
+                onInputChange={inputChangeHandler}
+                keyboardShouldPersistTaps='handled'
+                inputRef={ref => (password = ref)}
+                initalValue=''
+                formHasSubmitted={formHasSubmitted}
+              />
+              <View style={styles.buttonContainer}>
+                {isLoading ? (
+                  <ActivityIndicator size='small' color={Colors.primaryColor} />
+                ) : (
+                  <Button
+                    title='Login'
+                    type='button'
+                    color={Colors.lightPurp}
+                    onPress={authHandler}
+                    onPressIn={resetInputs}
+                  />
+                )}
+              </View>
+            </ScrollView>
+          </Card>
+        </LinearGradient>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
