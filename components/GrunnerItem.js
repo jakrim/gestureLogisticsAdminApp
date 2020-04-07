@@ -35,16 +35,22 @@ const GRunnerItem = props => {
                 <B>CID: </B>
                 {props.public_courier_id}
               </Text>
-              <Text style={styles.gRunnerDetails}>
-                <B>UID: </B>
-                {props.uid}
-              </Text>
+
               {props.current_status === 'online' ? (
                 <Text style={{ ...styles.gRunnerDetails, color: 'green' }}>
                   {props.current_status}
                 </Text>
-              ) : (
+              ) : props.current_status === 'offline' ? (
                 <Text style={{ ...styles.gRunnerDetails, color: 'red' }}>
+                  {props.current_status}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    ...styles.gRunnerDetails,
+                    color: Colors.accentColor
+                  }}
+                >
                   {props.current_status}
                 </Text>
               )}

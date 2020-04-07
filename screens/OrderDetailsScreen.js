@@ -23,9 +23,9 @@ import StyledButton from '../components/StyledButton';
 
 const OrderDetailsScreen = props => {
   const { route } = props;
-  const orderId = route.params.orderId;
+  const order_ID = route.params.order_ID;
   const selectedOrder = useSelector(state =>
-    state.orders.orders.find(order => order.orderId === orderId)
+    state.orders.orders.find(order => order.order_ID === order_ID)
   );
 
   let TouchableComp = TouchableOpacity;
@@ -51,14 +51,14 @@ const OrderDetailsScreen = props => {
               }}
             >
               <Text style={styles.textHeader}>Delivery Item</Text>
-              {selectedOrder.schedule ? (
-                <Text style={styles.scheduledTime}>Scheduled</Text>
-              ) : (
+              {selectedOrder.schedule == null ? (
                 <Text
                   style={(styles.scheduledTime, { color: Colors.accentColor })}
                 >
                   On Demand
                 </Text>
+              ) : (
+                <Text style={styles.scheduledTime}>Scheduled</Text>
               )}
             </View>
             <Text style={styles.product}>
@@ -70,11 +70,13 @@ const OrderDetailsScreen = props => {
               {selectedOrder.category_name}
             </Text>
           </View>
-          {selectedOrder.schedule ? (
+          {selectedOrder.schedule == null ? (
+            <></>
+          ) : (
             <Text style={styles.scheduledTime}>
               Scheduled For: {MillisToDate(selectedOrder.schedule)}
             </Text>
-          ) : null}
+          )}
 
           {/* BEGIN RECIPIENT STYLES/VIEW */}
           <Text style={styles.textHeader}>Delivering To</Text>

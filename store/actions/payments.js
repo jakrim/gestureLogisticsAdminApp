@@ -6,7 +6,7 @@ export const fetchPayments = uid => {
   return async dispatch => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_payment_history?uid=${uid}`
+        `https://us-central1-gesture-dev.cloudfunctions.net/paymentHistoryLogistics?uid=${uid}`
       );
 
       if (!response.ok) {
@@ -17,7 +17,6 @@ export const fetchPayments = uid => {
 
       const loadPayments = [];
       const payments = resData.result.data;
-      // console.log('payments', payments);
 
       for (const key in payments) {
         loadPayments.push(

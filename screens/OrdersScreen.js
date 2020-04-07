@@ -121,10 +121,9 @@ const OrdersScreen = props => {
     );
   }
 
-  const selectItemHandler = (id, name) => {
+  const selectItemHandler = id => {
     navigation.navigate('OrderDetailsScreen', {
-      orderId: id,
-      product_name: name
+      order_ID: id
     });
   };
 
@@ -141,44 +140,22 @@ const OrdersScreen = props => {
           initialNumToRender={10}
           refreshing={isRefreshing}
           data={orders}
-          keyExtractor={item => item.time_order_placed.toString()}
+          keyExtractor={item => item.order_ID.toString()}
           renderItem={itemData => {
-            if (!itemData.item.schedule) {
-              return (
-                <OrderItem
-                  order_ID={itemData.item.order_ID}
-                  product_name={itemData.item.product_name}
-                  address_string={itemData.item.address_string}
-                  time_order_placed={itemData.item.time_order_placed}
-                  address_string_2={itemData.item.address_string_2}
-                  zone={itemData.item.zone}
-                  onSelect={() => {
-                    selectItemHandler(
-                      itemData.item.orderId,
-                      itemData.item.product_name
-                    );
-                  }}
-                ></OrderItem>
-              );
-            } else {
-              return (
-                <OrderItem
-                  order_ID={itemData.item.order_ID}
-                  product_name={itemData.item.product_name}
-                  address_string={itemData.item.address_string}
-                  time_order_placed={itemData.item.time_order_placed}
-                  schedule={itemData.item.schedule}
-                  address_string_2={itemData.item.address_string_2}
-                  zone={itemData.item.zone}
-                  onSelect={() => {
-                    selectItemHandler(
-                      itemData.item.orderId,
-                      itemData.item.product_name
-                    );
-                  }}
-                ></OrderItem>
-              );
-            }
+            return (
+              <OrderItem
+                order_ID={itemData.item.order_ID}
+                product_name={itemData.item.product_name}
+                address_string={itemData.item.address_string}
+                time_order_placed={itemData.item.time_order_placed}
+                schedule={itemData.item.schedule}
+                address_string_2={itemData.item.address_string_2}
+                zone={itemData.item.zone}
+                onSelect={() => {
+                  selectItemHandler(itemData.item.order_ID);
+                }}
+              ></OrderItem>
+            );
           }}
         />
       </LinearGradient>

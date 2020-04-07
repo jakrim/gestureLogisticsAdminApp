@@ -23,7 +23,6 @@ const OrderItem = props => {
   const B = props => (
     <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
   );
-  // console.log('props.schedule', props.schedule);
 
   return (
     <Card style={styles.product}>
@@ -42,12 +41,17 @@ const OrderItem = props => {
               {props.schedule ? (
                 <Text style={styles.scheduled}>
                   Time:{' '}
-                  <Text style={{ fontFamily: 'dm-sans-regular' }}>
+                  <Text
+                    style={{
+                      fontFamily: 'dm-sans-regular',
+                      color: Colors.delayRed
+                    }}
+                  >
                     {MillisToDate(props.schedule)}
                   </Text>
                 </Text>
               ) : (
-                <Text style={styles.scheduled}>On Demand</Text>
+                <Text style={styles.onDemand}>On Demand</Text>
               )}
             </View>
             {/* <View style={styles.actions}>{props.children}</View> */}
@@ -96,11 +100,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.primaryColor
   },
-  scheduled: {
+  onDemand: {
     paddingTop: 5,
     fontFamily: 'dm-sans-bold',
     fontSize: 15,
     color: Colors.primaryColor
+  },
+  scheduled: {
+    paddingTop: 5,
+    fontFamily: 'dm-sans-bold',
+    fontSize: 15,
+    color: Colors.delayRed
   },
   orderDetails2: {
     paddingHorizontal: 10,

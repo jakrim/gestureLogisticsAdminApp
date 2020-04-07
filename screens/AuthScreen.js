@@ -66,6 +66,8 @@ const AuthScreen = props => {
   const [error, setError] = useState();
   const [formHasSubmitted, setFormHasSubmitted] = useState(false);
   const dispatch = useDispatch();
+  // const message = useSelector(state => state.auth.message);
+  // console.log('message', message);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -137,6 +139,7 @@ const AuthScreen = props => {
           <View style={styles.image}>
             <Image source={require('../assets/logo.png')} />
           </View>
+          {/* {message ? <Text>This email is unauthorized</Text> : <></>} */}
           <Card style={styles.authContainer}>
             <ScrollView keyboardShouldPersistTaps='always'>
               <Input

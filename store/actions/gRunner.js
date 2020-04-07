@@ -48,11 +48,11 @@ export const fetchGrunner = uid => {
   return async dispatch => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_grunner?uid=${uid}`
+        `https://us-central1-gesture-dev.cloudfunctions.net/logGRunnerInfo?courierId=${uid}`
       );
 
       if (!response.ok) {
-        throw new Error('Something went wrong in fetching gRunners!');
+        throw new Error('Something went wrong in fetching gRunner!');
       }
 
       const resData = await response.json();

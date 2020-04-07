@@ -42,6 +42,7 @@ export default function App() {
       />
     );
   }
+  console.ignoredYellowBox = ['Warning: Each'];
 
   return (
     <Provider store={store}>

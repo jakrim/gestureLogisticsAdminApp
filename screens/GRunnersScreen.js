@@ -38,9 +38,12 @@ const GRunnersScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', loadGrunners);
+    let mount = true;
+    if (mount) {
+      navigation.addListener('focus', loadGrunners);
+    }
 
-    return () => unsubscribe();
+    return () => (mount = false);
   }, [navigation, loadGrunners, setIsLoading]);
 
   useEffect(() => {
@@ -110,9 +113,8 @@ const GRunnersScreen = props => {
         initialNumToRender={10}
         refreshing={isRefreshing}
         data={gRunners}
-        keyExtractor={gRunner => gRunner.public_courier_id}
+        keyExtractor={gRunner => gRunner.uid}
         renderItem={itemData => {
-          // console.log('itemData.item', itemData);
           return (
             <GrunnerItem
               uid={itemData.item.uid}

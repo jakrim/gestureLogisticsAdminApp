@@ -136,7 +136,7 @@ const GRunnerDetailsScreen = props => {
                   fontSize: 18
                 }}
               >
-                {gRunner.currentStatus} NOT HERE
+                {gRunner.currentStatus}
               </Text>
             </View>
           ) : (
@@ -150,7 +150,7 @@ const GRunnerDetailsScreen = props => {
                   fontSize: 18
                 }}
               >
-                {gRunner.currentStatus} HERE
+                {gRunner.currentStatus}
               </Text>
             </View>
           )}
@@ -184,7 +184,7 @@ const GRunnerDetailsScreen = props => {
             )}
           </View>
           <Text style={styles.description}>
-            <B style={{ color: 'black', fontSize: 14 }}>CID: </B>
+            <B style={{ color: 'black', fontSize: 14 }}>Courier id: </B>
             {gRunner.publicCourierId}
           </Text>
           <View style={styles.buttonContainer}>
