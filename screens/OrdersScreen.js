@@ -146,7 +146,7 @@ const OrdersScreen = props => {
             if (!itemData.item.schedule) {
               return (
                 <OrderItem
-                  order_Id={itemData.item.orderID}
+                  order_ID={itemData.item.order_ID}
                   product_name={itemData.item.product_name}
                   address_string={itemData.item.address_string}
                   time_order_placed={itemData.item.time_order_placed}
@@ -163,7 +163,7 @@ const OrdersScreen = props => {
             } else {
               return (
                 <OrderItem
-                  order_Id={itemData.item.orderID}
+                  order_ID={itemData.item.order_ID}
                   product_name={itemData.item.product_name}
                   address_string={itemData.item.address_string}
                   time_order_placed={itemData.item.time_order_placed}

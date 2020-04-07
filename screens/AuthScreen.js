@@ -8,11 +8,12 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
   StyleSheet,
   Image
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
 import Input from '../components/Input';
@@ -121,8 +122,8 @@ const AuthScreen = props => {
   return (
     <KeyboardAvoidingView
       style={styles.screen}
-      keyboardVerticalOffset={50}
-      behavior='padding'
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      keyboardVerticalOffset={Platform.select({ ios: 0, android: 50 })}
     >
       <TouchableWithoutFeedback
         onPress={() => {

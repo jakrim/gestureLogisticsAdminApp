@@ -20,6 +20,9 @@ export const fetchOrders = () => {
       const orders = resData.data;
       // console.log('fetchOrders -> orders', resData.data);
 
+      // console.log('fetchOrders -> orders', orders[7]);
+      // console.log('orders.schedule in ACTION', orders[7].schedule);
+      // console.log('fetchOrders -> time_order_placed', orders[7].time_order_placed);
       if (!orders.schedule) {
         for (const key in orders) {
           loadedOrders.push(
@@ -29,7 +32,7 @@ export const fetchOrders = () => {
               orders[key].address_string_2,
               orders[key].category_name,
               orders[key].delivery_note,
-              orders[key].orderId,
+              orders[key].orderID,
               orders[key].os,
               orders[key].product_name,
               orders[key].recipient_email,
@@ -52,7 +55,7 @@ export const fetchOrders = () => {
               orders[key].address_string_2,
               orders[key].category_name,
               orders[key].delivery_note,
-              orders[key].orderId,
+              orders[key].orderID,
               orders[key].os,
               orders[key].product_name,
               orders[key].recipient_email,

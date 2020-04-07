@@ -123,24 +123,24 @@ const StyledModal = props => {
               />
               <Text style={styles.modalText}>Filter Data:</Text>
 
-              <ScrollView horizontal={false}>
-                <FilterSwitch
-                  label='Cities'
-                  state={isZone}
-                  onChange={() => setIsZone(!isZone)}
-                />
-                {isZone ? <CitySelector /> : <></>}
-                <FilterSwitch
-                  label='Scheduled'
-                  state={isScheduled}
-                  onChange={newValue => setIsScheduled(newValue)}
-                />
-                <FilterSwitch
-                  label='On Demand'
-                  state={isOnDemand}
-                  onChange={newValue => setIsOnDemand(newValue)}
-                />
-              </ScrollView>
+              {/* <ScrollView style={{ maxWidth: 500 }} horizontal='false'> */}
+              <FilterSwitch
+                label='Cities'
+                state={isZone}
+                onChange={() => setIsZone(!isZone)}
+              />
+              {isZone ? <CitySelector /> : <></>}
+              <FilterSwitch
+                label='Scheduled'
+                state={isScheduled}
+                onChange={newValue => setIsScheduled(newValue)}
+              />
+              <FilterSwitch
+                label='On Demand'
+                state={isOnDemand}
+                onChange={newValue => setIsOnDemand(newValue)}
+              />
+              {/* </ScrollView> */}
               <View style={styles.buttonContainer}>
                 <StyledButton
                   style={{ backgroundColor: Colors.accentColor }}

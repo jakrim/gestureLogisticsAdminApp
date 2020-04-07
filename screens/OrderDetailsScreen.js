@@ -34,8 +34,6 @@ const OrderDetailsScreen = props => {
     TouchableComp = TouchableNativeFeedback;
   }
 
-  console.log('selectedOrder.schedule', selectedOrder.schedule);
-
   return (
     <LinearGradient
       colors={[Colors.primaryColor, Colors.lightTeal]}
@@ -245,7 +243,7 @@ const OrderDetailsScreen = props => {
 
           <View style={styles.orderDetailsContainer}>
             <Text style={styles.recipientRow}>
-              Order ID: {selectedOrder.orderId}
+              Order ID: {selectedOrder.order_ID}
             </Text>
             <Text style={styles.recipientRow}>
               Order Placed: {MillisToDate(selectedOrder.time_order_placed)}

@@ -66,10 +66,9 @@ export const signin = (email, password) => {
 export const authenticate = () => {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
-    console.log('authenticate -> userId', userId);
 
     const response = await fetch(
-      `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=42142y814y8921942891`,
+      `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=${userId}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -79,13 +78,14 @@ export const authenticate = () => {
       }
     );
 
-    //! CHECK MESSAGE IN RESULT.DATA
-
     const resData = await response.json();
 
     const resMessage = resData.result.data.message;
-
-    dispatch({ type: AUTHENTICATE, message: resMessage });
+    if (resMessage === 'Authenticated') {
+      dispatch({ type: AUTHENTICATE, message: resMessage });
+    } else {
+      dispatch({ type: LOGOUT });
+    }
   };
 };
 

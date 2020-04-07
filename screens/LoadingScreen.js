@@ -16,16 +16,14 @@ const LoadingScreen = props => {
   useEffect(() => {
     try {
       setIsLoading(true);
-      dispatch(authActions.authenticate());
       setTimeout(() => {
-        props.navigation.navigate('OrderStack');
+        dispatch(authActions.authenticate());
       }, 1000);
     } catch (err) {
-      setError(message);
       setTimeout(() => {
-        props.navigation.navigate('Login');
+        setError(message);
+        setIsLoading(false);
       }, 1000);
-      setIsLoading(false);
     }
   });
 
