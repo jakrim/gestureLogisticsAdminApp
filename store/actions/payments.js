@@ -2,8 +2,9 @@ import { Payment } from '../../models/Payment';
 
 export const SET_PAYMENTS = 'SET_PAYMENTS';
 
-export const fetchPayments = uid => {
-  return async dispatch => {
+export const fetchPayments = (uid) => {
+  console.log('fetchPayments -> uid', uid);
+  return async (dispatch) => {
     try {
       const response = await fetch(
         `https://us-central1-gesture-dev.cloudfunctions.net/paymentHistoryLogistics?uid=${uid}`
@@ -14,9 +15,11 @@ export const fetchPayments = uid => {
       }
 
       const resData = await response.json();
+      console.log('resData', resData);
 
       const loadPayments = [];
       const payments = resData.result.data;
+      console.log('fetchPayments -> payments', payments);
 
       for (const key in payments) {
         loadPayments.push(
@@ -34,7 +37,7 @@ export const fetchPayments = uid => {
 
       dispatch({
         type: SET_PAYMENTS,
-        payments: loadPayments
+        payments: loadPayments,
       });
     } catch (err) {
       console.log('ERROR IN FETCHING PAYMENTS', err);

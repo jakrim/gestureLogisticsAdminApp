@@ -1,16 +1,16 @@
-// import {SET_ZONES} from '../actions/zones'
+import { FETCH_ZONES } from '../actions/zones';
 
 const initialState = {
   cities: [],
-  zones: []
+  zones: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_ZONES:
+    case FETCH_ZONES:
       return {
         cities: action.cities,
-        zones: action.zones
+        zones: action.zones,
       };
     default:
       return state;

@@ -14,14 +14,14 @@ export const setDidTryAL = () => {
 };
 
 export const signedIn = (userId, token, expiryTime) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(setLogoutTimer(expiryTime));
     dispatch({ type: SIGNEDIN, userId, token });
   };
 };
 
 export const signin = (email, password) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const response = await fetch(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${Keys.apiKey}`,
       {
@@ -30,15 +30,14 @@ export const signin = (email, password) => {
         body: JSON.stringify({
           email,
           password,
-          returnSecureToken: true
-        })
+          returnSecureToken: true,
+        }),
       }
     );
 
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      console.log('signin -> errorId', errorId);
       let message = 'Something went wrong!';
       if (errorId === 'EMAIL_NOT_FOUND') {
         message = 'Your email is unauthorized to use this app!';
@@ -74,7 +73,7 @@ export const authenticate = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           // userId
-        })
+        }),
       }
     );
 
@@ -101,8 +100,8 @@ const clearLogoutTimer = () => {
   }
 };
 
-const setLogoutTimer = expirationTime => {
-  return dispatch => {
+const setLogoutTimer = (expirationTime) => {
+  return (dispatch) => {
     timer = setTimeout(() => {
       dispatch(logout());
     }, expirationTime);
@@ -115,7 +114,7 @@ const saveDataToStorage = (token, userId, expirationDate) => {
     JSON.stringify({
       token,
       userId,
-      expiryDate: expirationDate.toISOString()
+      expiryDate: expirationDate.toISOString(),
     })
   );
 };

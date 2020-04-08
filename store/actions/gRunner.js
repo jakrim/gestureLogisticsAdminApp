@@ -4,7 +4,7 @@ export const SET_GRUNNERS = 'SET_GRUNNERS';
 export const SET_GRUNNER = 'SET_GRUNNER';
 
 export const fetchGrunners = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
         'https://us-central1-gesture-dev.cloudfunctions.net/logisticsGRunners'
@@ -36,7 +36,7 @@ export const fetchGrunners = () => {
 
       dispatch({
         type: SET_GRUNNERS,
-        gRunners: loadGrunners
+        gRunners: loadGrunners,
       });
     } catch (err) {
       console.log('ERROR IN FETCHING GRUNNERS', err);
@@ -44,8 +44,8 @@ export const fetchGrunners = () => {
   };
 };
 
-export const fetchGrunner = uid => {
-  return async dispatch => {
+export const fetchGrunner = (uid) => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
         `https://us-central1-gesture-dev.cloudfunctions.net/logGRunnerInfo?courierId=${uid}`
@@ -61,7 +61,7 @@ export const fetchGrunner = uid => {
 
       dispatch({
         type: SET_GRUNNER,
-        gRunner: gRunner
+        gRunner: gRunner,
       });
     } catch (err) {
       console.log('ERROR IN FETCHING GRUNNER!', err);

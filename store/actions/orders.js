@@ -4,7 +4,7 @@ export const SET_ORDERS = 'SET_ORDERS';
 export const SET_ORDER = 'SET_ORDER';
 
 export const fetchOrders = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
         'https://us-central1-gesture-dev.cloudfunctions.net/logPendingOrders'
@@ -45,7 +45,7 @@ export const fetchOrders = () => {
 
       dispatch({
         type: SET_ORDERS,
-        orders: loadedOrders
+        orders: loadedOrders,
       });
     } catch (err) {
       console.log('ERROR IN FETCHING ORDERS', err);
@@ -53,11 +53,11 @@ export const fetchOrders = () => {
   };
 };
 
-export const fetchOrder = orderId => {
-  return async dispatch => {
+export const fetchOrder = (orderId) => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logisticsOrder?uid=1234324&orderId=${orderId}`
+        `https://us-central1-gesture-dev.cloudfunctions.net/logisticsOrder?orderId=${orderId}`
       );
 
       const resData = await response.json();
@@ -91,7 +91,7 @@ export const fetchOrder = orderId => {
 
       dispatch({
         type: SET_ORDER,
-        order: order
+        order: order,
       });
     } catch (err) {
       console.log('ERROR in fetching order', err);
@@ -99,6 +99,6 @@ export const fetchOrder = orderId => {
   };
 };
 
-export const setFilters = filterSettings => {
+export const setFilters = (filterSettings) => {
   return { type: SET_FILTERS, filters: filterSettings };
 };

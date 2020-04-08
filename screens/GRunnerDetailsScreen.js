@@ -9,7 +9,7 @@ import {
   Dimensions,
   Linking,
   Platform,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,18 +21,19 @@ import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import StyledButton from '../components/StyledButton';
 
-const B = props => (
+const B = (props) => (
   <Text {...props} style={{ fontFamily: 'dm-sans-bold', ...props.style }}>
     {props.children}
   </Text>
 );
 
-const GRunnerDetailsScreen = props => {
+const GRunnerDetailsScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
-  const gRunner = useSelector(state => state.gRunners.gRunner);
+  const gRunner = useSelector((state) => state.gRunners.gRunner);
+  console.log('GRunnerDetailsScreen -> gRunner.courierId', gRunner.courierId);
 
   const { route, navigation } = props;
   const uid = route.params.uid;
@@ -60,7 +61,7 @@ const GRunnerDetailsScreen = props => {
       .then(() => {
         setIsLoading(false);
       })
-      .catch(err => console.log(`ERR in GDetailsScreen`, err));
+      .catch((err) => console.log(`Error in GDetailsScreen`, err));
   }, [dispatch, loadGrunner, setIsLoading]);
 
   if (error) {
@@ -73,7 +74,7 @@ const GRunnerDetailsScreen = props => {
           <Text
             style={{
               fontSize: 20,
-              color: Colors.darkPurp
+              color: Colors.darkPurp,
             }}
           >
             An error occurred!
@@ -105,9 +106,9 @@ const GRunnerDetailsScreen = props => {
     );
   }
 
-  const selectItemHandler = uid => {
+  const selectItemHandler = (courierId) => {
     navigation.navigate('PaymentHistoryScreen', {
-      uid
+      courierId,
     });
   };
 
@@ -133,7 +134,7 @@ const GRunnerDetailsScreen = props => {
                   textAlign: 'center',
                   fontFamily: 'dm-sans-boldItalic',
                   paddingTop: 4,
-                  fontSize: 18
+                  fontSize: 18,
                 }}
               >
                 {gRunner.currentStatus}
@@ -147,7 +148,7 @@ const GRunnerDetailsScreen = props => {
                   textAlign: 'center',
                   fontFamily: 'dm-sans-bold',
                   paddingTop: 4,
-                  fontSize: 18
+                  fontSize: 18,
                 }}
               >
                 {gRunner.currentStatus}
@@ -158,7 +159,7 @@ const GRunnerDetailsScreen = props => {
             style={{
               flexDirection: 'row',
               paddingLeft: 10,
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             {gRunner.isLock ? (
@@ -191,7 +192,7 @@ const GRunnerDetailsScreen = props => {
             <StyledButton
               style={styles.button}
               onPress={() => {
-                selectItemHandler(gRunner.publicCourierId);
+                selectItemHandler(gRunner.courierId);
               }}
             >
               Payment History
@@ -209,15 +210,15 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   },
   card: {
     flex: 1,
     padding: 10,
-    width: 350
+    width: 350,
   },
   imageContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     width: Dimensions.get('window').width * 0.7,
@@ -227,38 +228,38 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: 'black',
     overflow: 'hidden',
-    marginVertical: 10
+    marginVertical: 10,
   },
   gRunnerName: {
     textAlign: 'center',
     fontFamily: 'dm-sans-regular',
     fontSize: 20,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   status: {
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   isLock: {
     fontSize: 18,
     fontFamily: 'dm-sans-regular',
-    padding: 10
+    padding: 10,
   },
   description: {
     fontFamily: 'dm-sans-regular',
     paddingTop: 5,
     fontSize: 18,
     marginHorizontal: 10,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   buttonContainer: {
-    paddingVertical: 100
+    paddingVertical: 100,
   },
   button: {
     //
-  }
+  },
 });
 
 export default GRunnerDetailsScreen;
