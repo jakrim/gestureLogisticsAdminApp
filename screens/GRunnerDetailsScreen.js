@@ -5,9 +5,7 @@ import {
   View,
   Button,
   Image,
-  TouchableOpacity,
   Dimensions,
-  Linking,
   Platform,
   StyleSheet,
 } from 'react-native';
@@ -33,7 +31,6 @@ const GRunnerDetailsScreen = (props) => {
   const dispatch = useDispatch();
 
   const gRunner = useSelector((state) => state.gRunners.gRunner);
-  console.log('GRunnerDetailsScreen -> gRunner.courierId', gRunner.courierId);
 
   const { route, navigation } = props;
   const uid = route.params.uid;
@@ -50,9 +47,12 @@ const GRunnerDetailsScreen = (props) => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', loadGrunner);
+    let mount = true;
+    if (mount) {
+      navigation.addListener('focus', loadGrunner);
+    }
 
-    return () => unsubscribe();
+    return () => (mount = false);
   }, [navigation, loadGrunner]);
 
   useEffect(() => {
@@ -125,7 +125,10 @@ const GRunnerDetailsScreen = (props) => {
               source={{ uri: gRunner.profileImageUrl }}
             />
           </View>
-          <Text style={styles.gRunnerName}>{gRunner.full_name}</Text>
+          {/* <Text style={styles.gRunnerName}>
+            {capitalizeLetter(gRunner.firstName)}{' '}
+            {capitalizeLetter(gRunner.lastName)}
+          </Text> */}
           {gRunner.currentStatus === 'online' ? (
             <View style={styles.status}>
               <Text
@@ -202,6 +205,18 @@ const GRunnerDetailsScreen = (props) => {
       </Card>
     </LinearGradient>
   );
+};
+
+export const gRunnerScreenDetails = (navData) => {
+  const routeParams = navData.route.params ? navData.route.params : {};
+  return {
+    headerTitle: routeParams.name ? routeParams.name : 'G-Runner',
+    headerTintColor: Colors.primaryColor,
+    headerTitleStyle: {
+      fontSize: 20,
+      fontFamily: 'dm-sans-bold',
+    },
+  };
 };
 
 const styles = StyleSheet.create({

@@ -8,7 +8,7 @@ import {
   TouchableNativeFeedback,
   Linking,
   Platform,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,14 +18,14 @@ import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import makeCall from '../components/PhoneCall';
 import sendEmail from '../components/Email';
-import MillisToDate from '../components/MillisToDate';
+import { MillisToDate } from '../components/HelperFunctions';
 import StyledButton from '../components/StyledButton';
 
-const OrderDetailsScreen = props => {
+const OrderDetailsScreen = (props) => {
   const { route } = props;
   const order_ID = route.params.order_ID;
-  const selectedOrder = useSelector(state =>
-    state.orders.orders.find(order => order.order_ID === order_ID)
+  const selectedOrder = useSelector((state) =>
+    state.orders.orders.find((order) => order.order_ID === order_ID)
   );
 
   let TouchableComp = TouchableOpacity;
@@ -47,7 +47,7 @@ const OrderDetailsScreen = props => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignItems: 'baseline'
+                alignItems: 'baseline',
               }}
             >
               <Text style={styles.textHeader}>Delivery Item</Text>
@@ -90,7 +90,7 @@ const OrderDetailsScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'  '}
@@ -149,7 +149,7 @@ const OrderDetailsScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'   '}
@@ -167,7 +167,7 @@ const OrderDetailsScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'  '}
@@ -188,7 +188,7 @@ const OrderDetailsScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'  '}
@@ -245,13 +245,16 @@ const OrderDetailsScreen = props => {
 
           <View style={styles.orderDetailsContainer}>
             <Text style={styles.recipientRow}>
-              Order ID: {selectedOrder.order_ID}
-            </Text>
-            <Text style={styles.recipientRow}>
               Order Placed: {MillisToDate(selectedOrder.time_order_placed)}
             </Text>
+            <Text style={styles.recipientRow}>
+              Order ID: {selectedOrder.order_ID}
+            </Text>
           </View>
-          <StyledButton style={styles.button}>DELAY</StyledButton>
+          <StyledButton style={styles.button1}>DELAY</StyledButton>
+          <StyledButton style={styles.button2}>
+            Connect to G-Runner
+          </StyledButton>
         </ScrollView>
       </Card>
     </LinearGradient>
@@ -264,61 +267,66 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   },
   card: {
     flex: 2,
     padding: 10,
-    width: 350
+    width: 350,
   },
   touchableButton: {
     padding: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   textHeader: {
     paddingBottom: 8,
     fontFamily: 'dm-sans-bold',
-    fontSize: 24
+    fontSize: 24,
   },
   productContainer: {
     paddingTop: 10,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   product: {
     fontSize: 18,
     color: Colors.primaryColor,
     paddingTop: 10,
-    fontFamily: 'dm-sans-regular'
+    fontFamily: 'dm-sans-regular',
   },
   scheduledTime: {
     fontFamily: 'dm-sans-bold',
     color: 'red',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingBottom: 15,
   },
   accent: {
     fontFamily: 'dm-sans-bold',
-    color: Colors.darkPurp
+    color: Colors.darkPurp,
   },
   recipientContainer: {
     padding: 5,
     paddingHorizontal: 10,
-    alignItems: 'baseline'
+    alignItems: 'baseline',
   },
   recipientRow: {
     flexDirection: 'row',
     fontFamily: 'dm-sans-regular',
     fontSize: 18,
     paddingBottom: 4,
-    color: Colors.darkPurp
+    color: Colors.darkPurp,
   },
   orderDetailsContainer: {
     padding: 10,
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
-  button: {
-    backgroundColor: Colors.delayRed
-  }
+  button1: {
+    backgroundColor: Colors.delayRed,
+    marginVertical: 20,
+  },
+  button2: {
+    backgroundColor: Colors.accentColor,
+  },
 });
 
 export default OrderDetailsScreen;

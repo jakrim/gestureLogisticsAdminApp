@@ -1,70 +1,32 @@
 import React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  SafeAreaView,
-  Linking,
-  Text,
-  Button,
-  Modal,
-  View
-} from 'react-native';
+import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import {
   createDrawerNavigator,
-  DrawerContentScrollView,
   DrawerItemList,
-  DrawerItem
 } from '@react-navigation/drawer';
-
-import LogoTitle from '../components/LogoTitle';
-import StyledModal from '../components/StyledModal';
 
 import AuthScreen from '../screens/AuthScreen';
 import LoadingScreen from '../screens/LoadingScreen';
-import OrdersScreen from '../screens/OrdersScreen';
+import OrdersScreen, {
+  ordersScreenHeaderOptions,
+} from '../screens/OrdersScreen';
 import OrderDetailsScreen from '../screens/OrderDetailsScreen';
-import GRunnersScreen from '../screens/GRunnersScreen';
-import GRunnerScreen from '../screens/GRunnerDetailsScreen';
+import GRunnersScreen, {
+  gRunnersScreenHeaderOptions,
+} from '../screens/GRunnersScreen';
+import GRunnerScreen, {
+  gRunnerScreenDetails,
+} from '../screens/GRunnerDetailsScreen';
 import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
 import PaymentOrderScreen from '../screens/PaymentOrderScreen';
 import Colors from '../constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import * as authActions from '../store/actions/auth';
 import { LogoComponent, LogoutComponent } from './DrawerComponents';
 
 const AuthStack = createStackNavigator();
 const OrderStack = createStackNavigator();
 const GRunnerStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
-const headerOptions = props => {
-  return {
-    headerTitle: props => <LogoTitle {...props} />,
-    headerLeft: () => (
-      <Ionicons
-        style={styles.headerButtonLeft}
-        name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-        color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
-        size={25}
-        onPress={() => {
-          props.navigation.toggleDrawer();
-        }}
-      />
-    ),
-    headerRight: () => <StyledModal style={styles.modalButton} />,
-    headerStyle: {
-      backgroundColor:
-        Platform.OS === 'android' ? Colors.primaryColor : 'white',
-      shadowColor: 'transparent',
-      elevation: 0
-    },
-    // headerTitleAlign: 'center',
-    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor
-  };
-};
 
 export const AuthNavigator = () => (
   <AuthStack.Navigator
@@ -73,14 +35,14 @@ export const AuthNavigator = () => (
         backgroundColor: Colors.primaryColor,
         shadowColor: 'transparent',
         elevation: 0,
-        height: 100
+        height: 100,
       },
       headerTitleAlign: 'center',
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontSize: 25,
-        fontFamily: 'dm-sans-bold'
-      }
+        fontFamily: 'dm-sans-bold',
+      },
     }}
   >
     <AuthStack.Screen
@@ -92,7 +54,7 @@ export const AuthNavigator = () => (
       name='LoadingScreen'
       component={LoadingScreen}
       options={{
-        headerShown: false
+        headerShown: false,
       }}
     />
   </AuthStack.Navigator>
@@ -103,7 +65,7 @@ const OrderNavigator = ({ navigation }) => (
     <OrderStack.Screen
       name='Orders'
       component={OrdersScreen}
-      options={headerOptions}
+      options={ordersScreenHeaderOptions}
     />
     <OrderStack.Screen
       name='OrderDetailsScreen'
@@ -118,12 +80,12 @@ export const GRunnerNavigator = ({ navigation }) => (
     <GRunnerStack.Screen
       name='GRunners'
       component={GRunnersScreen}
-      options={headerOptions}
+      options={gRunnersScreenHeaderOptions}
     />
     <GRunnerStack.Screen
       name='GRunner'
       component={GRunnerScreen}
-      options={{ headerTitle: 'GRunner' }}
+      options={gRunnerScreenDetails}
     />
     <GRunnerStack.Screen
       name='PaymentHistoryScreen'
@@ -140,9 +102,9 @@ export const GRunnerNavigator = ({ navigation }) => (
 
 export const GestureNavigator = () => (
   <Drawer.Navigator
-    drawerContent={props => (
+    drawerContent={(props) => (
       <View style={{ flex: 1, paddingTop: 60 }}>
-        <LogoComponent {...props} />
+        <LogoComponent {...props} style={{ paddingBottom: 50 }} />
         <DrawerItemList {...props} />
         <LogoutComponent {...props} />
       </View>
@@ -154,23 +116,11 @@ export const GestureNavigator = () => (
       itemStyle: { paddingVertical: 10 },
       labelStyle: {
         fontSize: 18,
-        fontFamily: 'dm-sans-boldItalic'
-      }
+        fontFamily: 'dm-sans-boldItalic',
+      },
     }}
   >
-    <Drawer.Screen name='OrderStack' component={OrderNavigator} />
-    <Drawer.Screen name='GRunnerStack' component={GRunnerNavigator} />
+    <Drawer.Screen name='Orders' component={OrderNavigator} />
+    <Drawer.Screen name='G-Runners' component={GRunnerNavigator} />
   </Drawer.Navigator>
 );
-
-const styles = StyleSheet.create({
-  headerButtonLeft: {
-    paddingLeft: 15
-  },
-  headerButtonRight: {
-    paddingRight: 15
-  },
-  modalButton: {
-    paddingRight: 15
-  }
-});

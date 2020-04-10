@@ -2,6 +2,8 @@ import { Order } from '../../models/Order';
 
 export const SET_ORDERS = 'SET_ORDERS';
 export const SET_ORDER = 'SET_ORDER';
+export const SET_FILTERS = 'SET_FILTERS';
+export const FETCH_ZONES = 'FETCH_ZONES';
 
 export const fetchOrders = () => {
   return async (dispatch) => {
@@ -48,7 +50,7 @@ export const fetchOrders = () => {
         orders: loadedOrders,
       });
     } catch (err) {
-      console.log('ERROR IN FETCHING ORDERS', err);
+      console.log('ERROR in fetching orders', err);
     }
   };
 };
@@ -101,4 +103,27 @@ export const fetchOrder = (orderId) => {
 
 export const setFilters = (filterSettings) => {
   return { type: SET_FILTERS, filters: filterSettings };
+};
+
+export const fetchZones = () => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        'https://us-central1-gesture-dev.cloudfunctions.net/logistics_zones'
+      );
+
+      if (!response.ok) {
+        throw new Error('Something went wrong in fetching zones!');
+      }
+
+      const resData = await response.json();
+
+      const cities = resData.result.data.cities.split(',');
+      const zones = resData.result.data.city_zones;
+
+      dispatch({ type: FETCH_ZONES, zones: zones, cities: cities });
+    } catch (err) {
+      console.log('Error in fetching zones!', err);
+    }
+  };
 };

@@ -6,21 +6,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import Card from './Card';
 import Colors from '../constants/Colors';
 
-const GRunnerItem = props => {
+const GRunnerItem = (props) => {
   let TouchableComp = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableComp = TouchableNativeFeedback;
   }
 
-  const B = props => (
+  const B = (props) => (
     <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
   );
 
@@ -48,7 +48,7 @@ const GRunnerItem = props => {
                 <Text
                   style={{
                     ...styles.gRunnerDetails,
-                    color: Colors.accentColor
+                    color: Colors.accentColor,
                   }}
                 >
                   {props.current_status}
@@ -120,44 +120,45 @@ const GRunnerItem = props => {
 
 const styles = StyleSheet.create({
   card: {
-    height: 190,
+    // height: 190,
     width: 320,
     margin: 15,
-    backgroundColor: Colors.backgroundFeed
+    backgroundColor: Colors.backgroundFeed,
   },
   touchable: {
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   gRunnerDetailsContainer: {
     padding: 10,
-    backgroundColor: Colors.backgroundFeed
+    backgroundColor: Colors.backgroundFeed,
   },
   gRunnerName: {
     fontFamily: 'dm-sans-bold',
     fontSize: 18,
     paddingBottom: 5,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   gRunnerDetails: {
     fontFamily: 'dm-sans-regular',
     fontSize: 15,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   gRunnerDetails2: {
+    paddingBottom: 10,
     paddingHorizontal: 10,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   gRunnerDetails2Text: {
     fontFamily: 'dm-sans-regular',
     fontSize: 14,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
   // imageContainer: {
   //   width: '100%',
   //   height: '60%',

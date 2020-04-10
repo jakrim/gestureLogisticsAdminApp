@@ -11,32 +11,17 @@ import {
   TouchableOpacity,
   FlatList,
   TouchableNativeFeedback,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import { CommonActions } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import StyledButton from '../components/StyledButton';
-import Checkbox from '../components/Checkbox';
-import { setFilters } from '../store/actions/orders';
+import StyledButton from './StyledButton';
+import Checkbox from './Checkbox';
+import * as ordersActions from '../store/actions/orders';
 
-const zoneData = {
-  cities: 'Brooklyn,Manhattan,Los Angeles',
-  city_zones: {
-    Brooklyn: 'bk_1',
-    Manhattan: 'zone1,zone2,zone3,zone4,zone5,zone6,zone7,zone8',
-    'Los Angeles': 'la_1'
-  }
-};
-
-const convertZoneData = () => {
-  const cities = zoneData.cities.split(',');
-  return cities;
-};
-
-const FilterSwitch = props => {
+const FilterSwitch = (props) => {
   return (
     <View style={styles.filterContainer}>
       <Text>{props.label}</Text>
@@ -50,20 +35,29 @@ const FilterSwitch = props => {
   );
 };
 
-const CitySelector = props => {
-  const [check, setCheck] = useState(false);
-  // console.log('selected', selected);
+const CitySelector = (props) => {
+  const [citySelected, setCitySelected] = useState(false);
+  const dispatch = useDispatch();
   let TouchableComp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableComp = TouchableNativeFeedback;
   }
+  let cities = useSelector((state) => state.orders.cities);
+
+  useEffect(() => {
+    try {
+      dispatch(ordersActions.fetchZones());
+    } catch (err) {
+      console.log('error in fetching cities', err);
+    }
+  });
 
   return (
     <FlatList
-      keyExtractor={item => item}
-      data={convertZoneData()}
-      renderItem={itemdata => (
-        <TouchableComp>
+      keyExtractor={(item) => item}
+      data={cities}
+      renderItem={(itemdata) => (
+        <TouchableComp style={{ alignItems: 'center', padding: 2 }}>
           <Checkbox city={itemdata.item} />
         </TouchableComp>
       )}
@@ -71,9 +65,7 @@ const CitySelector = props => {
   );
 };
 
-const StyledModal = props => {
-  const [citySelected, setCitySelected] = useState(false);
-  const { navigation } = props;
+const OrdersModal = (props) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [isZone, setIsZone] = useState(false);
@@ -84,15 +76,11 @@ const StyledModal = props => {
     const appliedFilters = {
       zone: isZone,
       scheduled: isScheduled,
-      onDemand: isOnDemand
+      onDemand: isOnDemand,
     };
-
-    dispatch(setFilters(appliedFilters));
+    console.log(appliedFilters);
+    dispatch(ordersActions.setFilters(appliedFilters));
   }, [isZone, isScheduled, isOnDemand, dispatch]);
-
-  useEffect(() => {
-    CommonActions.setParams({ save: saveFilters });
-  }, [saveFilters]);
 
   return (
     <>
@@ -109,9 +97,9 @@ const StyledModal = props => {
           animationType='fade'
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            console.log('Closed');
-          }}
+          // onRequestClose={() => {
+          //   console.log('Closed');
+          // }}
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -123,7 +111,6 @@ const StyledModal = props => {
               />
               <Text style={styles.modalText}>Filter Data:</Text>
 
-              {/* <ScrollView style={{ maxWidth: 500 }} horizontal='false'> */}
               <FilterSwitch
                 label='Cities'
                 state={isZone}
@@ -133,18 +120,19 @@ const StyledModal = props => {
               <FilterSwitch
                 label='Scheduled'
                 state={isScheduled}
-                onChange={newValue => setIsScheduled(newValue)}
+                onChange={(newValue) => setIsScheduled(newValue)}
               />
               <FilterSwitch
                 label='On Demand'
                 state={isOnDemand}
-                onChange={newValue => setIsOnDemand(newValue)}
+                onChange={(newValue) => setIsOnDemand(newValue)}
               />
-              {/* </ScrollView> */}
-              <View style={styles.buttonContainer}>
+
+              <View>
                 <StyledButton
                   style={{ backgroundColor: Colors.accentColor }}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={saveFilters}
+                  // onPressIn={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={styles.textStyle}>Confirm Settings</Text>
                 </StyledButton>
@@ -160,46 +148,42 @@ const StyledModal = props => {
 const styles = StyleSheet.create({
   icon: {
     paddingRight: 15,
-    position: 'absolute'
+    position: 'absolute',
   },
   centeredView: {
     flex: 1,
     paddingTop: 120,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   modalView: {
-    width: 380,
-    height: 400,
+    width: 350,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 15,
+    paddingVertical: 15,
     alignItems: 'center',
     shadowColor: 'black',
     shadowOffset: {
       width: 4,
-      height: 8
+      height: 8,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 10
-  },
+  buttonContainer: {},
   modalText: {
     fontFamily: 'dm-sans-regular',
     fontSize: 24,
     marginBottom: 15,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   filterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '75%',
-    marginVertical: 15
-  }
+    marginVertical: 15,
+  },
 });
 
-export default StyledModal;
+export default OrdersModal;

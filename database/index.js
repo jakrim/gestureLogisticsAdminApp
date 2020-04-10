@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: 'gesture-dev',
   storageBucket: 'gesture-dev.appspot.com',
   messagingSenderId: '4334941903',
-  appId: '1:4334941903:web:f85f8d95e80905595d69ba'
+  appId: '1:4334941903:web:f85f8d95e80905595d69ba',
 };
 
 if (!firebase.apps.length) {

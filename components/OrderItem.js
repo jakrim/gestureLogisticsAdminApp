@@ -6,21 +6,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 
 import Card from './Card';
 import Colors from '../constants/Colors';
-import MillisToDate from './MillisToDate';
+import { MillisToDate } from './HelperFunctions';
 
-const OrderItem = props => {
+const OrderItem = (props) => {
   let TouchableComp = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableComp = TouchableNativeFeedback;
   }
 
-  const B = props => (
+  const B = (props) => (
     <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
   );
 
@@ -44,7 +44,7 @@ const OrderItem = props => {
                   <Text
                     style={{
                       fontFamily: 'dm-sans-regular',
-                      color: Colors.delayRed
+                      color: Colors.delayRed,
                     }}
                   >
                     {MillisToDate(props.schedule)}
@@ -77,58 +77,58 @@ const styles = StyleSheet.create({
     height: 170,
     width: 340,
     margin: 15,
-    backgroundColor: Colors.backgroundFeed
+    backgroundColor: Colors.backgroundFeed,
   },
   touchable: {
     borderRadius: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   orderDetails: {
     // alignItems: 'flex-start',
     // height: '17%',
     padding: 10,
-    backgroundColor: Colors.backgroundFeed
+    backgroundColor: Colors.backgroundFeed,
   },
   productName: {
     fontFamily: 'dm-sans-bold',
     fontSize: 18,
     paddingBottom: 5,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   address: {
     fontFamily: 'dm-sans-regular',
     fontSize: 14,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   onDemand: {
     paddingTop: 5,
     fontFamily: 'dm-sans-bold',
     fontSize: 15,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   scheduled: {
     paddingTop: 5,
     fontFamily: 'dm-sans-bold',
     fontSize: 15,
-    color: Colors.delayRed
+    color: Colors.delayRed,
   },
   orderDetails2: {
     paddingHorizontal: 10,
     paddingVertical: 10,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   orderDetails2Text: {
     fontFamily: 'dm-sans-regular',
     fontSize: 14,
-    color: Colors.primaryColor
+    color: Colors.primaryColor,
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
     // height: '23%',
     // paddingHorizontal: 20
-  }
+  },
   // imageContainer: {
   //   width: '100%',
   //   height: '60%',

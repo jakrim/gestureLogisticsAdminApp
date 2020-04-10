@@ -58,6 +58,7 @@ export const fetchGrunner = (uid) => {
       const resData = await response.json();
 
       const gRunner = resData.result.data;
+      console.log('fetchGrunner -> gRunner', gRunner);
 
       dispatch({
         type: SET_GRUNNER,

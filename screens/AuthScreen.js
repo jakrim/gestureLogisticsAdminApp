@@ -10,7 +10,7 @@ import {
   Keyboard,
   Platform,
   StyleSheet,
-  Image
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,24 +25,24 @@ const FORM_INPUT_UPDATE = 'FORM_UPDATE';
 const initialState = {
   inputValues: {
     email: '',
-    password: ''
+    password: '',
   },
   inputValidities: {
     email: false,
-    password: false
+    password: false,
   },
-  formIsValid: false
+  formIsValid: false,
 };
 
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
       ...state.inputValues,
-      [action.input]: action.value
+      [action.input]: action.value,
     };
     const updatedValidities = {
       ...state.inputValidities,
-      [action.input]: action.isValid
+      [action.input]: action.isValid,
     };
     let updatedFormIsValid = true;
     for (const key in updatedValidities) {
@@ -51,7 +51,7 @@ const formReducer = (state, action) => {
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
-      inputValues: updatedValues
+      inputValues: updatedValues,
     };
   }
   return state;
@@ -61,24 +61,22 @@ const resetInputs = () => {
   formState = initialState;
 };
 
-const AuthScreen = props => {
+const AuthScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [formHasSubmitted, setFormHasSubmitted] = useState(false);
   const dispatch = useDispatch();
-  // const message = useSelector(state => state.auth.message);
-  // console.log('message', message);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: '',
-      password: ''
+      password: '',
     },
     inputValidities: {
       email: false,
-      password: false
+      password: false,
     },
-    formIsValid: false
+    formIsValid: false,
   });
 
   useEffect(() => {
@@ -115,7 +113,7 @@ const AuthScreen = props => {
         type: FORM_INPUT_UPDATE,
         value: inputValue,
         isValid: inputValidity,
-        input: inputIdentifier
+        input: inputIdentifier,
       });
     },
     [dispatchFormState]
@@ -168,7 +166,7 @@ const AuthScreen = props => {
                 errorText='Please enter a valid password.'
                 onInputChange={inputChangeHandler}
                 keyboardShouldPersistTaps='handled'
-                inputRef={ref => (password = ref)}
+                inputRef={(ref) => (password = ref)}
                 initalValue=''
                 formHasSubmitted={formHasSubmitted}
               />
@@ -195,13 +193,13 @@ const AuthScreen = props => {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
+    flex: 1,
   },
   gradient: {
     flex: 1,
     paddingVertical: 50,
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     paddingVertical: 30,
@@ -210,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     maxWidth: 90,
-    maxHeight: 90
+    maxHeight: 90,
   },
   authContainer: {
     justifyContent: 'flex-start',
@@ -218,11 +216,11 @@ const styles = StyleSheet.create({
     width: '80%',
     maxWidth: 400,
     maxHeight: 400,
-    padding: 20
+    padding: 20,
   },
   buttonContainer: {
-    marginTop: 15
-  }
+    marginTop: 15,
+  },
 });
 
 export default AuthScreen;

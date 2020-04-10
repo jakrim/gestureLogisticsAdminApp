@@ -8,7 +8,7 @@ import {
   TouchableNativeFeedback,
   Linking,
   Platform,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BallIndicator } from 'react-native-indicators';
@@ -20,10 +20,10 @@ import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import makeCall from '../components/PhoneCall';
 import sendEmail from '../components/Email';
-import MillisToDate from '../components/MillisToDate';
+import { MillisToDate } from '../components/HelperFunctions';
 import StyledButton from '../components/StyledButton';
 
-const PaymentOrderScreen = props => {
+const PaymentOrderScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -36,8 +36,7 @@ const PaymentOrderScreen = props => {
     TouchableComp = TouchableNativeFeedback;
   }
 
-  const order = useSelector(state => state.orders.order);
-
+  const order = useSelector((state) => state.orders.order);
   const orderId = route.params.orderId;
 
   const loadOrder = useCallback(async () => {
@@ -46,16 +45,19 @@ const PaymentOrderScreen = props => {
     try {
       await dispatch(orderActions.fetchOrder(orderId));
     } catch (err) {
-      setError('HERES ERRPR <ESSAGE', err.message);
+      setError('Error in Payment Order Screen', err.message);
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', loadOrder);
+    let mount = true;
+    if (mount) {
+      navigation.addListener('focus', loadOrder);
+    }
 
-    return () => unsubscribe();
-  }, [navigation, loadOrder, setIsLoading]);
+    return () => (mount = false);
+  }, [navigation, loadOrder]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -74,7 +76,7 @@ const PaymentOrderScreen = props => {
           <Text
             style={{
               fontSize: 20,
-              color: Colors.darkPurp
+              color: Colors.darkPurp,
             }}
           >
             An error occurred!
@@ -119,7 +121,7 @@ const PaymentOrderScreen = props => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignItems: 'baseline'
+                alignItems: 'baseline',
               }}
             >
               <Text style={styles.textHeader}>Delivery Item</Text>
@@ -160,7 +162,7 @@ const PaymentOrderScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'  '}
@@ -219,7 +221,7 @@ const PaymentOrderScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'   '}
@@ -236,7 +238,7 @@ const PaymentOrderScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'  '}
@@ -257,7 +259,7 @@ const PaymentOrderScreen = props => {
               />
               <Text
                 style={{
-                  color: Colors.primaryColor
+                  color: Colors.primaryColor,
                 }}
               >
                 {'  '}
@@ -331,61 +333,61 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   },
   card: {
     flex: 2,
     padding: 10,
-    width: 350
+    width: 350,
   },
   touchableButton: {
     padding: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   textHeader: {
     paddingBottom: 8,
     fontFamily: 'dm-sans-bold',
-    fontSize: 24
+    fontSize: 24,
   },
   productContainer: {
     paddingTop: 10,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   product: {
     fontSize: 18,
     color: Colors.primaryColor,
     paddingTop: 10,
-    fontFamily: 'dm-sans-regular'
+    fontFamily: 'dm-sans-regular',
   },
   scheduledTime: {
     fontFamily: 'dm-sans-bold',
     color: 'red',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   accent: {
     fontFamily: 'dm-sans-bold',
-    color: Colors.darkPurp
+    color: Colors.darkPurp,
   },
   recipientContainer: {
     padding: 5,
     paddingHorizontal: 10,
-    alignItems: 'baseline'
+    alignItems: 'baseline',
   },
   recipientRow: {
     flexDirection: 'row',
     fontFamily: 'dm-sans-regular',
     fontSize: 18,
     paddingBottom: 4,
-    color: Colors.darkPurp
+    color: Colors.darkPurp,
   },
   orderDetailsContainer: {
     padding: 10,
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   button: {
-    backgroundColor: Colors.delayRed
-  }
+    backgroundColor: Colors.delayRed,
+  },
 });
 
 export default PaymentOrderScreen;

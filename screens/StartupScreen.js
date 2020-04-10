@@ -3,14 +3,14 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import * as authActions from '../store/actions/auth';
 import Colors from '../constants/Colors';
 
-const StartupScreen = props => {
+const StartupScreen = (props) => {
   const { navigation } = props;
   const dispatch = useDispatch();
 
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default StartupScreen;

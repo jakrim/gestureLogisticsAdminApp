@@ -1,19 +1,10 @@
 export class Payment {
-  constructor(
-    uid,
-    payment,
-    bonus,
-    tips,
-    orderId,
-    delivery_completed_note,
-    delivery_compeleted_time
-  ) {
-    this.uid = uid;
+  constructor(payment, bonus, tips, orderId, total_time, completed_date_ms) {
     this.payment = payment;
     this.bonus = bonus;
     this.tips = tips;
     this.orderId = orderId;
-    this.delivery_completed_note = delivery_completed_note;
-    this.delivery_compeleted_time = delivery_compeleted_time;
+    this.total_time = total_time;
+    this.completed_date_ms = completed_date_ms;
   }
 }

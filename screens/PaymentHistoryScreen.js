@@ -8,13 +8,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as paymentActions from '../store/actions/payments';
 import PaymentItem from '../components/PaymentItem';
 
-const PaymentHistoryScreen = props => {
+const PaymentHistoryScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
-  const payments = useSelector(state => state.payments.payments);
+  const payments = useSelector((state) => state.payments.payments);
 
   const { navigation, route } = props;
   const uid = route.params.uid;
@@ -31,9 +31,12 @@ const PaymentHistoryScreen = props => {
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', loadPayments);
+    let mount = true;
+    if (mount) {
+      navigation.addListener('focus', loadPayments);
+    }
 
-    return () => unsubscribe();
+    return () => (mount = false);
   }, [navigation, loadPayments, setIsLoading]);
 
   useEffect(() => {
@@ -53,7 +56,7 @@ const PaymentHistoryScreen = props => {
           <Text
             style={{
               fontSize: 20,
-              color: Colors.darkPurp
+              color: Colors.darkPurp,
             }}
           >
             An error occurred!
@@ -85,9 +88,9 @@ const PaymentHistoryScreen = props => {
     );
   }
 
-  const selectItemHandler = orderId => {
+  const selectItemHandler = (orderId) => {
     navigation.navigate('PaymentOrderScreen', {
-      orderId
+      orderId,
     });
   };
 
@@ -102,16 +105,15 @@ const PaymentHistoryScreen = props => {
         onRefresh={loadPayments}
         refreshing={isRefreshing}
         data={payments}
-        keyExtractor={item => `${item.uid}`}
-        renderItem={itemData => (
+        keyExtractor={(item) => `${item.orderId}`}
+        renderItem={(itemData) => (
           <PaymentItem
-            uid={itemData.item.uid}
             payment={itemData.item.payment}
             bonus={itemData.item.bonus}
             tip={itemData.item.tips}
             orderId={itemData.item.orderId}
-            delivery_completed_note={itemData.item.delivery_completed_note}
-            delivery_compeleted_time={itemData.item.delivery_compeleted_time}
+            total_time={itemData.item.total_time}
+            completed_date_ms={itemData.item.completed_date_ms}
             onSelect={() => {
               selectItemHandler(itemData.item.orderId);
             }}
@@ -128,12 +130,12 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   },
   text: {
     fontSize: 30,
-    paddingVertical: 80
-  }
+    paddingVertical: 80,
+  },
 });
 
 export default PaymentHistoryScreen;

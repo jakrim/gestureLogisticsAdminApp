@@ -3,11 +3,10 @@ import { Payment } from '../../models/Payment';
 export const SET_PAYMENTS = 'SET_PAYMENTS';
 
 export const fetchPayments = (uid) => {
-  console.log('fetchPayments -> uid', uid);
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/paymentHistoryLogistics?uid=${uid}`
+        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_payment_history?uid=${uid}`
       );
 
       if (!response.ok) {
@@ -15,22 +14,19 @@ export const fetchPayments = (uid) => {
       }
 
       const resData = await response.json();
-      console.log('resData', resData);
 
       const loadPayments = [];
       const payments = resData.result.data;
-      console.log('fetchPayments -> payments', payments);
 
       for (const key in payments) {
         loadPayments.push(
           new Payment(
-            payments[key].uid,
             payments[key].payment,
             payments[key].bonus,
             payments[key].tips,
             payments[key].orderId,
-            payments[key].delivery_completed_note,
-            payments[key].delivery_compeleted_time
+            payments[key].total_time,
+            payments[key].completed_date_ms
           )
         );
       }

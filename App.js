@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   orders: ordersReducer,
   gRunners: gRunnerReducer,
-  payments: paymentsReducer
+  payments: paymentsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -26,7 +26,7 @@ const fetchFonts = () => {
     'dm-sans-boldItalic': require('./assets/fonts/DMSans-BoldItalic.ttf'),
     'dm-sans-medium': require('./assets/fonts/DMSans-Medium.ttf'),
     'dm-sans-regular': require('./assets/fonts/DMSans-Regular.ttf'),
-    'dm-sans-regularItalic': require('./assets/fonts/DMSans-RegularItalic.ttf')
+    'dm-sans-regularItalic': require('./assets/fonts/DMSans-RegularItalic.ttf'),
   });
 };
 
@@ -38,11 +38,10 @@ export default function App() {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setFontLoaded(true)}
-        onError={err => console.log('Error in Loading Fonts', err)}
+        onError={(err) => console.log('Error in Loading Fonts', err)}
       />
     );
   }
-  console.ignoredYellowBox = ['Warning: Each'];
 
   return (
     <Provider store={store}>
