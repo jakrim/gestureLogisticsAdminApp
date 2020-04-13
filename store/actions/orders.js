@@ -5,7 +5,7 @@ export const SET_ORDER = 'SET_ORDER';
 export const SET_FILTERS = 'SET_FILTERS';
 export const FETCH_ZONES = 'FETCH_ZONES';
 
-export const fetchOrders = () => {
+export const fetchOrders = (filters) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -48,11 +48,16 @@ export const fetchOrders = () => {
       dispatch({
         type: SET_ORDERS,
         orders: loadedOrders,
+        filters: filters,
       });
     } catch (err) {
       console.log('ERROR in fetching orders', err);
     }
   };
+};
+
+export const setFilters = (filterSettings) => {
+  return { type: SET_FILTERS, filters: filterSettings };
 };
 
 export const fetchOrder = (orderId) => {
@@ -99,10 +104,6 @@ export const fetchOrder = (orderId) => {
       console.log('ERROR in fetching order', err);
     }
   };
-};
-
-export const setFilters = (filterSettings) => {
-  return { type: SET_FILTERS, filters: filterSettings };
 };
 
 export const fetchZones = () => {

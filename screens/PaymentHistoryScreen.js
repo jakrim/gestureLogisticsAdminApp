@@ -108,6 +108,7 @@ const PaymentHistoryScreen = (props) => {
         keyExtractor={(item) => `${item.orderId}`}
         renderItem={(itemData) => (
           <PaymentItem
+            product_name={itemData.item.product_name}
             payment={itemData.item.payment}
             bonus={itemData.item.bonus}
             tip={itemData.item.tips}

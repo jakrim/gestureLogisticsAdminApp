@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  useMemo,
+} from 'react';
 import {
   Text,
   View,
@@ -19,6 +25,7 @@ import StyledButton from '../components/StyledButton';
 import * as ordersActions from '../store/actions/orders';
 import OrderItem from '../components/OrderItem';
 import Colors from '../constants/Colors';
+import { FiltersContext } from '../components/FiltersContext';
 
 const OrdersScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +33,7 @@ const OrdersScreen = (props) => {
   const [error, setError] = useState();
   const orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
+  const { filters, setFilters } = useContext(FiltersContext);
 
   const { navigation } = props;
 
@@ -34,7 +42,8 @@ const OrdersScreen = (props) => {
     setIsLoading(true);
     setIsRefreshing(true);
     try {
-      await dispatch(ordersActions.fetchOrders());
+      // await dispatch(ordersActions.setFilters(filters));
+      await dispatch(ordersActions.fetchOrders(filters));
     } catch (err) {
       setError(err.message);
     }
@@ -57,6 +66,10 @@ const OrdersScreen = (props) => {
       setIsLoading(false);
     });
   }, [dispatch, loadOrders]);
+
+  // const memoOrders = useMemo(() => {
+  //   return loadOrders()
+  // }, [loadOrders])
 
   if (error) {
     return (

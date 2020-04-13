@@ -21,6 +21,7 @@ export const fetchPayments = (uid) => {
       for (const key in payments) {
         loadPayments.push(
           new Payment(
+            payments[key].product_name,
             payments[key].payment,
             payments[key].bonus,
             payments[key].tips,

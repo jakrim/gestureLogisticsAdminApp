@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   Modal,
   View,
@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import StyledButton from './StyledButton';
 import Checkbox from './Checkbox';
 import * as ordersActions from '../store/actions/orders';
+import { FiltersContext } from '../components/FiltersContext';
 
 const FilterSwitch = (props) => {
   return (
@@ -72,14 +73,19 @@ const OrdersModal = (props) => {
   const [isScheduled, setIsScheduled] = useState(false);
   const [isOnDemand, setIsOnDemand] = useState(false);
 
+  const { filters, setFilters } = useContext(FiltersContext);
+
   const saveFilters = useCallback(() => {
     const appliedFilters = {
       zone: isZone,
       scheduled: isScheduled,
       onDemand: isOnDemand,
     };
-    console.log(appliedFilters);
-    dispatch(ordersActions.setFilters(appliedFilters));
+    console.log('appliedFilters in Modal', appliedFilters);
+    setFilters(appliedFilters);
+    // dispatch(ordersActions.setFilters(appliedFilters));
+    dispatch(ordersActions.fetchOrders(appliedFilters));
+    setModalVisible(!modalVisible);
   }, [isZone, isScheduled, isOnDemand, dispatch]);
 
   return (
@@ -132,7 +138,6 @@ const OrdersModal = (props) => {
                 <StyledButton
                   style={{ backgroundColor: Colors.accentColor }}
                   onPress={saveFilters}
-                  // onPressIn={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={styles.textStyle}>Confirm Settings</Text>
                 </StyledButton>

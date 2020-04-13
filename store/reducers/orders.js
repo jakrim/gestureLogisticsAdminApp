@@ -8,18 +8,47 @@ import {
 const initialState = {
   orders: [],
   filteredOrders: [],
+  filters: [],
   order: [],
   cities: [],
   zones: [],
 };
 
+//Can we refactor which orders are passed to orders based on filters set - can it be one function and not two?
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDERS:
-      return {
-        ...state,
-        orders: action.orders,
-      };
+      const appliedFilters = action.filters;
+      console.log('appliedFilters in Reducer', appliedFilters);
+      if (
+        appliedFilters === undefined ||
+        (appliedFilters.onDemand === false &&
+          appliedFilters.scheduled === false &&
+          appliedFilters.zone === false)
+      ) {
+        return {
+          ...state,
+          orders: action.orders,
+        };
+      } else {
+        const filteredOrders = action.orders.filter((order) => {
+          if (appliedFilters.scheduled && order.scheduled != null) {
+            return false;
+          }
+          if (appliedFilters.onDemand && order.scheduled == {}) {
+            return false;
+          }
+          return true;
+        });
+        // console.log('filteredOrders', filteredOrders);
+
+        return {
+          ...state,
+          orders: filteredOrders,
+        };
+      }
+    // case SET_ORDERS:
     case SET_ORDER:
       return {
         ...state,
@@ -32,20 +61,20 @@ export default (state = initialState, action) => {
         zones: action.zones,
       };
     case SET_FILTERS:
-      const appliedFilters = action.filters;
-      const updatedFilteredOrders = state.orders.filter((order) => {
-        if (appliedFilters.scheduled && order.scheduled != null) {
-          return false;
-        }
-        if (appliedFilters.onDemand && order.scheduled == typeof {}) {
-          return false;
-        }
-        return true;
-      });
-      // console.log('updatedFilteredOrders', updatedFilteredOrders);
+      //   const appliedFilters = action.filters;
+      //   const updatedFilteredOrders = state.orders.filter((order) => {
+      //     if (appliedFilters.scheduled && order.scheduled != null) {
+      //       return false;
+      //     }
+      //     if (appliedFilters.onDemand && order.scheduled == typeof {}) {
+      //       return false;
+      //     }
+      //     return true;
+      //   });
+      //   // console.log('updatedFilteredOrders', updatedFilteredOrders);
       return {
         ...state,
-        filteredOrders: updatedFilteredOrders,
+        filters: action.filters,
       };
     default:
       return state;

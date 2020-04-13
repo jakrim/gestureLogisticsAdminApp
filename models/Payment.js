@@ -1,5 +1,14 @@
 export class Payment {
-  constructor(payment, bonus, tips, orderId, total_time, completed_date_ms) {
+  constructor(
+    product_name,
+    payment,
+    bonus,
+    tips,
+    orderId,
+    total_time,
+    completed_date_ms
+  ) {
+    this.product_name = product_name;
     this.payment = payment;
     this.bonus = bonus;
     this.tips = tips;

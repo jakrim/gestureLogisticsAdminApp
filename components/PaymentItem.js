@@ -43,6 +43,7 @@ const PaymentItem = (props) => {
         useForeground
       >
         <View>
+          <Text style={styles.productName}>{props.product_name}</Text>
           <Text style={styles.paymentText}>
             <B>Payment: </B> {props.payment}
           </Text>
@@ -78,6 +79,12 @@ const styles = StyleSheet.create({
     width: 320,
     margin: 15,
     backgroundColor: Colors.backgroundFeed,
+  },
+  productName: {
+    fontFamily: 'dm-sans-bold',
+    fontSize: 18,
+    paddingBottom: 5,
+    color: Colors.primaryColor,
   },
   touchable: {
     borderRadius: 10,
