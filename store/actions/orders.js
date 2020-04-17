@@ -45,6 +45,7 @@ export const fetchOrders = (filters) => {
         );
       }
 
+      console.log('fetchOrders -> filters', filters);
       dispatch({
         type: SET_ORDERS,
         orders: loadedOrders,

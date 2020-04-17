@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Text,
   View,
@@ -59,10 +59,9 @@ const GRunnersScreen = (props) => {
     });
   }, [dispatch, loadGrunners, setIsLoading]);
 
-  const selectItemHandler = (uid, name) => {
+  const selectItemHandler = (uid) => {
     navigation.navigate('GRunner', {
       uid,
-      name,
     });
   };
 
@@ -112,6 +111,7 @@ const GRunnersScreen = (props) => {
     );
   }
 
+  // useMemo(() => {
   return (
     <ErrorBoundary>
       <LinearGradient
@@ -137,27 +137,16 @@ const GRunnersScreen = (props) => {
                       ' ' +
                       capitalizeLetter(itemData.item.last_name)
                     : itemData.item.first_name
-                    ? itemData.item.first_name
+                    ? capitalizeLetter(itemData.item.first_name)
                     : itemData.item.last_name
-                    ? itemData.item.last_name
-                    : null
+                    ? capitalizeLetter(itemData.item.last_name)
+                    : ''
                 }
                 current_zone={itemData.item.current_zone}
                 current_status={itemData.item.current_status}
                 current_order={itemData.item.current_order}
                 onSelect={() => {
-                  selectItemHandler(
-                    itemData.item.uid,
-                    itemData.item.first_name && itemData.item.last_name
-                      ? capitalizeLetter(itemData.item.first_name) +
-                          ' ' +
-                          capitalizeLetter(itemData.item.last_name)
-                      : itemData.item.first_name
-                      ? itemData.item.first_name
-                      : itemData.item.last_name
-                      ? itemData.item.last_name
-                      : null
-                  );
+                  selectItemHandler(itemData.item.uid);
                 }}
               ></GrunnerItem>
             );
@@ -166,6 +155,7 @@ const GRunnersScreen = (props) => {
       </LinearGradient>
     </ErrorBoundary>
   );
+  // });
 };
 
 export const gRunnersScreenHeaderOptions = (props) => {

@@ -40,7 +40,7 @@ const OrderDetailsScreen = (props) => {
       style={styles.gradient}
     >
       <Card style={styles.card}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {/* BEGIN PRODUCT STYLES/VIEW */}
           <View style={styles.productContainer}>
             <View
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
     textAlign: 'center',
-    paddingBottom: 15,
+    paddingBottom: 10,
   },
   accent: {
     fontFamily: 'dm-sans-bold',
@@ -317,12 +317,13 @@ const styles = StyleSheet.create({
     color: Colors.darkPurp,
   },
   orderDetailsContainer: {
-    padding: 10,
+    paddingTop: 10,
+    paddingHorizontal: 10,
     alignItems: 'flex-start',
   },
   button1: {
     backgroundColor: Colors.delayRed,
-    marginVertical: 20,
+    marginVertical: 13,
   },
   button2: {
     backgroundColor: Colors.accentColor,

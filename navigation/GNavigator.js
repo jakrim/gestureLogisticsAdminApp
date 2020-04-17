@@ -15,9 +15,7 @@ import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 import GRunnersScreen, {
   gRunnersScreenHeaderOptions,
 } from '../screens/GRunnersScreen';
-import GRunnerScreen, {
-  gRunnerScreenDetails,
-} from '../screens/GRunnerDetailsScreen';
+import GRunnerScreen from '../screens/GRunnerDetailsScreen';
 import PaymentHistoryScreen from '../screens/PaymentHistoryScreen';
 import PaymentOrderScreen from '../screens/PaymentOrderScreen';
 import Colors from '../constants/Colors';
@@ -85,7 +83,7 @@ export const GRunnerNavigator = ({ navigation }) => (
     <GRunnerStack.Screen
       name='GRunner'
       component={GRunnerScreen}
-      options={gRunnerScreenDetails}
+      options={{ headerTitle: 'G Runner' }}
     />
     <GRunnerStack.Screen
       name='PaymentHistoryScreen'
@@ -121,6 +119,6 @@ export const GestureNavigator = () => (
     }}
   >
     <Drawer.Screen name='Orders' component={OrderNavigator} />
-    <Drawer.Screen name='G-Runners' component={GRunnerNavigator} />
+    <Drawer.Screen name='G Runners' component={GRunnerNavigator} />
   </Drawer.Navigator>
 );

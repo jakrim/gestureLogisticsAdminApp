@@ -18,6 +18,7 @@ import * as gRunnerActions from '../store/actions/gRunner';
 import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import StyledButton from '../components/StyledButton';
+import { capitalizeLetter } from '../components/HelperFunctions';
 
 const B = (props) => (
   <Text {...props} style={{ fontFamily: 'dm-sans-bold', ...props.style }}>
@@ -112,6 +113,11 @@ const GRunnerDetailsScreen = (props) => {
     });
   };
 
+  let full_name =
+    capitalizeLetter(gRunner.firstName) +
+    ' ' +
+    capitalizeLetter(gRunner.lastName);
+
   return (
     <LinearGradient
       colors={[Colors.primaryColor, Colors.lightTeal]}
@@ -125,10 +131,7 @@ const GRunnerDetailsScreen = (props) => {
               source={{ uri: gRunner.profileImageUrl }}
             />
           </View>
-          {/* <Text style={styles.gRunnerName}>
-            {capitalizeLetter(gRunner.firstName)}{' '}
-            {capitalizeLetter(gRunner.lastName)}
-          </Text> */}
+          <Text style={styles.gRunnerName}>{full_name}</Text>
           {gRunner.currentStatus === 'online' ? (
             <View style={styles.status}>
               <Text
@@ -205,18 +208,6 @@ const GRunnerDetailsScreen = (props) => {
       </Card>
     </LinearGradient>
   );
-};
-
-export const gRunnerScreenDetails = (navData) => {
-  const routeParams = navData.route.params ? navData.route.params : {};
-  return {
-    headerTitle: routeParams.name ? routeParams.name : 'G-Runner',
-    headerTintColor: Colors.primaryColor,
-    headerTitleStyle: {
-      fontSize: 20,
-      fontFamily: 'dm-sans-bold',
-    },
-  };
 };
 
 const styles = StyleSheet.create({

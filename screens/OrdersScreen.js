@@ -42,8 +42,8 @@ const OrdersScreen = (props) => {
     setIsLoading(true);
     setIsRefreshing(true);
     try {
-      // await dispatch(ordersActions.setFilters(filters));
       await dispatch(ordersActions.fetchOrders(filters));
+      await dispatch(ordersActions.fetchZones());
     } catch (err) {
       setError(err.message);
     }

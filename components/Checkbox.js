@@ -5,13 +5,14 @@ import {
   Text,
   StyleSheet,
   View,
-  Platform
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 
-export const Checkbox = props => {
+export const Checkbox = (props) => {
   const [selected, setSelected] = useState(false);
+  // const [cities, setCities] = useState([]);
 
   let TouchableComp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -21,7 +22,12 @@ export const Checkbox = props => {
   return (
     <TouchableComp
       style={styles.checkBox}
-      onPress={() => setSelected(!selected)}
+      onPress={() => {
+        setSelected(!selected);
+        if (!selected) {
+          props.getCities(props.city);
+        }
+      }}
     >
       <View style={styles.container}>
         <Text style={styles.textStyle}>{props.city}</Text>
@@ -46,28 +52,28 @@ export const Checkbox = props => {
 const styles = StyleSheet.create({
   checkBox: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   container: {
     width: '80%',
     flexDirection: 'row',
     padding: 5,
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   textStyle: {
     color: 'black',
     fontFamily: 'dm-sans-bold',
     textAlign: 'center',
-    fontSize: 18
+    fontSize: 18,
   },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '70%',
-    marginVertical: 5
-  }
+    marginVertical: 5,
+  },
 });
 
 export default Checkbox;

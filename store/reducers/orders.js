@@ -20,29 +20,22 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDERS:
       const appliedFilters = action.filters;
-      console.log('appliedFilters in Reducer', appliedFilters);
-      if (
-        appliedFilters === undefined ||
-        (appliedFilters.onDemand === false &&
-          appliedFilters.scheduled === false &&
-          appliedFilters.zone === false)
-      ) {
+      console.log('appliedFilters (REDUCER)', appliedFilters);
+      if (appliedFilters === undefined || appliedFilters === {}) {
         return {
           ...state,
           orders: action.orders,
         };
       } else {
         const filteredOrders = action.orders.filter((order) => {
-          if (appliedFilters.scheduled && order.scheduled != null) {
+          if (appliedFilters.filter === 'schedule' && order.schedule === null) {
             return false;
           }
-          if (appliedFilters.onDemand && order.scheduled == {}) {
+          if (appliedFilters.filter === 'onDemand' && order.schedule !== null) {
             return false;
           }
           return true;
         });
-        // console.log('filteredOrders', filteredOrders);
-
         return {
           ...state,
           orders: filteredOrders,

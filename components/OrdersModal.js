@@ -17,6 +17,7 @@ import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
+import MultiSwitch from '../components/MultiSwitch/index';
 import StyledButton from './StyledButton';
 import Checkbox from './Checkbox';
 import * as ordersActions from '../store/actions/orders';
@@ -44,22 +45,21 @@ const CitySelector = (props) => {
     TouchableComp = TouchableNativeFeedback;
   }
   let cities = useSelector((state) => state.orders.cities);
-
-  useEffect(() => {
-    try {
-      dispatch(ordersActions.fetchZones());
-    } catch (err) {
-      console.log('error in fetching cities', err);
-    }
-  });
+  // console.log('CitySelector -> citySelected', citySelected);
+  // let zones = useSelector((state) => state.orders.zones);
 
   return (
     <FlatList
       keyExtractor={(item) => item}
       data={cities}
       renderItem={(itemdata) => (
-        <TouchableComp style={{ alignItems: 'center', padding: 2 }}>
-          <Checkbox city={itemdata.item} />
+        <TouchableComp
+          style={{ alignItems: 'center', padding: 2 }}
+          onPress={() => {
+            // setCitySelected(itemData.item);
+          }}
+        >
+          <Checkbox getCities={props.getCities} city={itemdata.item} />
         </TouchableComp>
       )}
     />
@@ -70,23 +70,33 @@ const OrdersModal = (props) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [isZone, setIsZone] = useState(false);
-  const [isScheduled, setIsScheduled] = useState(false);
-  const [isOnDemand, setIsOnDemand] = useState(false);
+  const [filterOption, setFilterOption] = useState(false);
+  const [cities, setCities] = useState([]);
+  console.log('OrdersModal -> cities', cities);
 
   const { filters, setFilters } = useContext(FiltersContext);
 
   const saveFilters = useCallback(() => {
     const appliedFilters = {
       zone: isZone,
-      scheduled: isScheduled,
-      onDemand: isOnDemand,
+      cities: cities,
+      filter: filterOption,
     };
-    console.log('appliedFilters in Modal', appliedFilters);
-    setFilters(appliedFilters);
-    // dispatch(ordersActions.setFilters(appliedFilters));
+    // console.log('appliedFilters in Modal', appliedFilters);
+    dispatch(ordersActions.setFilters(appliedFilters));
     dispatch(ordersActions.fetchOrders(appliedFilters));
+    setFilters(appliedFilters);
     setModalVisible(!modalVisible);
-  }, [isZone, isScheduled, isOnDemand, dispatch]);
+  }, [isZone, filterOption, dispatch]);
+
+  const chosenCities = (selectedCity) => {
+    console.log('chosenCities -> selectedCities', selectedCity);
+    if (cities.includes(selectedCity)) {
+      return;
+    } else {
+      setCities([...cities, selectedCity]);
+    }
+  };
 
   return (
     <>
@@ -116,23 +126,24 @@ const OrdersModal = (props) => {
                 onPress={() => setModalVisible(!modalVisible)}
               />
               <Text style={styles.modalText}>Filter Data:</Text>
-
+              <MultiSwitch
+                currentStatus={'noFilter'}
+                disableScroll={(value) => {
+                  console.log('scrollEnabled', value);
+                }}
+                isParentScrollDisabled={false}
+                onStatusChanged={(filter) => {
+                  setFilterOption(filter);
+                  // console.log('Change Status ', filter);
+                }}
+                disableSwitch={false}
+              />
               <FilterSwitch
                 label='Cities'
                 state={isZone}
                 onChange={() => setIsZone(!isZone)}
               />
-              {isZone ? <CitySelector /> : <></>}
-              <FilterSwitch
-                label='Scheduled'
-                state={isScheduled}
-                onChange={(newValue) => setIsScheduled(newValue)}
-              />
-              <FilterSwitch
-                label='On Demand'
-                state={isOnDemand}
-                onChange={(newValue) => setIsOnDemand(newValue)}
-              />
+              {isZone ? <CitySelector getCities={chosenCities} /> : <></>}
 
               <View>
                 <StyledButton
@@ -161,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    width: 350,
+    width: 340,
     backgroundColor: 'white',
     borderRadius: 20,
     paddingVertical: 15,
