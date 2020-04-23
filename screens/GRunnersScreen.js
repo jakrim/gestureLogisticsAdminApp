@@ -1,15 +1,9 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import {
-  Text,
-  View,
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
+import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import LogoTitle from '../components/LogoTitle';
 import GRunnerModal from '../components/GRunnerModal';
@@ -32,13 +26,13 @@ const GRunnersScreen = (props) => {
 
   const loadGrunners = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    // setIsLoading(true);
     setIsRefreshing(true);
     try {
       await dispatch(gRunnerActions.fetchGrunners());
     } catch (err) {
       setError(err.message);
-      setIsLoading(false);
+      // setIsLoading(false);
     }
     setIsRefreshing(false);
   }, [dispatch, setIsLoading, setError]);
@@ -53,10 +47,14 @@ const GRunnersScreen = (props) => {
   }, [navigation, loadGrunners]);
 
   useEffect(() => {
-    setIsLoading(true);
-    loadGrunners().then(() => {
-      setIsLoading(false);
-    });
+    let effect = true;
+    if (effect) {
+      setIsLoading(true);
+      loadGrunners().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (effect = false);
   }, [dispatch, loadGrunners, setIsLoading]);
 
   const selectItemHandler = (uid) => {
@@ -118,7 +116,7 @@ const GRunnersScreen = (props) => {
         colors={[Colors.primaryColor, Colors.lightTeal]}
         style={styles.gradient}
       >
-        <FlatList
+        <OptimizedFlatList
           scrollIndicatorInsets={{ right: 1 }}
           showsVerticalScrollIndicator={false}
           onRefresh={loadGrunners}
@@ -137,10 +135,10 @@ const GRunnersScreen = (props) => {
                       ' ' +
                       capitalizeLetter(itemData.item.last_name)
                     : itemData.item.first_name
-                    ? capitalizeLetter(itemData.item.first_name)
+                    ? capitalizeLetter(itemData.item.first_name) + ' '
                     : itemData.item.last_name
                     ? capitalizeLetter(itemData.item.last_name)
-                    : ''
+                    : null
                 }
                 current_zone={itemData.item.current_zone}
                 current_status={itemData.item.current_status}

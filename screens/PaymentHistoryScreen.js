@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, Button, StyleSheet, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BallIndicator } from 'react-native-indicators';
+import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import Colors from '../constants/Colors';
 import { useSelector, useDispatch } from 'react-redux';
@@ -99,7 +100,7 @@ const PaymentHistoryScreen = (props) => {
       colors={[Colors.primaryColor, Colors.lightTeal]}
       style={styles.gradient}
     >
-      <FlatList
+      <OptimizedFlatList
         scrollIndicatorInsets={{ right: 1 }}
         showsVerticalScrollIndicator={false}
         onRefresh={loadPayments}

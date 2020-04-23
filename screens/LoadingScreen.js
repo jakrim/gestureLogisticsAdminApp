@@ -6,12 +6,12 @@ import { BallIndicator } from 'react-native-indicators';
 import { useSelector, useDispatch } from 'react-redux';
 import * as authActions from '../store/actions/auth';
 
-const LoadingScreen = props => {
+const LoadingScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
-  const message = useSelector(state => state.auth.message);
+  const message = useSelector((state) => state.auth.message);
 
   useEffect(() => {
     try {
@@ -23,7 +23,7 @@ const LoadingScreen = props => {
       setTimeout(() => {
         setError(message);
         setIsLoading(false);
-      }, 1000);
+      }, 500);
     }
   });
 
@@ -52,12 +52,12 @@ const styles = StyleSheet.create({
     paddingVertical: 370,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
     fontSize: 30,
-    paddingVertical: 80
-  }
+    paddingVertical: 80,
+  },
 });
 
 export default LoadingScreen;

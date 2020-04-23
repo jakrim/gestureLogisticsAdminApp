@@ -60,10 +60,14 @@ const PaymentOrderScreen = (props) => {
   }, [navigation, loadOrder]);
 
   useEffect(() => {
-    setIsLoading(true);
-    loadOrder().then(() => {
-      setIsLoading(false);
-    });
+    let effect = true;
+    if (effect) {
+      setIsLoading(true);
+      loadOrder().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (effect = false);
   }, [dispatch, loadOrder]);
 
   if (error) {

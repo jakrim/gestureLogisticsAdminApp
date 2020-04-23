@@ -27,5 +27,7 @@ export const MillisToTime = (milliseconds) => {
 };
 
 export const capitalizeLetter = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  if (string !== undefined) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 };

@@ -3,6 +3,8 @@ import {
   SET_ORDER,
   SET_FILTERS,
   FETCH_ZONES,
+  ADD_CITY,
+  REMOVE_CITY,
 } from '../actions/orders';
 
 const initialState = {
@@ -12,6 +14,7 @@ const initialState = {
   order: [],
   cities: [],
   zones: [],
+  selectedCities: [],
 };
 
 //Can we refactor which orders are passed to orders based on filters set - can it be one function and not two?
@@ -28,6 +31,8 @@ export default (state = initialState, action) => {
         };
       } else {
         const filteredOrders = action.orders.filter((order) => {
+          if (appliedFilters.cities && order.city) {
+          }
           if (appliedFilters.filter === 'schedule' && order.schedule === null) {
             return false;
           }
@@ -36,6 +41,7 @@ export default (state = initialState, action) => {
           }
           return true;
         });
+
         return {
           ...state,
           orders: filteredOrders,
@@ -53,6 +59,16 @@ export default (state = initialState, action) => {
         cities: action.cities,
         zones: action.zones,
       };
+    case ADD_CITY: {
+      console.log('selectedCities', selectedCities);
+      console.log('added City');
+      return [...state, action.payload.city];
+    }
+    case REMOVE_CITY: {
+      console.log('selectedCities', selectedCities);
+      console.log('deleted City');
+      return state.filter((city) => city !== action.payload);
+    }
     case SET_FILTERS:
       //   const appliedFilters = action.filters;
       //   const updatedFilteredOrders = state.orders.filter((order) => {

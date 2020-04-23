@@ -5,17 +5,11 @@ import React, {
   useContext,
   useMemo,
 } from 'react';
-import {
-  Text,
-  View,
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import { Text, View, Button, ScrollView, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
+import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import LogoTitle from '../components/LogoTitle';
 import OrdersModal from '../components/OrdersModal';
@@ -39,7 +33,7 @@ const OrdersScreen = (props) => {
 
   const loadOrders = useCallback(async () => {
     setError(null);
-    setIsLoading(true);
+    // setIsLoading(true);
     setIsRefreshing(true);
     try {
       await dispatch(ordersActions.fetchOrders(filters));
@@ -47,9 +41,9 @@ const OrdersScreen = (props) => {
     } catch (err) {
       setError(err.message);
     }
-    setIsLoading(false);
+    // setIsLoading(false);
     setIsRefreshing(false);
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch, setIsLoading, setIsRefreshing, setError]);
 
   useEffect(() => {
     let mount = true;
@@ -61,15 +55,19 @@ const OrdersScreen = (props) => {
   }, [navigation, loadOrders]);
 
   useEffect(() => {
-    setIsLoading(true);
-    loadOrders().then(() => {
-      setIsLoading(false);
-    });
+    let effect = true;
+    if (effect) {
+      setIsLoading(true);
+      loadOrders().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => (effect = false);
   }, [dispatch, loadOrders]);
 
   // const memoOrders = useMemo(() => {
-  //   return loadOrders()
-  // }, [loadOrders])
+  //   return loadOrders();
+  // }, [loadOrders]);
 
   if (error) {
     return (
@@ -157,11 +155,12 @@ const OrdersScreen = (props) => {
         colors={[Colors.primaryColor, Colors.lightTeal]}
         style={styles.gradient}
       >
-        <FlatList
+        <OptimizedFlatList
+          maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
           scrollIndicatorInsets={{ right: 1 }}
           onRefresh={loadOrders}
-          initialNumToRender={10}
+          initialNumToRender={7}
           refreshing={isRefreshing}
           data={orders}
           keyExtractor={(item) => item.order_ID.toString()}

@@ -4,6 +4,9 @@ export const SET_ORDERS = 'SET_ORDERS';
 export const SET_ORDER = 'SET_ORDER';
 export const SET_FILTERS = 'SET_FILTERS';
 export const FETCH_ZONES = 'FETCH_ZONES';
+export const ADD_CITY = 'ADD_CITY';
+export const REMOVE_CITY = 'REMOVE_CITY';
+export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 
 export const fetchOrders = (filters) => {
   return async (dispatch) => {
@@ -120,12 +123,28 @@ export const fetchZones = () => {
 
       const resData = await response.json();
 
+      // const indexedCities = [];
+
       const cities = resData.result.data.cities.split(',');
+      // for (let i = 0; i < cities.length; i++) {
+      //   indexedCities.push({
+      //     id: i,
+      //     city: cities[i],
+      //   });
+      // }
       const zones = resData.result.data.city_zones;
+      // console.log('fetchZones -> indexedCities', indexedCities);
 
       dispatch({ type: FETCH_ZONES, zones: zones, cities: cities });
     } catch (err) {
       console.log('Error in fetching zones!', err);
     }
   };
+};
+
+export const addCity = (selectedCity) => {
+  return { type: ADD_CITIES, city: action.city };
+};
+export const removeCity = (id) => {
+  return { type: REMOVE_CITY, id: action.id };
 };

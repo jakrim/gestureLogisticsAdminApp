@@ -88,6 +88,55 @@ export const authenticate = () => {
   };
 };
 
+// export const refreshData = (refreshToken) => {
+//   return async (dispatch) => {
+//     try {
+//       const response = await fetch(
+//         `https://securetoken.googleapis.com/v1/token?key=${Keys.apiKey}`,
+//         {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/x-www-form-urlencoded',
+//           },
+//           body: 'grant_type=refresh_token&refresh_token=' + refreshToken,
+//         }
+//       );
+
+//       if (!response.ok) {
+//         throw new Error('Error in fetching refresh token!');
+//       }
+//       const resData = await response.json();
+
+//       // NOTE!!! YOU HAVE TO USE id_token NOT idToken
+//       dispatch(
+//         authenticate(
+//           resData.id_token,
+//           resData.user_id,
+//           parseInt(resData.expires_in) * 1000
+//         )
+//       );
+//       // The first new Date converts the second's huge number of miliseconds in a concrete date.
+
+//       const expirationDate = new Date(
+//         new Date().getTime() + parseInt(resData.expires_in) * 1000
+//       );
+
+//       // Use this to test it
+//       //const expirationDate = new Date(new Date().getTime() + 20 * 1000);
+
+//       saveDataToStorage(
+//         resData.id_token,
+//         resData.user_id,
+//         expirationDate,
+//         resData.email,
+//         resData.refresh_token
+//       );
+//     } catch (error) {
+//       throw error;
+//     }
+//   };
+// };
+
 export const logout = () => {
   clearLogoutTimer();
   AsyncStorage.removeItem('userData');

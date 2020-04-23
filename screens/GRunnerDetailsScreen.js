@@ -37,13 +37,13 @@ const GRunnerDetailsScreen = (props) => {
   const uid = route.params.uid;
 
   const loadGrunner = useCallback(async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     setError(null);
     try {
       await dispatch(gRunnerActions.fetchGrunner(uid));
     } catch (err) {
       setError(err.message);
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }, [dispatch, setIsLoading, setError]);
 
@@ -57,12 +57,16 @@ const GRunnerDetailsScreen = (props) => {
   }, [navigation, loadGrunner]);
 
   useEffect(() => {
-    setIsLoading(true);
-    loadGrunner()
-      .then(() => {
-        setIsLoading(false);
-      })
-      .catch((err) => console.log(`Error in GDetailsScreen`, err));
+    let effect = true;
+    if (effect) {
+      setIsLoading(true);
+      loadGrunner()
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((err) => console.log(`Error in GDetailsScreen`, err));
+    }
+    return () => (effect = false);
   }, [dispatch, loadGrunner, setIsLoading]);
 
   if (error) {
