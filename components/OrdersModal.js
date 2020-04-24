@@ -1,114 +1,17 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  Switch,
-  Platform,
-  Button,
-  Alert,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  TouchableNativeFeedback,
-  ScrollView,
-} from 'react-native';
+import React, { useState, useCallback, useContext, useReducer } from 'react';
+import { Modal, View, Text, Platform, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { BallIndicator } from 'react-native-indicators';
 
 import ErrorBoundary from '../components/ErrorBoundary';
 import MultiSwitch from '../components/MultiSwitch/index';
 import StyledButton from './StyledButton';
-import Checkbox from './Checkbox';
+import CitySelector from './CitySelector';
+import FilterSwitch from './FilterSwitch';
 import * as ordersActions from '../store/actions/orders';
 import { FiltersContext } from '../components/FiltersContext';
-
-const FilterSwitch = (props) => {
-  return (
-    <View style={{ ...styles.filterContainer, ...props.style }}>
-      <View style={styles.textSwitch}>
-        <Text style={{ fontFamily: 'dm-sans-regularItalic' }} t>
-          {props.label}
-        </Text>
-        <Switch
-          trackColor={{ true: Colors.primaryColor }}
-          thumbColor={Platform.OS === 'android' ? Colors.primaryColor : ''}
-          value={props.state}
-          onValueChange={props.onChange}
-        />
-      </View>
-    </View>
-  );
-};
-
-const CitySelector = (props) => {
-  const [citySelected, setCitySelected] = useState(false);
-  //! When a new City is added to the citiesAPI -> MUST add the city as an object to the state below.
-  const [values, setValues] = useState({
-    listKeys: [
-      { key: 'Brooklyn', switch: false },
-      { key: 'Manhattan', switch: false },
-      { key: 'Los Angeles', switch: false },
-    ],
-  });
-  let cities = useSelector((state) => state.orders.cities);
-
-  const setSwitchValue = (val, index) => {
-    const tempData = values.listKeys;
-    tempData[index].switch = val;
-    setValues({ listKeys: tempData });
-    passSelectedCities(values.listKeys[index].key, index);
-  };
-
-  const passSelectedCities = (city, cityIndex) => {
-    if (values.listKeys[cityIndex].switch === false) {
-      let temp = [...props.selectedCities];
-      props.setSelectedCities(
-        temp.filter((city) => city !== values.listKeys[cityIndex].key)
-      );
-    }
-    if (values.listKeys[cityIndex].switch === true) {
-      if (props.selectedCities.includes(city)) {
-        return;
-      }
-      props.setSelectedCities((state) => [...state, city]);
-    }
-  };
-
-  let TouchableComp = TouchableOpacity;
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableComp = TouchableNativeFeedback;
-  }
-
-  return (
-    <FlatList
-      contentContainerStyle={{
-        width: '50%',
-        paddingVertical: 10,
-      }}
-      keyExtractor={(item) => item}
-      data={cities}
-      renderItem={({ item, index }) => {
-        return (
-          <TouchableComp
-            style={{
-              alignItems: 'flex-start',
-              fontFamily: 'dm-sans-italic',
-              padding: 2,
-            }}
-          >
-            <FilterSwitch
-              label={item}
-              state={values.listKeys[index].switch}
-              onChange={(value) => setSwitchValue(value, index)}
-            />
-          </TouchableComp>
-        );
-      }}
-    />
-  );
-};
 
 const OrdersModal = (props) => {
   const dispatch = useDispatch();
@@ -127,23 +30,31 @@ const OrdersModal = (props) => {
   };
 
   const saveFilters = useCallback(() => {
+    setIsLoading(true);
     const appliedFilters = {
       isCity: isCity,
       cities: selectedCities,
       filter: filterOption,
     };
+    try {
+      setFilterObj(appliedFilters);
+      dispatch(ordersActions.fetchOrders(filterObj));
+      setFilters(filterObj);
+      // setTimeout(() => {
+      setModalVisible(!modalVisible);
+      // console.log('HEREREERER');
+      // resetFilters(initialState);
+      // }, 2000);
+    } catch (err) {
+      console.log('Error in Orders Modal Try block');
+    }
 
-    setFilterObj(appliedFilters);
-    dispatch(ordersActions.fetchOrders(filterObj));
-    setFilters(filterObj);
-    setModalVisible(!modalVisible);
-
-    // resetFilters();
+    setIsLoading(false);
   }, [isCity, filterOption, filterObj, selectedCities, dispatch]);
 
-  const resetFilters = () => {
+  const resetFilters = (state) => {
     if (!modalVisible) {
-      setFilterObj(initialState);
+      setFilterObj(state);
     }
     console.log('OrdersModal -> filterObj', filterObj);
   };
@@ -204,7 +115,6 @@ const OrdersModal = (props) => {
                 <CitySelector
                   setSelectedCities={setSelectedCities}
                   selectedCities={selectedCities}
-                  // getSelectedCities={getSelectedCities}
                 />
               ) : (
                 <></>
@@ -256,18 +166,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 15,
     textAlign: 'center',
-  },
-  textSwitch: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingVertical: 10,
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    width: '100%',
   },
 });
 

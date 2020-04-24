@@ -43,12 +43,12 @@ export const fetchOrders = (filters) => {
             orders[key].sender_name,
             orders[key].sender_phone_number,
             orders[key].time_order_placed,
-            orders[key].zone
+            orders[key].zone,
+            orders[key].city
           )
         );
       }
 
-      console.log('fetchOrders -> filters', filters);
       dispatch({
         type: SET_ORDERS,
         orders: loadedOrders,

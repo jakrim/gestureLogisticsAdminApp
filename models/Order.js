@@ -16,7 +16,8 @@ export class Order {
     sender_name,
     sender_phone_number,
     time_order_placed,
-    zone
+    zone,
+    city
   ) {
     (this.address_coordinates = address_coordinates),
       (this.address_string = address_string),
@@ -34,7 +35,8 @@ export class Order {
       (this.sender_name = sender_name),
       (this.sender_phone_number = sender_phone_number),
       (this.time_order_placed = time_order_placed),
-      (this.zone = zone);
+      (this.zone = zone),
+      (this.city = city);
   }
 }
 

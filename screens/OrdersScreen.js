@@ -43,7 +43,7 @@ const OrdersScreen = (props) => {
     }
     // setIsLoading(false);
     setIsRefreshing(false);
-  }, [dispatch, setIsLoading, setIsRefreshing, setError]);
+  }, [dispatch, setIsLoading, filters, setIsRefreshing, setError]);
 
   useEffect(() => {
     let mount = true;
@@ -122,8 +122,11 @@ const OrdersScreen = (props) => {
         >
           <View style={styles.centered}>
             <Text style={styles.errorText}>
-              An error occurred in fetching orders! Please email
-              jesse@yourgesture.com or Slack Jesse Krim
+              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+                No Orders:
+              </Text>{' '}
+              {'\n'}
+              Check your filters and refresh the application.
             </Text>
 
             {!isLoading ? (
