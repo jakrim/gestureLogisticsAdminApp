@@ -4,9 +4,10 @@ export const SET_ORDERS = 'SET_ORDERS';
 export const SET_ORDER = 'SET_ORDER';
 export const SET_FILTERS = 'SET_FILTERS';
 export const FETCH_ZONES = 'FETCH_ZONES';
-export const ADD_CITY = 'ADD_CITY';
-export const REMOVE_CITY = 'REMOVE_CITY';
-export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
+export const RESET_FILTERS = 'RESET_FILTERS';
+// export const ADD_CITY = 'ADD_CITY';
+// export const REMOVE_CITY = 'REMOVE_CITY';
+// export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 
 export const fetchOrders = (filters) => {
   return async (dispatch) => {
@@ -142,9 +143,12 @@ export const fetchZones = () => {
   };
 };
 
-export const addCity = (selectedCity) => {
-  return { type: ADD_CITIES, city: action.city };
-};
-export const removeCity = (id) => {
-  return { type: REMOVE_CITY, id: action.id };
+// export const addCity = (selectedCity) => {
+//   return { type: ADD_CITIES, city: action.city };
+// };
+// export const removeCity = (id) => {
+//   return { type: REMOVE_CITY, id: action.id };
+// };
+export const resetFilters = () => {
+  return { type: RESET_FILTERS };
 };

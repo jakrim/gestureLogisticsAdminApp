@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useReducer } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { Modal, View, Text, Platform, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,28 +20,29 @@ const OrdersModal = (props) => {
   const [filterOption, setFilterOption] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
   console.log('OrdersModal -> selectedCities', selectedCities);
-  const [filterObj, setFilterObj] = useState(initialState);
-
+  // const [filterObj, setFilterObj] = useState(initialState);
   const { filters, setFilters } = useContext(FiltersContext);
-  const initialState = {
-    isCity: false,
-    cities: [],
-    filter: 'noFilter',
-  };
 
   const saveFilters = useCallback(() => {
-    setIsLoading(true);
+    const initialState = {
+      isCity: false,
+      cities: [],
+      filter: 'noFilter',
+    };
+    // setIsLoading(true);
     const appliedFilters = {
       isCity: isCity,
       cities: selectedCities,
       filter: filterOption,
     };
+
     try {
-      setFilterObj(appliedFilters);
-      dispatch(ordersActions.fetchOrders(filterObj));
-      setFilters(filterObj);
-      // setTimeout(() => {
       setModalVisible(!modalVisible);
+      // setFilterObj(appliedFilters);
+      dispatch(ordersActions.setFilters(appliedFilters));
+      setFilters(appliedFilters);
+      // dispatch(ordersActions.fetchOrders(appliedFilters));
+      // setTimeout(() => {
       // console.log('HEREREERER');
       // resetFilters(initialState);
       // }, 2000);
@@ -49,8 +50,8 @@ const OrdersModal = (props) => {
       console.log('Error in Orders Modal Try block');
     }
 
-    setIsLoading(false);
-  }, [isCity, filterOption, filterObj, selectedCities, dispatch]);
+    // setIsLoading(false);
+  }, [isCity, filterOption, selectedCities, dispatch]);
 
   const resetFilters = (state) => {
     if (!modalVisible) {
@@ -66,7 +67,7 @@ const OrdersModal = (props) => {
           name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
           color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
           size={25}
-          onPress={() => setModalVisible(true)}
+          onPress={() => setModalVisible(!modalVisible)}
         />
       </View>
       <View style={styles.centeredView}>
@@ -160,7 +161,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  buttonContainer: {},
   modalText: {
     fontFamily: 'dm-sans-regular',
     fontSize: 24,
@@ -170,12 +170,3 @@ const styles = StyleSheet.create({
 });
 
 export default OrdersModal;
-
-// filterContainer: {
-//   flexDirection: 'row',
-//   justifyContent: 'space-evenly',
-//   alignItems: 'center',
-//   paddingHorizontal: 160,
-//   width: '100%',
-//   marginVertical: 15,
-// },

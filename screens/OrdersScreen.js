@@ -37,13 +37,14 @@ const OrdersScreen = (props) => {
     setIsRefreshing(true);
     try {
       await dispatch(ordersActions.fetchOrders(filters));
-      await dispatch(ordersActions.fetchZones());
+      dispatch(ordersActions.fetchZones());
     } catch (err) {
       setError(err.message);
     }
+    dispatch(ordersActions.resetFilters());
     // setIsLoading(false);
     setIsRefreshing(false);
-  }, [dispatch, setIsLoading, filters, setIsRefreshing, setError]);
+  }, [dispatch, filters, setIsRefreshing, setError]);
 
   useEffect(() => {
     let mount = true;
