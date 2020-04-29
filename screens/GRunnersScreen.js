@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  useMemo,
+} from 'react';
 import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +18,7 @@ import * as gRunnerActions from '../store/actions/gRunner';
 import ErrorBoundary from '../components/ErrorBoundary';
 import GrunnerItem from '../components/GrunnerItem';
 import Colors from '../constants/Colors';
-
+import { GrunnerFiltersContext } from '../components/FiltersContext';
 import { capitalizeLetter } from '../components/HelperFunctions';
 
 const GRunnersScreen = (props) => {
@@ -22,6 +28,8 @@ const GRunnersScreen = (props) => {
   const dispatch = useDispatch();
   const gRunners = useSelector((state) => state.gRunners.gRunners);
 
+  const { gfilters, setGFilters } = useContext(GrunnerFiltersContext);
+
   const { navigation } = props;
 
   const loadGrunners = useCallback(async () => {
@@ -29,13 +37,14 @@ const GRunnersScreen = (props) => {
     // setIsLoading(true);
     setIsRefreshing(true);
     try {
-      await dispatch(gRunnerActions.fetchGrunners());
+      await dispatch(gRunnerActions.fetchGrunners(gfilters));
+      await dispatch(gRunnerActions.fetchZones());
     } catch (err) {
       setError(err.message);
       // setIsLoading(false);
     }
     setIsRefreshing(false);
-  }, [dispatch, setIsLoading, setError]);
+  }, [dispatch, gfilters, setIsRefreshing, setError]);
 
   useEffect(() => {
     let mount = true;
@@ -109,7 +118,27 @@ const GRunnersScreen = (props) => {
     );
   }
 
-  // useMemo(() => {
+  if (!isLoading && gRunners.length === 0) {
+    return (
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <Text style={styles.errorText}>
+              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+                No G Runners:
+              </Text>{' '}
+              {'\n'}
+              Check your filters on the top right!
+            </Text>
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
+    );
+  }
+
   return (
     <ErrorBoundary>
       <LinearGradient
@@ -193,6 +222,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  errorText: {
+    textAlign: 'center',
+    fontFamily: 'dm-sans-regular',
+    fontSize: 18,
+    color: Colors.backgroundFeed,
+    padding: 10,
   },
   headerButtonLeft: {
     paddingLeft: 15,

@@ -1,95 +1,66 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  Switch,
-  Platform,
-  Button,
-  Alert,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  TouchableNativeFeedback,
-  ScrollView,
-} from 'react-native';
+import React, { useState, useCallback, useContext } from 'react';
+import { Modal, View, Text, Platform, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
+import ErrorBoundary from '../components/ErrorBoundary';
+import GRunMultiSwitch from './GRunMultiSwitch/index';
 import StyledButton from './StyledButton';
-import Checkbox from './Checkbox';
-import * as ordersActions from '../store/actions/orders';
-
-const FilterSwitch = (props) => {
-  return (
-    <View style={styles.filterContainer}>
-      <Text>{props.label}</Text>
-      <Switch
-        trackColor={{ true: Colors.primaryColor }}
-        thumbColor={Platform.OS === 'android' ? Colors.primaryColor : ''}
-        value={props.state}
-        onValueChange={props.onChange}
-      />
-    </View>
-  );
-};
-
-const CitySelector = (props) => {
-  const [citySelected, setCitySelected] = useState(false);
-  const dispatch = useDispatch();
-  let TouchableComp = TouchableOpacity;
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableComp = TouchableNativeFeedback;
-  }
-  let cities = useSelector((state) => state.orders.cities);
-
-  useEffect(() => {
-    try {
-      dispatch(ordersActions.fetchZones());
-    } catch (err) {
-      console.log('error in fetching cities', err);
-    }
-  });
-
-  return (
-    <FlatList
-      keyExtractor={(item) => item}
-      data={cities}
-      renderItem={(itemdata) => (
-        <TouchableComp style={{ alignItems: 'center', padding: 2 }}>
-          <Checkbox city={itemdata.item} />
-        </TouchableComp>
-      )}
-    />
-  );
-};
+import CitySelector from './CitySelector';
+import FilterSwitch from './FilterSwitch';
+import { GrunnerFiltersContext } from '../components/FiltersContext';
 
 const OrdersModal = (props) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
-  const [isZone, setIsZone] = useState(false);
-  const [isScheduled, setIsScheduled] = useState(false);
-  const [isOnDemand, setIsOnDemand] = useState(false);
+  const [isCity, setIsCity] = useState(false);
+  const [hasCurrentOrder, setHasCurrentOrder] = useState(false);
+  const [filterOption, setFilterOption] = useState(false);
+  const [selectedCities, setSelectedCities] = useState([]);
+  const { gFilters, setGFilters } = useContext(GrunnerFiltersContext);
 
   const saveFilters = useCallback(() => {
-    const appliedFilters = {
-      zone: isZone,
-      scheduled: isScheduled,
-      onDemand: isOnDemand,
+    const initialState = {
+      hasOrder: 'false',
+      isCity: false,
+      cities: [],
+      filter: 'noFilter',
     };
-    console.log(appliedFilters);
-    dispatch(ordersActions.setFilters(appliedFilters));
-  }, [isZone, isScheduled, isOnDemand, dispatch]);
+    // setIsLoading(true);
+    const appliedFilters = {
+      hasCurrentOrder: hasCurrentOrder,
+      isCity: isCity,
+      cities: selectedCities,
+      filter: filterOption,
+    };
+    console.log('saveFilters -> appliedFilters', appliedFilters);
+
+    try {
+      setModalVisible(!modalVisible);
+      setGFilters(appliedFilters);
+    } catch (err) {
+      console.log('Error in G Runner Modal Try block');
+    }
+
+    // setIsLoading(false);
+  }, [isCity, filterOption, selectedCities, dispatch]);
+
+  const resetFilters = (state) => {
+    if (!modalVisible) {
+      setFilterObj(state);
+    }
+    console.log('OrdersModal -> filterObj', filterObj);
+  };
 
   return (
-    <>
+    <ErrorBoundary>
       <View style={styles.icon}>
         <Ionicons
           name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
           color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
           size={25}
-          onPress={() => setModalVisible(true)}
+          onPress={() => setModalVisible(!modalVisible)}
         />
       </View>
       <View style={styles.centeredView}>
@@ -110,29 +81,48 @@ const OrdersModal = (props) => {
                 onPress={() => setModalVisible(!modalVisible)}
               />
               <Text style={styles.modalText}>Filter Data:</Text>
-
-              <FilterSwitch
-                label='Zone'
-                state={isZone}
-                onChange={() => setIsZone(!isZone)}
+              <GRunMultiSwitch
+                currentStatus={'noFilter'}
+                disableScroll={(value) => {
+                  // console.log('scrollEnabled', value);
+                }}
+                isParentScrollDisabled={false}
+                onStatusChanged={(filter) => {
+                  console.log('filter', filter);
+                  setFilterOption(filter);
+                }}
+                disableSwitch={false}
               />
-              {isZone ? <CitySelector /> : <></>}
-              <FilterSwitch
-                label='Online'
-                state={isOnDemand}
-                onChange={(newValue) => setIsOnDemand(newValue)}
-              />
-              <FilterSwitch
-                label='Current Order'
-                state={isScheduled}
-                onChange={(newValue) => setIsScheduled(newValue)}
-              />
-
+              <View
+                style={{
+                  width: 200,
+                  marginTop: 10,
+                  justifyContent: 'space-between',
+                }}
+              >
+                <FilterSwitch
+                  label='Current Order'
+                  state={hasCurrentOrder}
+                  onChange={() => setHasCurrentOrder(!hasCurrentOrder)}
+                />
+                <FilterSwitch
+                  label='Cities'
+                  state={isCity}
+                  onChange={() => setIsCity(!isCity)}
+                />
+              </View>
+              {isCity ? (
+                <CitySelector
+                  setSelectedCities={setSelectedCities}
+                  selectedCities={selectedCities}
+                />
+              ) : (
+                <></>
+              )}
               <View>
                 <StyledButton
                   style={{ backgroundColor: Colors.accentColor }}
                   onPress={saveFilters}
-                  // onPressIn={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={styles.textStyle}>Confirm Settings</Text>
                 </StyledButton>
@@ -141,7 +131,7 @@ const OrdersModal = (props) => {
           </View>
         </Modal>
       </View>
-    </>
+    </ErrorBoundary>
   );
 };
 
@@ -156,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    width: 350,
+    width: 340,
     backgroundColor: 'white',
     borderRadius: 20,
     paddingVertical: 15,
@@ -170,19 +160,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  buttonContainer: {},
   modalText: {
     fontFamily: 'dm-sans-regular',
     fontSize: 24,
     marginBottom: 15,
     textAlign: 'center',
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '75%',
-    marginVertical: 15,
   },
 });
 

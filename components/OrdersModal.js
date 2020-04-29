@@ -3,15 +3,13 @@ import { Modal, View, Text, Platform, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
-import { BallIndicator } from 'react-native-indicators';
 
 import ErrorBoundary from '../components/ErrorBoundary';
-import MultiSwitch from '../components/MultiSwitch/index';
+import MultiSwitch from './MultiSwitch/index';
 import StyledButton from './StyledButton';
 import CitySelector from './CitySelector';
 import FilterSwitch from './FilterSwitch';
-import * as ordersActions from '../store/actions/orders';
-import { FiltersContext } from '../components/FiltersContext';
+import { OrderFiltersContext } from '../components/FiltersContext';
 
 const OrdersModal = (props) => {
   const dispatch = useDispatch();
@@ -19,9 +17,7 @@ const OrdersModal = (props) => {
   const [isCity, setIsCity] = useState(false);
   const [filterOption, setFilterOption] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
-  console.log('OrdersModal -> selectedCities', selectedCities);
-  // const [filterObj, setFilterObj] = useState(initialState);
-  const { filters, setFilters } = useContext(FiltersContext);
+  const { filters, setFilters } = useContext(OrderFiltersContext);
 
   const saveFilters = useCallback(() => {
     const initialState = {
@@ -38,14 +34,8 @@ const OrdersModal = (props) => {
 
     try {
       setModalVisible(!modalVisible);
-      // setFilterObj(appliedFilters);
-      dispatch(ordersActions.setFilters(appliedFilters));
       setFilters(appliedFilters);
-      // dispatch(ordersActions.fetchOrders(appliedFilters));
-      // setTimeout(() => {
-      // console.log('HEREREERER');
-      // resetFilters(initialState);
-      // }, 2000);
+      //! resetFilters(initialState);
     } catch (err) {
       console.log('Error in Orders Modal Try block');
     }
@@ -54,9 +44,9 @@ const OrdersModal = (props) => {
   }, [isCity, filterOption, selectedCities, dispatch]);
 
   const resetFilters = (state) => {
-    if (!modalVisible) {
-      setFilterObj(state);
-    }
+    // if (!modalVisible) {
+    setFilterObj(state);
+    // }
     console.log('OrdersModal -> filterObj', filterObj);
   };
 

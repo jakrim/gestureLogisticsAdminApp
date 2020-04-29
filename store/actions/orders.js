@@ -61,10 +61,6 @@ export const fetchOrders = (filters) => {
   };
 };
 
-export const setFilters = (filterSettings) => {
-  return { type: SET_FILTERS, filters: filterSettings };
-};
-
 export const fetchOrder = (orderId) => {
   return async (dispatch) => {
     try {
@@ -124,17 +120,8 @@ export const fetchZones = () => {
 
       const resData = await response.json();
 
-      // const indexedCities = [];
-
       const cities = resData.result.data.cities.split(',');
-      // for (let i = 0; i < cities.length; i++) {
-      //   indexedCities.push({
-      //     id: i,
-      //     city: cities[i],
-      //   });
-      // }
       const zones = resData.result.data.city_zones;
-      // console.log('fetchZones -> indexedCities', indexedCities);
 
       dispatch({ type: FETCH_ZONES, zones: zones, cities: cities });
     } catch (err) {
@@ -143,12 +130,6 @@ export const fetchZones = () => {
   };
 };
 
-// export const addCity = (selectedCity) => {
-//   return { type: ADD_CITIES, city: action.city };
-// };
-// export const removeCity = (id) => {
-//   return { type: REMOVE_CITY, id: action.id };
-// };
 export const resetFilters = () => {
   return { type: RESET_FILTERS };
 };

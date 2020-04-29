@@ -2,8 +2,10 @@ import { Grunners, Grunner } from '../../models/Grunners';
 
 export const SET_GRUNNERS = 'SET_GRUNNERS';
 export const SET_GRUNNER = 'SET_GRUNNER';
+export const SET_FILTERS = 'SET_FILTERS';
+export const FETCH_ZONES = 'FETCH_ZONES';
 
-export const fetchGrunners = () => {
+export const fetchGrunners = (gfilters) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
@@ -34,9 +36,14 @@ export const fetchGrunners = () => {
         );
       }
 
+      // const sortedGrunners = loadGrunners.sort((a, b) => {
+      //   a.current_order !== null ? 1 : -1;
+      // });
+
       dispatch({
         type: SET_GRUNNERS,
         gRunners: loadGrunners,
+        filters: gfilters,
       });
     } catch (err) {
       console.log('ERROR IN FETCHING GRUNNERS', err);
@@ -65,6 +72,29 @@ export const fetchGrunner = (uid) => {
       });
     } catch (err) {
       console.log('ERROR IN FETCHING GRUNNER!', err);
+    }
+  };
+};
+
+export const fetchZones = () => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        'https://us-central1-gesture-dev.cloudfunctions.net/logistics_zones'
+      );
+
+      if (!response.ok) {
+        throw new Error('Something went wrong in fetching zones!');
+      }
+
+      const resData = await response.json();
+
+      const cities = resData.result.data.cities.split(',');
+      const zones = resData.result.data.city_zones;
+
+      dispatch({ type: FETCH_ZONES, zones: zones, cities: cities });
+    } catch (err) {
+      console.log('Error in fetching zones!', err);
     }
   };
 };

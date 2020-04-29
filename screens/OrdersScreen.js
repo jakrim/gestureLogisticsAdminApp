@@ -19,7 +19,7 @@ import StyledButton from '../components/StyledButton';
 import * as ordersActions from '../store/actions/orders';
 import OrderItem from '../components/OrderItem';
 import Colors from '../constants/Colors';
-import { FiltersContext } from '../components/FiltersContext';
+import { OrderFiltersContext } from '../components/FiltersContext';
 
 const OrdersScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,7 @@ const OrdersScreen = (props) => {
   const [error, setError] = useState();
   const orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
-  const { filters, setFilters } = useContext(FiltersContext);
+  const { filters, setFilters } = useContext(OrderFiltersContext);
 
   const { navigation } = props;
 
@@ -37,7 +37,7 @@ const OrdersScreen = (props) => {
     setIsRefreshing(true);
     try {
       await dispatch(ordersActions.fetchOrders(filters));
-      dispatch(ordersActions.fetchZones());
+      await dispatch(ordersActions.fetchZones());
     } catch (err) {
       setError(err.message);
     }
@@ -65,10 +65,6 @@ const OrdersScreen = (props) => {
     }
     return () => (effect = false);
   }, [dispatch, loadOrders]);
-
-  // const memoOrders = useMemo(() => {
-  //   return loadOrders();
-  // }, [loadOrders]);
 
   if (error) {
     return (
@@ -127,20 +123,8 @@ const OrdersScreen = (props) => {
                 No Orders:
               </Text>{' '}
               {'\n'}
-              Check your filters and refresh the application.
+              Check your filters on the top right!
             </Text>
-
-            {!isLoading ? (
-              <StyledButton
-                onPress={loadOrders}
-                color={Colors.backgroundFeed}
-                style={styles.button}
-              >
-                Try again
-              </StyledButton>
-            ) : (
-              <BallIndicator color={Colors.LightColorText} />
-            )}
           </View>
         </LinearGradient>
       </ErrorBoundary>

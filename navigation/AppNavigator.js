@@ -5,7 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthNavigator, GestureNavigator } from './GNavigator';
 import StartupScreen from '../screens/StartupScreen';
 import LoadingScreen from '../screens/LoadingScreen';
-import { FiltersContext } from '../components/FiltersContext';
+import {
+  OrderFiltersContext,
+  GrunnerFiltersContext,
+} from '../components/FiltersContext';
 
 const AppNavigator = (props) => {
   const isAuth = useSelector((state) => !!state.auth.token);
@@ -13,18 +16,28 @@ const AppNavigator = (props) => {
   let authMessage = useSelector(
     (state) => state.auth.message === 'Authenticated'
   );
+
   const [filters, setFilters] = useState({});
   const providerValue = useMemo(() => ({ filters, setFilters }), [
     filters,
     setFilters,
   ]);
+  const [gfilters, setGFilters] = useState({});
+  const gProviderValue = useMemo(() => ({ gfilters, setGFilters }), [
+    gfilters,
+    setGFilters,
+  ]);
 
   return (
     <NavigationContainer>
       {isAuth && !authMessage && <LoadingScreen />}
-      <FiltersContext.Provider value={providerValue}>
-        {isAuth && authMessage && <GestureNavigator />}
-      </FiltersContext.Provider>
+
+      <OrderFiltersContext.Provider value={providerValue}>
+        <GrunnerFiltersContext.Provider value={gProviderValue}>
+          {isAuth && authMessage && <GestureNavigator />}
+        </GrunnerFiltersContext.Provider>
+      </OrderFiltersContext.Provider>
+
       {!isAuth && didTryAutoLogin && <AuthNavigator />}
       {!isAuth && !didTryAutoLogin && <StartupScreen />}
     </NavigationContainer>

@@ -1,6 +1,13 @@
-import { useContext, createContext } from 'react';
+import { createContext } from 'react';
 
-export const FiltersContext = createContext({
+export const OrderFiltersContext = createContext({
+  isCity: false,
+  cities: [],
+  filter: 'noFilter',
+});
+
+export const GrunnerFiltersContext = createContext({
+  hasOrder: 'false',
   isCity: false,
   cities: [],
   filter: 'noFilter',
