@@ -16,13 +16,14 @@ const OrdersModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isCity, setIsCity] = useState(false);
   const [hasCurrentOrder, setHasCurrentOrder] = useState(false);
+  console.log('OrdersModal -> hasCurrentOrder', hasCurrentOrder);
   const [filterOption, setFilterOption] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
   const { gFilters, setGFilters } = useContext(GrunnerFiltersContext);
 
   const saveFilters = useCallback(() => {
     const initialState = {
-      hasOrder: 'false',
+      hasOrder: false,
       isCity: false,
       cities: [],
       filter: 'noFilter',
@@ -42,16 +43,15 @@ const OrdersModal = (props) => {
     } catch (err) {
       console.log('Error in G Runner Modal Try block');
     }
+    setHasCurrentOrder(false);
+    setIsCity(false);
+  }, [isCity, filterOption, hasCurrentOrder, selectedCities, dispatch]);
 
-    // setIsLoading(false);
-  }, [isCity, filterOption, selectedCities, dispatch]);
-
-  const resetFilters = (state) => {
-    if (!modalVisible) {
-      setFilterObj(state);
-    }
-    console.log('OrdersModal -> filterObj', filterObj);
-  };
+  // const resetFilters = (state) => {
+  //   if (!modalVisible) {
+  //     setFilterObj(state);
+  //   }
+  // };
 
   return (
     <ErrorBoundary>
@@ -101,7 +101,7 @@ const OrdersModal = (props) => {
                 }}
               >
                 <FilterSwitch
-                  label='Current Order'
+                  label='Has Current Order'
                   state={hasCurrentOrder}
                   onChange={() => setHasCurrentOrder(!hasCurrentOrder)}
                 />

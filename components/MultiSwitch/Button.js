@@ -1,8 +1,8 @@
 /* Switch Button Component class
  */
 import React from 'react';
-import { TouchableOpacity, View, Platform } from 'react-native';
-import styles from './styles';
+import { TouchableOpacity, View, Platform, Text } from 'react-native';
+import styles from '../../constants/styles';
 import PropTypes from 'prop-types';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
@@ -12,61 +12,91 @@ const getIcon = (type, active) => {
   switch (type) {
     case 'schedule':
       icon = active ? (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-alarm' : 'ios-alarm'}
-          size={20}
-          color={Colors.primaryColor}
-          //   style={styles.callTxt}
-        />
+        <View style={styles.buttons}>
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-alarm' : 'ios-alarm'}
+            size={20}
+            color={Colors.primaryColor}
+            style={styles.iconStyle}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.onIconText}>scheduled</Text>
+          </View>
+        </View>
       ) : (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-alarm' : 'ios-alarm'}
-          size={20}
-          color='black'
-          //   style={styles.callTxt}
-        />
+        <View style={styles.buttons}>
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-alarm' : 'ios-alarm'}
+            size={20}
+            color='black'
+            style={styles.iconStyle}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.offIconText}>scheduled</Text>
+          </View>
+        </View>
       );
       break;
     case 'noFilter':
       icon = active ? (
-        <Ionicons
-          name={
-            Platform.OS === 'android'
-              ? 'md-radio-button-off'
-              : 'ios-radio-button-off'
-          }
-          size={20}
-          color={Colors.primaryColor}
-          //   style={styles.callTxt}
-        />
+        <View style={styles.buttons}>
+          <Ionicons
+            name={
+              Platform.OS === 'android'
+                ? 'md-radio-button-off'
+                : 'ios-radio-button-off'
+            }
+            size={20}
+            color={Colors.primaryColor}
+            style={styles.iconStyle}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.onIconText}>off</Text>
+          </View>
+        </View>
       ) : (
-        <Ionicons
-          name={
-            Platform.OS === 'android'
-              ? 'md-radio-button-off'
-              : 'ios-radio-button-off'
-          }
-          size={20}
-          color='black'
-          //   style={styles.callTxt}
-        />
+        <View style={styles.buttons}>
+          <Ionicons
+            name={
+              Platform.OS === 'android'
+                ? 'md-radio-button-off'
+                : 'ios-radio-button-off'
+            }
+            size={20}
+            color='black'
+            style={styles.iconStyle}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.offIconText}>off</Text>
+          </View>
+        </View>
       );
       break;
     case 'onDemand':
       icon = active ? (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-alert' : 'ios-alert'}
-          size={20}
-          color={Colors.primaryColor}
-          //   style={styles.callTxt}
-        />
+        <View style={styles.buttons}>
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-alert' : 'ios-alert'}
+            size={20}
+            color={Colors.primaryColor}
+            style={styles.iconStyle}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.onIconText}>onDemand</Text>
+          </View>
+        </View>
       ) : (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-alert' : 'ios-alert'}
-          size={20}
-          color='black'
-          //   style={styles.callTxt}
-        />
+        <View style={styles.buttons}>
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-alert' : 'ios-alert'}
+            size={20}
+            color='black'
+            style={styles.iconStyle}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.offIconText}>onDemand</Text>
+          </View>
+        </View>
       );
       break;
   }

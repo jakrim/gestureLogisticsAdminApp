@@ -31,3 +31,22 @@ export const capitalizeLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 };
+
+export const properTimeFunc = (ordersArr) => {
+  let properTimeArr = [];
+
+  for (order of ordersArr) {
+    var proper_time = order.proper_time;
+    // if schedule is null
+    if (order.schedule === null) {
+      // time order placed + 1 hr
+      proper_time = order.time_order_placed + 3600000;
+    } else {
+      proper_time = order.schedule;
+    }
+    order['proper_time'] = proper_time;
+    properTimeArr.push(order);
+  }
+
+  return properTimeArr;
+};

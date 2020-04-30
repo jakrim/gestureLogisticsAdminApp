@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 const { width } = Dimensions.get('window');
+import ColorsConst from './Colors';
 
 const Colors = {
   mBackColor: '#efefef',
@@ -44,9 +45,34 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 1,
-    width: Metrics.containerWidth / 3,
+    width: Metrics.containerWidth / 3.1,
     height: 54,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    margin: 5,
+  },
+  iconStyle: {
+    position: 'relative',
+    top: 10,
+  },
+  offIconText: {
+    fontFamily: 'dm-sans-bold',
+    fontSize: 10,
+    color: Colors.shadowColor,
+  },
+  onIconText: {
+    fontFamily: 'dm-sans-bold',
+    fontSize: 10,
+    color: ColorsConst.primaryColor,
+  },
+  textContainer: {
+    flex: 1,
+    // position: 'absolute',
+    top: 7,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
+  buttons: {
     alignItems: 'center',
   },
 });

@@ -35,20 +35,12 @@ const OrdersModal = (props) => {
     try {
       setModalVisible(!modalVisible);
       setFilters(appliedFilters);
-      //! resetFilters(initialState);
     } catch (err) {
       console.log('Error in Orders Modal Try block');
     }
-
+    setIsCity(false);
     // setIsLoading(false);
   }, [isCity, filterOption, selectedCities, dispatch]);
-
-  const resetFilters = (state) => {
-    // if (!modalVisible) {
-    setFilterObj(state);
-    // }
-    console.log('OrdersModal -> filterObj', filterObj);
-  };
 
   return (
     <ErrorBoundary>

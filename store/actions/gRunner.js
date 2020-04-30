@@ -36,6 +36,7 @@ export const fetchGrunners = (gfilters) => {
         );
       }
 
+      //? This is a sorting algorithm - not properly implemented
       // const sortedGrunners = loadGrunners.sort((a, b) => {
       //   a.current_order !== null ? 1 : -1;
       // });

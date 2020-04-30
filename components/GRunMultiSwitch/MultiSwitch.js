@@ -7,7 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import Button from './Button';
-import styles from './styles';
+import styles from '../../constants/styles';
 import PropTypes from 'prop-types';
 const { width } = Dimensions.get('window');
 
