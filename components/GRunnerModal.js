@@ -45,6 +45,7 @@ const OrdersModal = (props) => {
     }
     setHasCurrentOrder(false);
     setIsCity(false);
+    setSelectedCities([]);
   }, [isCity, filterOption, hasCurrentOrder, selectedCities, dispatch]);
 
   // const resetFilters = (state) => {

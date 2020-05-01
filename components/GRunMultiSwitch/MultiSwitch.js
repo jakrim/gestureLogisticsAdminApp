@@ -43,12 +43,13 @@ export default function MultiSwitch(props) {
       onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
-      onPanResponderGrant: () => {
+      onPanResponderGrant: (e, gestureState) => {
         // disable parent scroll if slider is inside a scrollview
-        if (!isParentScrollDisabled) {
-          props.disableScroll(false);
-          setIsParentScrollDisabled(true);
-        }
+        // if (!isParentScrollDisabled) {
+        //   props.disableScroll(false);
+        //   setIsParentScrollDisabled(true);
+        // }
+        setValue({ x: 0, y: 0 });
       },
       onPanResponderMove: (evt, gestureState) => {
         if (!props.disableSwitch) {

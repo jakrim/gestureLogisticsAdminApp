@@ -1,5 +1,3 @@
-import React from 'react';
-import { View, Text } from 'react-native';
 import firebase from 'firebase';
 
 const firebaseConfig = {
@@ -15,5 +13,3 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-
-// console.log('HERE"S FIREBASE', firebase);

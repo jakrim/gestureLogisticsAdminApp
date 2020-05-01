@@ -39,6 +39,7 @@ const OrdersModal = (props) => {
       console.log('Error in Orders Modal Try block');
     }
     setIsCity(false);
+    setSelectedCities([]);
     // setIsLoading(false);
   }, [isCity, filterOption, selectedCities, dispatch]);
 
@@ -73,10 +74,11 @@ const OrdersModal = (props) => {
               <MultiSwitch
                 currentStatus={'noFilter'}
                 disableScroll={(value) => {
-                  console.log('scrollEnabled', value);
+                  // console.log('scrollEnabled', value);
                 }}
                 isParentScrollDisabled={false}
                 onStatusChanged={(filter) => {
+                  console.log('OrdersModal -> filter', filter);
                   setFilterOption(filter);
                 }}
                 disableSwitch={false}

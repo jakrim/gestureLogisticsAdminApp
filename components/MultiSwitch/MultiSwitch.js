@@ -43,21 +43,28 @@ export default function MultiSwitch(props) {
       onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
-      onPanResponderGrant: () => {
+      onPanResponderGrant: (e, gestureState) => {
+        console.log('MultiSwitch -> gestureState', gestureState.x0);
+        // console.log('MultiSwitch -> gestureState', gestureState);
         // disable parent scroll if slider is inside a scrollview
-        if (!isParentScrollDisabled) {
-          props.disableScroll(false);
-          setIsParentScrollDisabled(true);
-        }
+        // if (!isParentScrollDisabled) {
+        //   props.disableScroll(false);
+        //   setIsParentScrollDisabled(true);
+        // }
+        // setPosValue({ x: 0, y: 0 });
+        // console.log('MultiSwitch -> setPosValue', setPosValue);
       },
       onPanResponderMove: (evt, gestureState) => {
-        if (!props.disableSwitch) {
-          let finalValue = gestureState.dx + posValue;
-          if (finalValue >= 0 && finalValue <= thresholdDistance)
-            position.setValue(posValue + gestureState.dx);
-        }
+        // console.log('MultiSwitch -> gestureState', gestureState.moveX);
+        //204-84 for off to scheduled
+        // if (!props.disableSwitch) {
+        //   let finalValue = gestureState.dx + posValue;
+        //   if (finalValue >= 0 && finalValue <= thresholdDistance)
+        //     position.setValue(posValue + gestureState.dx);
+        // }
+        Animated.event([{ x: setPosition(x) }])({ x: gestureState.moveX });
       },
-      onPanResponderTerminationRequest: () => true,
+      onPanResponderTerminationRequest: () => false,
       onPanResponderRelease: (evt, gestureState) => {
         if (!props.disableSwitch) {
           let finalValue = gestureState.dx + posValue;
