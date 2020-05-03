@@ -2,7 +2,7 @@
  */
 import React from 'react';
 import { TouchableOpacity, View, Platform, Text } from 'react-native';
-import styles from '../../constants/styles';
+import styles from '../../constants/MultiSwitchStyles';
 import PropTypes from 'prop-types';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';

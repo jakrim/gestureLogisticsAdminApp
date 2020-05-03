@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { Component } from 'react';
 import {
   Animated,
   Dimensions,
@@ -7,152 +7,146 @@ import {
   Platform,
 } from 'react-native';
 import Button from './Button';
-import styles from '../../constants/styles';
-import PropTypes from 'prop-types';
+import styles from '../../constants/MultiSwitchStyles';
 const { width } = Dimensions.get('window');
+import PropTypes from 'prop-types';
 
-export default function MultiSwitch(props) {
-  const [currentStatus, setCurrentStatus] = useState(props.currentStatus);
-  const [isComponentReady, setIsComponentReady] = useState(false);
-  const [position, setPosition] = useState(new Animated.Value(0));
-  const [posValue, setPosValue] = useState(0);
-  // console.log('MultiSwitch -> posValue', posValue);
-  const [selectedPosition, setSelectedPosition] = useState(1);
-  const [duration, setDuration] = useState(100);
-  const [mainWidth, setMainWidth] = useState(width);
-  const [switcherWidth, setSwitcherWidth] = useState(width / 2);
-  const [thresholdDistance, setThresholdDistance] = useState(width);
-  const [isParentScrollDisabled, setIsParentScrollDisabled] = useState(false);
-
-  // state = {
-  // currentStatus: props.currentStatus,
-  // isComponentReady: false,
-  // position: new Animated.Value(0),
-  // posValue: 0,
-  // selectedPosition: 0,
-  // duration: 100,
-  // mainWidth: width - 30,
-  // switcherWidth: width / 2.7,
-  // thresholdDistance: width - 8 - width / 2.4,
-  // };
-  // isParentScrollDisabled = false;
-
-  const panResponder = useRef(
-    PanResponder.create({
+export default class MultiSwitch extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentStatus: props.currentStatus,
+      isComponentReady: false,
+      position: new Animated.Value(0),
+      posValue: 0,
+      selectedPosition: 0,
+      duration: 100,
+      mainWidth: width - 55,
+      switcherWidth: width / 3,
+      thresholdDistance: width - 8 - width / 2.4,
+    };
+    this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
-      onPanResponderGrant: (e, gestureState) => {
-        console.log('MultiSwitch -> gestureState', gestureState.x0);
-        // console.log('MultiSwitch -> gestureState', gestureState);
+
+      onPanResponderGrant: () => {
         // disable parent scroll if slider is inside a scrollview
-        // if (!isParentScrollDisabled) {
-        //   props.disableScroll(false);
-        //   setIsParentScrollDisabled(true);
-        // }
-        // setPosValue({ x: 0, y: 0 });
-        // console.log('MultiSwitch -> setPosValue', setPosValue);
+        if (!this.isParentScrollDisabled) {
+          this.props.disableScroll(false);
+          this.isParentScrollDisabled = true;
+        }
       },
+
       onPanResponderMove: (evt, gestureState) => {
-        // console.log('MultiSwitch -> gestureState', gestureState.moveX);
-        //204-84 for off to scheduled
-        // if (!props.disableSwitch) {
-        //   let finalValue = gestureState.dx + posValue;
-        //   if (finalValue >= 0 && finalValue <= thresholdDistance)
-        //     position.setValue(posValue + gestureState.dx);
-        // }
-        Animated.event([{ x: setPosition(x) }])({ x: gestureState.moveX });
+        if (!this.props.disableSwitch) {
+          let finalValue = gestureState.dx + this.state.posValue;
+          if (finalValue >= 0 && finalValue <= this.state.thresholdDistance)
+            this.state.position.setValue(this.state.posValue + gestureState.dx);
+        }
       },
-      onPanResponderTerminationRequest: () => false,
+
+      onPanResponderTerminationRequest: () => true,
+
       onPanResponderRelease: (evt, gestureState) => {
-        if (!props.disableSwitch) {
-          let finalValue = gestureState.dx + posValue;
-          // console.log('MultiSwitch -> finalValue', finalValue);
-          setIsParentScrollDisabled(false);
-          props.disableScroll(false);
+        if (!this.props.disableSwitch) {
+          let finalValue = gestureState.dx + this.state.posValue;
+          this.isParentScrollDisabled = false;
+          this.props.disableScroll(true);
           if (gestureState.dx > 0) {
-            if (finalValue >= 0 && finalValue <= 0) {
-              schedule();
+            if (finalValue >= 0 && finalValue <= 30) {
+              this.notStartedSelected();
             } else if (finalValue >= 30 && finalValue <= 121) {
-              noFilter();
+              this.inProgressSelected();
             } else if (finalValue >= 121 && finalValue <= 280) {
               if (gestureState.dx > 0) {
-                onDemand();
+                this.onDemandSelected();
               } else {
-                noFilter();
+                this.inProgressSelected();
               }
             }
           } else {
             if (finalValue >= 78 && finalValue <= 175) {
-              noFilter();
+              this.inProgressSelected();
             } else if (finalValue >= -100 && finalValue <= 78) {
-              schedule();
+              this.notStartedSelected();
             } else {
-              onDemand();
+              this.onDemandSelected();
             }
           }
         }
       },
+
       onPanResponderTerminate: () => {},
       onShouldBlockNativeResponder: () => {
         // Returns whether this component should block native components from becoming the JS
         // responder. Returns true by default. Is currently only supported on android.
         return true;
       },
-    })
-  ).current;
-  // )
-  useEffect(() => {
-    moveInitialState();
-  }, []);
+    });
+    this.moveInitialState();
 
-  const schedule = () => {
-    if (props.disableSwitch) return;
-    Animated.timing(position, {
+    this.isParentScrollDisabled = false;
+  }
+
+  // componentWillMount() {
+
+  // }
+
+  notStartedSelected = () => {
+    if (this.props.disableSwitch) return;
+    Animated.timing(this.state.position, {
       toValue: Platform.OS === 'ios' ? -2 : 0,
-      duration: duration,
+      duration: this.state.duration,
     }).start();
     setTimeout(() => {
-      setPosValue(Platform.OS === 'ios' ? -2 : 0), setSelectedPosition(0);
+      this.setState({
+        posValue: Platform.OS === 'ios' ? -2 : 0,
+        selectedPosition: 0,
+      });
     }, 100);
-    props.onStatusChanged('schedule');
+    this.props.onStatusChanged('schedule');
   };
 
-  const noFilter = () => {
-    if (props.disableSwitch) return;
-    Animated.timing(position, {
-      toValue: mainWidth / 2 - switcherWidth / 2,
-      duration: duration,
+  inProgressSelected = () => {
+    if (this.props.disableSwitch) return;
+    Animated.timing(this.state.position, {
+      toValue: this.state.mainWidth / 2 - this.state.switcherWidth / 2,
+      duration: this.state.duration,
     }).start();
     setTimeout(() => {
-      setPosValue(mainWidth / 2 - switcherWidth / 2), setSelectedPosition(1);
+      this.setState({
+        posValue: this.state.mainWidth / 2 - this.state.switcherWidth / 2,
+        selectedPosition: 1,
+      });
     }, 100);
-    props.onStatusChanged('noFilter');
+    this.props.onStatusChanged('noFilter');
   };
 
-  const onDemand = () => {
-    if (props.disableSwitch) return;
-    Animated.timing(position, {
+  onDemandSelected = () => {
+    if (this.props.disableSwitch) return;
+    Animated.timing(this.state.position, {
       toValue:
         Platform.OS === 'ios'
-          ? mainWidth - switcherWidth
-          : mainWidth - switcherWidth - 4,
-      duration: duration,
+          ? this.state.mainWidth - this.state.switcherWidth
+          : this.state.mainWidth - this.state.switcherWidth - 2,
+      duration: this.state.duration,
     }).start();
     setTimeout(() => {
-      setPosValue(
-        Platform.OS === 'ios'
-          ? mainWidth - switcherWidth
-          : mainWidth - switcherWidth - 2
-      ),
-        setSelectedPosition(2);
+      this.setState({
+        posValue:
+          Platform.OS === 'ios'
+            ? this.state.mainWidth - this.state.switcherWidth
+            : this.state.mainWidth - this.state.switcherWidth - 2,
+        selectedPosition: 2,
+      });
     }, 100);
-    props.onStatusChanged('onDemand');
+    this.props.onStatusChanged('onDemand');
   };
 
-  const getStatus = () => {
-    switch (selectedPosition) {
+  getStatus = () => {
+    switch (this.state.selectedPosition) {
       case 0:
         return 'schedule';
       case 1:
@@ -162,39 +156,40 @@ export default function MultiSwitch(props) {
     }
   };
 
-  const moveInitialState = () => {
-    switch (currentStatus) {
+  moveInitialState = () => {
+    switch (this.state.currentStatus) {
       case 'schedule':
-        schedule();
+        this.notStartedSelected();
         break;
       case 'noFilter':
-        noFilter();
+        this.inProgressSelected();
         break;
       case 'onDemand':
-        onDemand();
+        this.onDemandSelected();
         break;
     }
   };
 
-  // console.log('MultiSwitch -> position', position);
-  return (
-    <View style={styles.container}>
-      <Button type='schedule' onPress={schedule} />
-      <Button type='noFilter' onPress={noFilter} />
-      <Button type='onDemand' onPress={onDemand} />
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={[
-          styles.switcher,
-          {
-            transform: [{ translateX: position }],
-          },
-        ]}
-      >
-        <Button type={getStatus()} active={true} />
-      </Animated.View>
-    </View>
-  );
+  render() {
+    return (
+      <View style={styles.container}>
+        <Button type='schedule' onPress={this.notStartedSelected} />
+        <Button type='noFilter' onPress={this.inProgressSelected} />
+        <Button type='onDemand' onPress={this.onDemandSelected} />
+        <Animated.View
+          {...this._panResponder.panHandlers}
+          style={[
+            styles.switcher,
+            {
+              transform: [{ translateX: this.state.position }],
+            },
+          ]}
+        >
+          <Button type={this.getStatus()} active={true} />
+        </Animated.View>
+      </View>
+    );
+  }
 }
 
 MultiSwitch.propTypes = {
@@ -203,5 +198,5 @@ MultiSwitch.propTypes = {
 };
 
 MultiSwitch.defaultProps = {
-  disableSwitch: false,
+  disableSwitch: true,
 };

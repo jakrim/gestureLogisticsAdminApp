@@ -24,8 +24,6 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDERS:
       const appliedFilters = action.filters;
-      console.log('appliedFilters (REDUCER)', appliedFilters);
-      console.log('appliedFilters.cities', appliedFilters.cities);
       if (appliedFilters === undefined || appliedFilters === {}) {
         return {
           ...state,

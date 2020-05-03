@@ -10,7 +10,7 @@ const Colors = {
 };
 
 const Metrics = {
-  containerWidth: width - 80,
+  containerWidth: width - 70,
   switchWidth: width / 3.5,
 };
 

@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   payments: paymentsReducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+export const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
   return Font.loadAsync({

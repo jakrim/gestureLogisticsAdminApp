@@ -71,6 +71,7 @@ const OrdersModal = (props) => {
                 onPress={() => setModalVisible(!modalVisible)}
               />
               <Text style={styles.modalText}>Filter Data:</Text>
+
               <MultiSwitch
                 currentStatus={'noFilter'}
                 disableScroll={(value) => {

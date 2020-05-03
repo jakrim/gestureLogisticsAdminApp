@@ -23,7 +23,7 @@ const LoadingScreen = (props) => {
       setTimeout(() => {
         setError(message);
         setIsLoading(false);
-      }, 500);
+      }, 300);
     }
   });
 

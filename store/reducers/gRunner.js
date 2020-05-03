@@ -5,7 +5,7 @@ const initialState = {
   gRunner: [],
   filters: [],
   cities: [],
-  zones: [],
+  city_zones: null,
 };
 
 export default (state = initialState, action) => {
@@ -22,17 +22,17 @@ export default (state = initialState, action) => {
       } else {
         const filteredGrunners = action.gRunners.filter((gRunner) => {
           // console.log('order.city', order.city);
-          // if (appliedFilters.isCity) {
-          //   if (
-          //     appliedFilters.cities.length === 0 ||
-          //     appliedFilters.cities === undefined
-          //   ) {
-          //     return false;
-          //   }
-          //   if (!appliedFilters.cities.includes(order.city)) {
-          //     return false;
-          //   }
-          // }
+          if (appliedFilters.isCity) {
+            if (
+              appliedFilters.cities.length === 0 ||
+              appliedFilters.cities === undefined
+            ) {
+              return false;
+            }
+            if (!appliedFilters.cities.includes(gRunner.city)) {
+              return false;
+            }
+          }
           if (
             appliedFilters.hasCurrentOrder === true &&
             gRunner.current_order === null
@@ -67,7 +67,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cities: action.cities,
-        zones: action.zones,
+        city_zones: action.city_zones,
       };
     default:
       return state;

@@ -1,4 +1,5 @@
 import { Grunners, Grunner } from '../../models/Grunners';
+import { mapCityToGRunner } from '../../components/HelperFunctions';
 
 export const SET_GRUNNERS = 'SET_GRUNNERS';
 export const SET_GRUNNER = 'SET_GRUNNER';
@@ -36,14 +37,11 @@ export const fetchGrunners = (gfilters) => {
         );
       }
 
-      //? This is a sorting algorithm - not properly implemented
-      // const sortedGrunners = loadGrunners.sort((a, b) => {
-      //   a.current_order !== null ? 1 : -1;
-      // });
+      let mappedGrunners = mapCityToGRunner(loadGrunners);
 
       dispatch({
         type: SET_GRUNNERS,
-        gRunners: loadGrunners,
+        gRunners: mappedGrunners,
         filters: gfilters,
       });
     } catch (err) {
@@ -91,9 +89,13 @@ export const fetchZones = () => {
       const resData = await response.json();
 
       const cities = resData.result.data.cities.split(',');
-      const zones = resData.result.data.city_zones;
+      const city_zones = resData.result.data.city_zones;
 
-      dispatch({ type: FETCH_ZONES, zones: zones, cities: cities });
+      dispatch({
+        type: FETCH_ZONES,
+        city_zones: city_zones,
+        cities: cities,
+      });
     } catch (err) {
       console.log('Error in fetching zones!', err);
     }
