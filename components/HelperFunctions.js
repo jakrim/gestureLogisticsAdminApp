@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { store } from '../App';
+import store from '../store';
 
 var moment = require('moment-timezone');
 
@@ -53,13 +52,6 @@ export const properTimeFunc = (ordersArr) => {
   return properTimeArr;
 };
 
-// export const mapCityToGRunner = (grunnersArr) => {
-//   // console.log('mapCityToGRunner -> cityZones', cityZones);
-
-//   for (gRunner of grunnersArr) {
-//   }
-
-// };
 function getCity(zone) {
   let city_zones = store.getState().gRunners.city_zones;
 

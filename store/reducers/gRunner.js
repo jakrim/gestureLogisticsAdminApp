@@ -12,8 +12,9 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_GRUNNERS:
       const appliedFilters = action.filters;
-      console.log('appliedFilters (REDUCER)', appliedFilters);
-      console.log('appliedFilters.cities', appliedFilters.cities);
+      console.log('city_zones', action.city_zones);
+      console.log('appliedFilters', appliedFilters);
+      console.log('appliedFilters -> Cities', appliedFilters.cities);
       if (appliedFilters === undefined || appliedFilters === {}) {
         return {
           ...state,

@@ -1,24 +1,10 @@
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 
-import authReducer from './store/reducers/auth';
-import ordersReducer from './store/reducers/orders';
-import gRunnerReducer from './store/reducers/gRunner';
-import paymentsReducer from './store/reducers/payments';
 import AppNavigator from './navigation/AppNavigator';
-
-const rootReducer = combineReducers({
-  auth: authReducer,
-  orders: ordersReducer,
-  gRunners: gRunnerReducer,
-  payments: paymentsReducer,
-});
-
-export const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+import store from './store';
 
 const fetchFonts = () => {
   return Font.loadAsync({
