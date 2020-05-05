@@ -22,6 +22,7 @@ import makeCall from '../components/PhoneCall';
 import sendEmail from '../components/Email';
 import { MillisToDate } from '../components/HelperFunctions';
 import StyledButton from '../components/StyledButton';
+import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 
 const PaymentOrderScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -63,9 +64,13 @@ const PaymentOrderScreen = (props) => {
     let effect = true;
     if (effect) {
       setIsLoading(true);
-      loadOrder().then(() => {
-        setIsLoading(false);
-      });
+      loadOrder()
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          throwError(new Error('Asynchronous error'));
+        });
     }
     return () => (effect = false);
   }, [dispatch, loadOrder]);

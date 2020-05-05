@@ -15,9 +15,17 @@ const CitySelector = (props) => {
   //! When a new City is added to the citiesAPI -> MUST add the city as an object to the state below.
   const [values, setValues] = useState({
     listKeys: [
-      { key: 'Brooklyn', switch: false },
       { key: 'Manhattan', switch: false },
+      { key: 'Bronx', switch: false },
+      { key: 'Brooklyn', switch: false },
+      { key: 'Boston', switch: false },
+      { key: 'Washington DC', switch: false },
+      { key: 'Atlanta', switch: false },
+      { key: 'Chicago', switch: false },
+      { key: 'Denver', switch: false },
+      { key: 'Las Vegas', switch: false },
       { key: 'Los Angeles', switch: false },
+      { key: 'San Francisco', switch: false },
     ],
   });
   let cities = useSelector((state) => state.orders.cities);

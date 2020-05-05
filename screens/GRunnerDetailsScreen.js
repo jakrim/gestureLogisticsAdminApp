@@ -15,6 +15,7 @@ import { BallIndicator } from 'react-native-indicators';
 import { Ionicons } from '@expo/vector-icons';
 
 import * as gRunnerActions from '../store/actions/gRunner';
+import ErrorBoundry, { throwError } from '../components/ErrorBoundary';
 import Colors from '../constants/Colors';
 import Card from '../components/Card';
 import StyledButton from '../components/StyledButton';
@@ -64,50 +65,56 @@ const GRunnerDetailsScreen = (props) => {
         .then(() => {
           setIsLoading(false);
         })
-        .catch((err) => console.log(`Error in GDetailsScreen`, err));
+        .catch((e) => {
+          throwError(new Error('Asynchronous error'));
+        });
     }
     return () => (effect = false);
   }, [dispatch, loadGrunner, setIsLoading]);
 
   if (error) {
     return (
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <View style={styles.centered}>
-          <Text
-            style={{
-              fontSize: 20,
-              color: Colors.darkPurp,
-            }}
-          >
-            An error occurred!
-          </Text>
-          {!isLoading ? (
-            <Button
-              title='Try again'
-              onPress={loadGrunner}
-              color={Colors.LightColorText}
-            />
-          ) : (
-            <BallIndicator color={Colors.LightColorText} />
-          )}
-        </View>
-      </LinearGradient>
+      <ErrorBoundry>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: Colors.darkPurp,
+              }}
+            >
+              An error occurred!
+            </Text>
+            {!isLoading ? (
+              <Button
+                title='Try again'
+                onPress={loadGrunner}
+                color={Colors.LightColorText}
+              />
+            ) : (
+              <BallIndicator color={Colors.LightColorText} />
+            )}
+          </View>
+        </LinearGradient>
+      </ErrorBoundry>
     );
   }
 
   if (isLoading) {
     return (
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <View style={styles.centered}>
-          <BallIndicator color={Colors.backgroundFeed} />
-        </View>
-      </LinearGradient>
+      <ErrorBoundry>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <BallIndicator color={Colors.backgroundFeed} />
+          </View>
+        </LinearGradient>
+      </ErrorBoundry>
     );
   }
 
@@ -123,94 +130,99 @@ const GRunnerDetailsScreen = (props) => {
     capitalizeLetter(gRunner.lastName);
 
   return (
-    <LinearGradient
-      colors={[Colors.primaryColor, Colors.lightTeal]}
-      style={styles.gradient}
-    >
-      <Card style={styles.card}>
-        <ScrollView>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={{ uri: gRunner.profileImageUrl }}
-            />
-          </View>
-          <Text style={styles.gRunnerName}>{full_name}</Text>
-          {gRunner.currentStatus === 'online' ? (
-            <View style={styles.status}>
-              <Text
-                style={{
-                  color: 'green',
-                  textAlign: 'center',
-                  fontFamily: 'dm-sans-boldItalic',
-                  paddingTop: 4,
-                  fontSize: 18,
-                }}
-              >
-                {gRunner.currentStatus}
-              </Text>
-            </View>
-          ) : (
-            <View style={styles.status}>
-              <Text
-                style={{
-                  color: 'red',
-                  textAlign: 'center',
-                  fontFamily: 'dm-sans-bold',
-                  paddingTop: 4,
-                  fontSize: 18,
-                }}
-              >
-                {gRunner.currentStatus}
-              </Text>
-            </View>
-          )}
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingLeft: 10,
-              alignItems: 'center',
-            }}
-          >
-            {gRunner.isLock ? (
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-lock' : 'ios-lock'}
-                size={20}
-                color={Colors.delayRed}
+    <ErrorBoundry>
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <Card style={styles.card}>
+          <ScrollView>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={{ uri: gRunner.profileImageUrl }}
               />
+            </View>
+            <Text style={styles.gRunnerName}>{full_name}</Text>
+            {gRunner.currentStatus === 'online' ? (
+              <View style={styles.status}>
+                <Text
+                  style={{
+                    color: 'green',
+                    textAlign: 'center',
+                    fontFamily: 'dm-sans-boldItalic',
+                    paddingTop: 4,
+                    fontSize: 18,
+                  }}
+                >
+                  {gRunner.currentStatus}
+                </Text>
+              </View>
             ) : (
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-unlock' : 'ios-unlock'}
-                size={20}
-                color='green'
-              />
+              <View style={styles.status}>
+                <Text
+                  style={{
+                    color: 'red',
+                    textAlign: 'center',
+                    fontFamily: 'dm-sans-bold',
+                    paddingTop: 4,
+                    fontSize: 18,
+                  }}
+                >
+                  {gRunner.currentStatus}
+                </Text>
+              </View>
             )}
-            {gRunner.isLock ? (
-              <Text style={(styles.isLock, { color: Colors.delayRed })}>
-                {' '}
-                Locked
-              </Text>
-            ) : (
-              <Text style={(styles.isLock, { color: 'green' })}> Unlocked</Text>
-            )}
-          </View>
-          <Text style={styles.description}>
-            <B style={{ color: 'black', fontSize: 14 }}>Courier id: </B>
-            {gRunner.publicCourierId}
-          </Text>
-          <View style={styles.buttonContainer}>
-            <StyledButton
-              style={styles.button}
-              onPress={() => {
-                selectItemHandler(gRunner.courierId);
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingLeft: 10,
+                alignItems: 'center',
               }}
             >
-              Payment History
-            </StyledButton>
-          </View>
-        </ScrollView>
-      </Card>
-    </LinearGradient>
+              {gRunner.isLock ? (
+                <Ionicons
+                  name={Platform.OS === 'android' ? 'md-lock' : 'ios-lock'}
+                  size={20}
+                  color={Colors.delayRed}
+                />
+              ) : (
+                <Ionicons
+                  name={Platform.OS === 'android' ? 'md-unlock' : 'ios-unlock'}
+                  size={20}
+                  color='green'
+                />
+              )}
+              {gRunner.isLock ? (
+                <Text style={(styles.isLock, { color: Colors.delayRed })}>
+                  {' '}
+                  Locked
+                </Text>
+              ) : (
+                <Text style={(styles.isLock, { color: 'green' })}>
+                  {' '}
+                  Unlocked
+                </Text>
+              )}
+            </View>
+            <Text style={styles.description}>
+              <B style={{ color: 'black', fontSize: 14 }}>Courier id: </B>
+              {gRunner.publicCourierId}
+            </Text>
+            <View style={styles.buttonContainer}>
+              <StyledButton
+                style={styles.button}
+                onPress={() => {
+                  selectItemHandler(gRunner.courierId);
+                }}
+              >
+                Payment History
+              </StyledButton>
+            </View>
+          </ScrollView>
+        </Card>
+      </LinearGradient>
+    </ErrorBoundry>
   );
 };
 

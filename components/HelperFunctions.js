@@ -1,5 +1,4 @@
-import React from 'react';
-import store from '../store';
+// import store from '../store';
 
 var moment = require('moment-timezone');
 
@@ -50,30 +49,4 @@ export const properTimeFunc = (ordersArr) => {
   }
 
   return properTimeArr;
-};
-
-function getCity(zone) {
-  let city_zones = store.getState().gRunners.city_zones;
-
-  for (cityId in city_zones) {
-    var cityMiniZones = city_zones[cityId];
-    if (cityMiniZones.includes(zone)) {
-      return cityId;
-    }
-  }
-  return null;
-}
-
-export const mapCityToGRunner = (grunnersArr) => {
-  var mappedArr = [];
-
-  for (grunner of grunnersArr) {
-    var zone = grunner[`current_zone`];
-    var city = getCity(zone);
-    var gRunnerData = grunner;
-    gRunnerData['city'] = city;
-    mappedArr.push(gRunnerData);
-  }
-
-  return mappedArr;
 };

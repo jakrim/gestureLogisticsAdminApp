@@ -15,7 +15,7 @@ import LogoTitle from '../components/LogoTitle';
 import GRunnerModal from '../components/GRunnerModal';
 import { Ionicons } from '@expo/vector-icons';
 import * as gRunnerActions from '../store/actions/gRunner';
-import ErrorBoundary from '../components/ErrorBoundary';
+import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 import GrunnerItem from '../components/GrunnerItem';
 import Colors from '../constants/Colors';
 import { GrunnerFiltersContext } from '../components/FiltersContext';
@@ -37,8 +37,11 @@ const GRunnersScreen = (props) => {
     // setIsLoading(true);
     setIsRefreshing(true);
     try {
-      await dispatch(gRunnerActions.fetchGrunners(gfilters));
-      await dispatch(gRunnerActions.fetchZones());
+      await dispatch(gRunnerActions.fetchZones())
+        .then(() => {
+          dispatch(gRunnerActions.fetchGrunners(gfilters));
+        })
+        .catch((err) => console.log(err));
     } catch (err) {
       setError(err.message);
       // setIsLoading(false);
@@ -59,9 +62,13 @@ const GRunnersScreen = (props) => {
     let effect = true;
     if (effect) {
       setIsLoading(true);
-      loadGrunners().then(() => {
-        setIsLoading(false);
-      });
+      loadGrunners()
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          throwError(new Error('Asynchronous error'));
+        });
     }
     return () => (effect = false);
   }, [dispatch, loadGrunners, setIsLoading]);
@@ -83,16 +90,16 @@ const GRunnersScreen = (props) => {
             <Text
               style={{
                 fontSize: 20,
-                color: Colors.darkPurp,
+                color: Colors.accentColor,
               }}
             >
               An error occurred!
             </Text>
             {!isLoading ? (
               <Button
-                title='Try again'
+                title='Press to try again'
                 onPress={loadGrunners}
-                color={Colors.LightColorText}
+                color={Colors.backgroundFeed}
               />
             ) : (
               <BallIndicator color={Colors.LightColorText} />

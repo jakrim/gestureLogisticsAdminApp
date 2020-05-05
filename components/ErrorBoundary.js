@@ -3,12 +3,12 @@ class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false
+      hasError: false,
     };
   }
   static getDerivedStateFromError(error) {
     return {
-      hasError: true
+      hasError: true,
     };
   }
   render() {
@@ -19,3 +19,15 @@ class ErrorBoundary extends Component {
   }
 }
 export default ErrorBoundary;
+
+export const useAsyncError = () => {
+  const [_, setError] = React.useState();
+  return React.useCallback(
+    (e) => {
+      setError(() => {
+        throw e;
+      });
+    },
+    [setError]
+  );
+};

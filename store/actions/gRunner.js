@@ -7,7 +7,8 @@ export const SET_FILTERS = 'SET_FILTERS';
 export const FETCH_ZONES = 'FETCH_ZONES';
 
 export const fetchGrunners = (gfilters) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    let city_zones = getState().gRunners.city_zones;
     try {
       const response = await fetch(
         'https://us-central1-gesture-dev.cloudfunctions.net/logisticsGRunners'
@@ -35,6 +36,30 @@ export const fetchGrunners = (gfilters) => {
             gRunners[key].public_courier_id
           )
         );
+      }
+
+      function getCity(zone) {
+        for (cityId in city_zones) {
+          var cityMiniZones = city_zones[cityId];
+          if (cityMiniZones.includes(zone)) {
+            return cityId;
+          }
+        }
+        return null;
+      }
+
+      function mapCityToGRunner(grunnersArr) {
+        var mappedArr = [];
+
+        for (gRunner of grunnersArr) {
+          var zone = gRunner[`current_zone`];
+          var city = getCity(zone);
+          var gRunnerData = gRunner;
+          gRunnerData['city'] = city;
+          mappedArr.push(gRunnerData);
+        }
+
+        return mappedArr;
       }
 
       let mappedGrunners = mapCityToGRunner(loadGrunners);

@@ -8,6 +8,7 @@ import Colors from '../constants/Colors';
 import { useSelector, useDispatch } from 'react-redux';
 import * as paymentActions from '../store/actions/payments';
 import PaymentItem from '../components/PaymentItem';
+import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 
 const PaymentHistoryScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,9 +43,13 @@ const PaymentHistoryScreen = (props) => {
 
   useEffect(() => {
     setIsLoading(true);
-    loadPayments().then(() => {
-      setIsLoading(false);
-    });
+    loadPayments()
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        throwError(new Error('Asynchronous error'));
+      });
   }, [dispatch, loadPayments]);
 
   if (error) {

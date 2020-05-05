@@ -14,7 +14,7 @@ import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 import LogoTitle from '../components/LogoTitle';
 import OrdersModal from '../components/OrdersModal';
 import { Ionicons } from '@expo/vector-icons';
-import ErrorBoundary from '../components/ErrorBoundary';
+import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 import StyledButton from '../components/StyledButton';
 import * as ordersActions from '../store/actions/orders';
 import OrderItem from '../components/OrderItem';
@@ -59,9 +59,13 @@ const OrdersScreen = (props) => {
     let effect = true;
     if (effect) {
       setIsLoading(true);
-      loadOrders().then(() => {
-        setIsLoading(false);
-      });
+      loadOrders()
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          throwError(new Error('Asynchronous error'));
+        });
     }
     return () => (effect = false);
   }, [dispatch, loadOrders]);

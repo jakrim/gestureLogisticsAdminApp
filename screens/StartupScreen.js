@@ -26,14 +26,14 @@ const StartupScreen = (props) => {
 
       const expirationDate = new Date(expiryDate);
 
-      if (expirationDate <= new Date() || !token || !userId) {
-        dispatch(authActions.setDidTryAL());
-        return;
-      }
+      // if (expirationDate <= new Date() || !token || !userId) {
+      //   dispatch(authActions.setDidTryAL());
+      //   return;
+      // }
 
-      const expirationTime = expirationDate.getTime() - new Date().getTime();
+      // const expirationTime = expirationDate.getTime() - new Date().getTime();
 
-      dispatch(authActions.signedIn(userId, token, expirationTime));
+      dispatch(authActions.signedIn(userId, token));
     };
 
     tryLogin();

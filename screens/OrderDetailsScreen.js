@@ -34,6 +34,10 @@ const OrderDetailsScreen = (props) => {
     TouchableComp = TouchableNativeFeedback;
   }
 
+  const B = (props) => (
+    <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
+  );
+
   return (
     <LinearGradient
       colors={[Colors.primaryColor, Colors.lightTeal]}
@@ -53,7 +57,10 @@ const OrderDetailsScreen = (props) => {
               <Text style={styles.textHeader}>Delivery Item</Text>
               {selectedOrder.schedule == null ? (
                 <Text
-                  style={(styles.scheduledTime, { color: Colors.accentColor })}
+                  style={
+                    (styles.scheduledTime,
+                    { color: Colors.accentColor, fontSize: 18 })
+                  }
                 >
                   On Demand
                 </Text>
@@ -245,10 +252,11 @@ const OrderDetailsScreen = (props) => {
 
           <View style={styles.orderDetailsContainer}>
             <Text style={styles.recipientRow}>
-              Order Placed: {MillisToDate(selectedOrder.time_order_placed)}
+              <B>Order Placed: </B>
+              {MillisToDate(selectedOrder.time_order_placed)}
             </Text>
             <Text style={styles.recipientRow}>
-              Order ID: {selectedOrder.order_ID}
+              <B>Order ID:</B> {selectedOrder.order_ID}
             </Text>
           </View>
           <StyledButton style={styles.button1}>DELAY</StyledButton>
