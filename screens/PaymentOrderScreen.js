@@ -6,7 +6,6 @@ import {
   Button,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Linking,
   Platform,
   StyleSheet,
 } from 'react-native';
@@ -77,262 +76,270 @@ const PaymentOrderScreen = (props) => {
 
   if (error) {
     return (
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <View style={styles.centered}>
-          <Text
-            style={{
-              fontSize: 20,
-              color: Colors.darkPurp,
-            }}
-          >
-            An error occurred!
-          </Text>
-          {!isLoading ? (
-            <Button
-              title='Try again'
-              onPress={loadOrder}
-              color={Colors.LightColorText}
-            />
-          ) : (
-            <BallIndicator color={Colors.LightColorText} />
-          )}
-        </View>
-      </LinearGradient>
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: Colors.darkPurp,
+              }}
+            >
+              An error occurred!
+            </Text>
+            {!isLoading ? (
+              <Button
+                title='Try again'
+                onPress={loadOrder}
+                color={Colors.LightColorText}
+              />
+            ) : (
+              <BallIndicator color={Colors.LightColorText} />
+            )}
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
     );
   }
 
   if (isLoading) {
     return (
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <View style={styles.centered}>
-          <BallIndicator color={Colors.backgroundFeed} />
-        </View>
-      </LinearGradient>
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <BallIndicator color={Colors.backgroundFeed} />
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
     );
   }
 
   return (
-    <LinearGradient
-      colors={[Colors.primaryColor, Colors.lightTeal]}
-      style={styles.gradient}
-    >
-      <Card style={styles.card}>
-        <ScrollView>
-          {/* BEGIN PRODUCT STYLES/VIEW */}
-          <View style={styles.productContainer}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-              }}
-            >
-              <Text style={styles.textHeader}>Delivery Item</Text>
-              {/* {!!selectedOrder.schedule ? (
-                <Text style={styles.scheduledTime}>Scheduled</Text>
-              ) : (
-                <Text
-                  style={(styles.scheduledTime, { color: Colors.accentColor })}
-                >
-                  On Demand
-                </Text>
-              )} */}
+    <ErrorBoundary>
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <Card style={styles.card}>
+          <ScrollView>
+            {/* BEGIN PRODUCT STYLES/VIEW */}
+            <View style={styles.productContainer}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'baseline',
+                }}
+              >
+                <Text style={styles.textHeader}>Delivery Item</Text>
+                {!!order.schedule ? (
+                  <Text style={styles.scheduledTime}>Scheduled</Text>
+                ) : (
+                  <Text
+                    style={
+                      (styles.scheduledTime, { color: Colors.accentColor })
+                    }
+                  >
+                    On Demand
+                  </Text>
+                )}
+              </View>
+              <Text style={styles.product}>
+                <Text style={styles.accent}>Product: </Text>
+                {order.product_name}
+              </Text>
+              <Text style={styles.product}>
+                <Text style={styles.accent}>Category: </Text>
+                {order.category_name}
+              </Text>
             </View>
-            <Text style={styles.product}>
-              <Text style={styles.accent}>Product: </Text>
-              {order.product_name}
-            </Text>
-            <Text style={styles.product}>
-              <Text style={styles.accent}>Category: </Text>
-              {order.category_name}
-            </Text>
-          </View>
-          {/* {!!order.schedule ? (
-            <Text style={styles.scheduledTime}>
-              Scheduled For: {MillisToDate(order.schedule)}
-            </Text>
-          ) : null} */}
-
-          {/* BEGIN RECIPIENT STYLES/VIEW */}
-          <Text style={styles.textHeader}>Delivering To</Text>
-          <View style={styles.recipientContainer}>
-            <Text style={styles.recipientRow}>
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
-                size={24}
-                color={Colors.primaryColor}
-                style={styles.callTxt}
-              />
-              <Text
-                style={{
-                  color: Colors.primaryColor,
-                }}
-              >
-                {'  '}
-                {order.recipient_name}
+            {!!order.schedule ? (
+              <Text style={styles.scheduledTime}>
+                Scheduled For: {MillisToDate(order.schedule)}
               </Text>
-            </Text>
-            <TouchableComp
-              onPress={() => makeCall(order.recipient_phone_number)}
-              activeOpacity={0.7}
-            >
+            ) : null}
+
+            {/* BEGIN RECIPIENT STYLES/VIEW */}
+            <Text style={styles.textHeader}>Delivering To</Text>
+            <View style={styles.recipientContainer}>
               <Text style={styles.recipientRow}>
                 <Ionicons
-                  name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
+                  name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
                   size={24}
                   color={Colors.primaryColor}
                   style={styles.callTxt}
                 />
-                <Text style={{ color: '#0644AD', fontSize: 18 }}>
+                <Text
+                  style={{
+                    color: Colors.primaryColor,
+                  }}
+                >
                   {'  '}
-                  {order.recipient_phone_number}
+                  {order.recipient_name}
                 </Text>
               </Text>
-            </TouchableComp>
-            <TouchableComp
-              onPress={() => {
-                sendEmail(
-                  `${order.recipient_email}`,
-                  `Here's an example SUBJECT`,
-                  `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
-                  { cc: 'daniel@yourgesture.com' }
-                ).then(() => {
-                  console.log('Your email was successfully sent!');
-                });
-              }}
-              activeOpacity={0.7}
-            >
+              <TouchableComp
+                onPress={() => makeCall(order.recipient_phone_number)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.recipientRow}>
+                  <Ionicons
+                    name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
+                    size={24}
+                    color={Colors.primaryColor}
+                    style={styles.callTxt}
+                  />
+                  <Text style={{ color: '#0644AD', fontSize: 18 }}>
+                    {'  '}
+                    {order.recipient_phone_number}
+                  </Text>
+                </Text>
+              </TouchableComp>
+              <TouchableComp
+                onPress={() => {
+                  sendEmail(
+                    `${order.recipient_email}`,
+                    `Here's an example SUBJECT`,
+                    `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
+                    { cc: 'daniel@yourgesture.com' }
+                  ).then(() => {
+                    console.log('Your email was successfully sent!');
+                  });
+                }}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.recipientRow}>
+                  <Ionicons
+                    name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
+                    size={24}
+                    color={Colors.primaryColor}
+                    style={styles.callTxt}
+                  />
+                  <Text style={{ color: '#0644AD', fontSize: 18 }}>
+                    {'  '}
+                    {order.recipient_email}
+                  </Text>
+                </Text>
+              </TouchableComp>
               <Text style={styles.recipientRow}>
                 <Ionicons
-                  name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
+                  name={Platform.OS === 'android' ? 'md-pin' : 'ios-pin'}
                   size={24}
                   color={Colors.primaryColor}
                   style={styles.callTxt}
                 />
-                <Text style={{ color: '#0644AD', fontSize: 18 }}>
-                  {'  '}
-                  {order.recipient_email}
+                <Text
+                  style={{
+                    color: Colors.primaryColor,
+                  }}
+                >
+                  {'   '}
+                  {order.address_string} ~ {order.address_string_2}
                 </Text>
               </Text>
-            </TouchableComp>
-            <Text style={styles.recipientRow}>
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-pin' : 'ios-pin'}
-                size={24}
-                color={Colors.primaryColor}
-                style={styles.callTxt}
-              />
-              <Text
-                style={{
-                  color: Colors.primaryColor,
-                }}
-              >
-                {'   '}
-                {order.address_string} ~ {order.address_string_2}
-              </Text>
-            </Text>
 
-            <Text style={styles.recipientRow}>
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-locate' : 'ios-locate'}
-                size={22}
-                color={Colors.primaryColor}
-                style={styles.callTxt}
-              />
-              <Text
-                style={{
-                  color: Colors.primaryColor,
-                }}
-              >
-                {'  '}
-                {order.delivery_note}
-              </Text>
-            </Text>
-          </View>
-
-          {/* BEGIN SENDER STYLES/VIEW */}
-          <Text style={styles.textHeader}>Sender</Text>
-          <View style={styles.recipientContainer}>
-            <Text style={styles.recipientRow}>
-              <Ionicons
-                name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
-                size={24}
-                color={Colors.primaryColor}
-                style={styles.callTxt}
-              />
-              <Text
-                style={{
-                  color: Colors.primaryColor,
-                }}
-              >
-                {'  '}
-                {order.sender_name}
-              </Text>
-            </Text>
-
-            <TouchableComp
-              onPress={() => makeCall(order.recipient_phone_number)}
-              activeOpacity={0.7}
-            >
               <Text style={styles.recipientRow}>
                 <Ionicons
-                  name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
+                  name={Platform.OS === 'android' ? 'md-locate' : 'ios-locate'}
+                  size={22}
+                  color={Colors.primaryColor}
+                  style={styles.callTxt}
+                />
+                <Text
+                  style={{
+                    color: Colors.primaryColor,
+                  }}
+                >
+                  {'  '}
+                  {order.delivery_note}
+                </Text>
+              </Text>
+            </View>
+
+            {/* BEGIN SENDER STYLES/VIEW */}
+            <Text style={styles.textHeader}>Sender</Text>
+            <View style={styles.recipientContainer}>
+              <Text style={styles.recipientRow}>
+                <Ionicons
+                  name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
                   size={24}
                   color={Colors.primaryColor}
                   style={styles.callTxt}
                 />
-                <Text style={{ color: '#0644AD', fontSize: 18 }}>
+                <Text
+                  style={{
+                    color: Colors.primaryColor,
+                  }}
+                >
                   {'  '}
-                  {order.sender_phone_number}
+                  {order.sender_name}
                 </Text>
               </Text>
-            </TouchableComp>
-            <TouchableComp
-              onPress={() => {
-                sendEmail(
-                  `${order.recipient_email}`,
-                  `Here's an example SUBJECT`,
-                  `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
-                  { cc: 'daniel@yourgesture.com' }
-                ).then(() => {
-                  console.log('Your email was successfully sent!');
-                });
-              }}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.recipientRow}>
-                <Ionicons
-                  name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
-                  size={24}
-                  color={Colors.primaryColor}
-                  style={styles.callTxt}
-                />
-                <Text style={{ color: '#0644AD', fontSize: 18 }}>
-                  {'  '}
-                  {order.sender_email}
-                </Text>
-              </Text>
-            </TouchableComp>
-          </View>
-          {/* Order Details */}
-          <Text style={styles.textHeader}>Order Details</Text>
 
-          <View style={styles.orderDetailsContainer}>
-            <Text style={styles.recipientRow}>Order ID: {order.orderId}</Text>
-            <Text style={styles.recipientRow}>
-              Order Placed: {MillisToDate(order.time_order_placed)}
-            </Text>
-          </View>
-          <StyledButton style={styles.button}>DELAY</StyledButton>
-        </ScrollView>
-      </Card>
-    </LinearGradient>
+              <TouchableComp
+                onPress={() => makeCall(order.recipient_phone_number)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.recipientRow}>
+                  <Ionicons
+                    name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
+                    size={24}
+                    color={Colors.primaryColor}
+                    style={styles.callTxt}
+                  />
+                  <Text style={{ color: '#0644AD', fontSize: 18 }}>
+                    {'  '}
+                    {order.sender_phone_number}
+                  </Text>
+                </Text>
+              </TouchableComp>
+              <TouchableComp
+                onPress={() => {
+                  sendEmail(
+                    `${order.recipient_email}`,
+                    `Here's an example SUBJECT`,
+                    `Hey this is Eugene with Gesture, your order is going to be a little bit delayed. Our sincere apologies.`,
+                    { cc: 'daniel@yourgesture.com' }
+                  ).then(() => {
+                    console.log('Your email was successfully sent!');
+                  });
+                }}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.recipientRow}>
+                  <Ionicons
+                    name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
+                    size={24}
+                    color={Colors.primaryColor}
+                    style={styles.callTxt}
+                  />
+                  <Text style={{ color: '#0644AD', fontSize: 18 }}>
+                    {'  '}
+                    {order.sender_email}
+                  </Text>
+                </Text>
+              </TouchableComp>
+            </View>
+            {/* Order Details */}
+            <Text style={styles.textHeader}>Order Details</Text>
+
+            <View style={styles.orderDetailsContainer}>
+              <Text style={styles.recipientRow}>Order ID: {order.orderId}</Text>
+              <Text style={styles.recipientRow}>
+                Order Placed: {MillisToDate(order.time_order_placed)}
+              </Text>
+            </View>
+            <StyledButton style={styles.button}>DELAY</StyledButton>
+          </ScrollView>
+        </Card>
+      </LinearGradient>
+    </ErrorBoundary>
   );
 };
 

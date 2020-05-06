@@ -17,15 +17,9 @@ const OrdersModal = (props) => {
   const [isCity, setIsCity] = useState(false);
   const [filterOption, setFilterOption] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
-  const { filters, setFilters } = useContext(OrderFiltersContext);
+  const { setFilters } = useContext(OrderFiltersContext);
 
   const saveFilters = useCallback(() => {
-    const initialState = {
-      isCity: false,
-      cities: [],
-      filter: 'noFilter',
-    };
-    // setIsLoading(true);
     const appliedFilters = {
       isCity: isCity,
       cities: selectedCities,
@@ -40,7 +34,6 @@ const OrdersModal = (props) => {
     }
     setIsCity(false);
     setSelectedCities([]);
-    // setIsLoading(false);
   }, [isCity, filterOption, selectedCities, dispatch]);
 
   return (
@@ -79,7 +72,6 @@ const OrdersModal = (props) => {
                 }}
                 isParentScrollDisabled={false}
                 onStatusChanged={(filter) => {
-                  console.log('OrdersModal -> filter', filter);
                   setFilterOption(filter);
                 }}
                 disableSwitch={false}
@@ -88,7 +80,6 @@ const OrdersModal = (props) => {
                 style={{
                   width: 200,
                   marginTop: 10,
-                  justifyContent: 'space-between',
                 }}
               >
                 <FilterSwitch
@@ -97,14 +88,16 @@ const OrdersModal = (props) => {
                   onChange={() => setIsCity(!isCity)}
                 />
               </View>
-              {isCity ? (
-                <CitySelector
-                  setSelectedCities={setSelectedCities}
-                  selectedCities={selectedCities}
-                />
-              ) : (
-                <></>
-              )}
+              <View style={styles.cities}>
+                {isCity ? (
+                  <CitySelector
+                    setSelectedCities={setSelectedCities}
+                    selectedCities={selectedCities}
+                  />
+                ) : (
+                  <></>
+                )}
+              </View>
               <View>
                 <StyledButton
                   style={{ backgroundColor: Colors.accentColor }}
@@ -139,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: 'black',
     shadowOffset: {
-      width: 4,
+      width: 5,
       height: 8,
     },
     shadowOpacity: 0.25,
@@ -151,6 +144,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 15,
     textAlign: 'center',
+  },
+  cities: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 

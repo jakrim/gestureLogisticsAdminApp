@@ -1,5 +1,7 @@
 import { SET_GRUNNERS, SET_GRUNNER, FETCH_ZONES } from '../actions/gRunner';
 
+import { makeLowercaseCities } from '../../components/HelperFunctions';
+
 const initialState = {
   gRunners: [],
   gRunner: [],
@@ -12,9 +14,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_GRUNNERS:
       const appliedFilters = action.filters;
-      console.log('city_zones', action.city_zones);
-      console.log('appliedFilters', appliedFilters);
-      console.log('appliedFilters -> Cities', appliedFilters.cities);
+
       if (appliedFilters === undefined || appliedFilters === {}) {
         return {
           ...state,
@@ -22,7 +22,6 @@ export default (state = initialState, action) => {
         };
       } else {
         const filteredGrunners = action.gRunners.filter((gRunner) => {
-          // console.log('order.city', order.city);
           if (appliedFilters.isCity) {
             if (
               appliedFilters.cities.length === 0 ||
@@ -30,7 +29,8 @@ export default (state = initialState, action) => {
             ) {
               return false;
             }
-            if (!appliedFilters.cities.includes(gRunner.city)) {
+            let mappedCities = makeLowercaseCities(appliedFilters.cities);
+            if (!mappedCities.includes(gRunner.city)) {
               return false;
             }
           }

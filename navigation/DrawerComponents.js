@@ -1,29 +1,17 @@
-import React, { useState } from 'react';
-import {
-  Platform,
-  SafeAreaView,
-  TouchableOpacity,
-  Text,
-  Button,
-  Image,
-  TouchableHighlight,
-  View,
-  Modal,
-  StyleSheet
-} from 'react-native';
+import React from 'react';
+import { Platform, SafeAreaView, Button, Image, View } from 'react-native';
 import { DrawerItem } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 
-import LogoTitle from '../components/LogoTitle';
 import Colors from '../constants/Colors';
 import { useDispatch } from 'react-redux';
 import * as authActions from '../store/actions/auth';
 
-export const LogoComponent = props => (
+export const LogoComponent = (props) => (
   <View
     style={{
       alignItems: 'center',
-      ...props.style
+      ...props.style,
     }}
   >
     <Image
@@ -31,13 +19,13 @@ export const LogoComponent = props => (
       style={{
         width: 120,
         height: 130,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
       }}
       source={require('../assets/gesture-icon.png')}
     />
   </View>
 );
-export const LogoutComponent = props => {
+export const LogoutComponent = (props) => {
   const dispatch = useDispatch();
   return (
     <View
@@ -45,7 +33,7 @@ export const LogoutComponent = props => {
         flex: 1,
         paddingBottom: 50,
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <SafeAreaView
@@ -53,14 +41,13 @@ export const LogoutComponent = props => {
         forceInset={{ top: 'always', horizontal: 'never' }}
       >
         <DrawerItem
-          label={({ focused, color }) => (
+          label={() => (
             <View style={{ width: 100 }}>
               <Button
                 title='Logout'
                 color={Colors.darkTeal}
                 onPress={() => {
                   dispatch(authActions.logout());
-                  // props.navigation.navigate('SignIn', { screen: 'Login' });
                 }}
               />
             </View>

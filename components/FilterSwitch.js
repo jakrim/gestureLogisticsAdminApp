@@ -24,13 +24,14 @@ const styles = StyleSheet.create({
   textSwitch: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   filterContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    // justifyContent: 'space-around',
+    // alignItems: 'flex-start',
     width: '100%',
   },
 });

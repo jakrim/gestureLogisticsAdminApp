@@ -1,4 +1,3 @@
-import React from 'react';
 import { Linking } from 'react-native';
 import qs from 'qs';
 
@@ -12,7 +11,7 @@ export default async function sendEmail(to, subject, body, options = {}) {
     subject: subject,
     body: body,
     cc: cc,
-    bcc: bcc
+    bcc: bcc,
   });
 
   if (query.length) {

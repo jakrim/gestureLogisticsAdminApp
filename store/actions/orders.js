@@ -1,15 +1,12 @@
 import { Order } from '../../models/Order';
 
-import { properTimeFunc } from '../../components/HelperFunctions';
+import { properTimeFunc, mapCities } from '../../components/HelperFunctions';
 
 export const SET_ORDERS = 'SET_ORDERS';
 export const SET_ORDER = 'SET_ORDER';
 export const SET_FILTERS = 'SET_FILTERS';
 export const FETCH_ZONES = 'FETCH_ZONES';
 export const RESET_FILTERS = 'RESET_FILTERS';
-// export const ADD_CITY = 'ADD_CITY';
-// export const REMOVE_CITY = 'REMOVE_CITY';
-// export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 
 export const fetchOrders = (filters) => {
   return async (dispatch) => {
@@ -125,9 +122,11 @@ export const fetchZones = () => {
       const resData = await response.json();
 
       const cities = resData.result.data.cities.split(',');
+      let finalCities = mapCities(cities);
+
       const zones = resData.result.data.city_zones;
 
-      dispatch({ type: FETCH_ZONES, zones: zones, cities: cities });
+      dispatch({ type: FETCH_ZONES, zones: zones, cities: finalCities });
     } catch (err) {
       console.log('Error in fetching zones!', err);
     }

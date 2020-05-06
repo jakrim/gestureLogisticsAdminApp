@@ -3,15 +3,13 @@ import {
   ScrollView,
   Text,
   View,
-  Button,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Linking,
   Platform,
   StyleSheet,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';

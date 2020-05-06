@@ -2,7 +2,7 @@ import {
   SIGNEDIN,
   AUTHENTICATE,
   LOGOUT,
-  SET_DID_TRY_AL
+  SET_DID_TRY_AL,
 } from '../actions/auth';
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
   token: null,
   userId: null,
   message: null,
-  didTryAutoLogin: false
+  didTryAutoLogin: false,
 };
 
 export default (state = initialState, action) => {
@@ -19,23 +19,23 @@ export default (state = initialState, action) => {
       return {
         token: action.token,
         userId: action.userId,
-        didTryAutoLogin: true
+        didTryAutoLogin: true,
       };
     case SET_DID_TRY_AL:
       return {
         ...state,
-        didTryAutoLogin: true
+        didTryAutoLogin: true,
       };
     case AUTHENTICATE:
       return {
         ...state,
         message: action.message,
-        didTryAutoLogin: true
+        didTryAutoLogin: true,
       };
     case LOGOUT:
       return {
         ...initialState,
-        didTryAutoLogin: true
+        didTryAutoLogin: true,
       };
     default:
       return state;

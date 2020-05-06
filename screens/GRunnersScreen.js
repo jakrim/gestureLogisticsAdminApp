@@ -1,11 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-} from 'react';
-import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { Text, View, Button, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
@@ -28,15 +22,15 @@ const GRunnersScreen = (props) => {
   const dispatch = useDispatch();
   const gRunners = useSelector((state) => state.gRunners.gRunners);
 
-  const { gfilters, setGFilters } = useContext(GrunnerFiltersContext);
+  const { gfilters } = useContext(GrunnerFiltersContext);
 
   const { navigation } = props;
 
   const loadGrunners = useCallback(async () => {
     setError(null);
-    // setIsLoading(true);
     setIsRefreshing(true);
     try {
+      setIsLoading(true);
       await dispatch(gRunnerActions.fetchZones())
         .then(() => {
           dispatch(gRunnerActions.fetchGrunners(gfilters));
@@ -44,10 +38,10 @@ const GRunnersScreen = (props) => {
         .catch((err) => console.log(err));
     } catch (err) {
       setError(err.message);
-      // setIsLoading(false);
     }
+    setIsLoading(false);
     setIsRefreshing(false);
-  }, [dispatch, gfilters, setIsRefreshing, setError]);
+  }, [dispatch, gfilters, setIsLoading, setIsRefreshing, setError]);
 
   useEffect(() => {
     let mount = true;
@@ -55,7 +49,9 @@ const GRunnersScreen = (props) => {
       navigation.addListener('focus', loadGrunners);
     }
 
-    return () => (mount = false);
+    return () => {
+      mount = false;
+    };
   }, [navigation, loadGrunners]);
 
   useEffect(() => {

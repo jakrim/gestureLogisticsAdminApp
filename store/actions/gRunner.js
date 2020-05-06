@@ -1,5 +1,5 @@
-import { Grunners, Grunner } from '../../models/Grunners';
-import { mapCityToGRunner } from '../../components/HelperFunctions';
+import { Grunners } from '../../models/Grunners';
+import { mapCities } from '../../components/HelperFunctions';
 
 export const SET_GRUNNERS = 'SET_GRUNNERS';
 export const SET_GRUNNER = 'SET_GRUNNER';
@@ -114,12 +114,14 @@ export const fetchZones = () => {
       const resData = await response.json();
 
       const cities = resData.result.data.cities.split(',');
+      let finalCities = mapCities(cities);
+
       const city_zones = resData.result.data.city_zones;
 
       dispatch({
         type: FETCH_ZONES,
         city_zones: city_zones,
-        cities: cities,
+        cities: finalCities,
       });
     } catch (err) {
       console.log('Error in fetching zones!', err);

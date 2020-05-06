@@ -11,7 +11,6 @@ import * as authActions from '../store/actions/auth';
 import Colors from '../constants/Colors';
 
 const StartupScreen = (props) => {
-  const { navigation } = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,16 +21,7 @@ const StartupScreen = (props) => {
         return;
       }
       const transformedData = JSON.parse(userData);
-      const { token, userId, expiryDate } = transformedData;
-
-      const expirationDate = new Date(expiryDate);
-
-      // if (expirationDate <= new Date() || !token || !userId) {
-      //   dispatch(authActions.setDidTryAL());
-      //   return;
-      // }
-
-      // const expirationTime = expirationDate.getTime() - new Date().getTime();
+      const { token, userId } = transformedData;
 
       dispatch(authActions.signedIn(userId, token));
     };

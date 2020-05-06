@@ -16,10 +16,9 @@ const OrdersModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isCity, setIsCity] = useState(false);
   const [hasCurrentOrder, setHasCurrentOrder] = useState(false);
-  console.log('OrdersModal -> hasCurrentOrder', hasCurrentOrder);
   const [filterOption, setFilterOption] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]);
-  const { gFilters, setGFilters } = useContext(GrunnerFiltersContext);
+  const { setGFilters } = useContext(GrunnerFiltersContext);
 
   const saveFilters = useCallback(() => {
     const initialState = {
@@ -35,7 +34,7 @@ const OrdersModal = (props) => {
       cities: selectedCities,
       filter: filterOption,
     };
-    console.log('saveFilters -> appliedFilters', appliedFilters);
+    // console.log('saveFilters -> appliedFilters', appliedFilters);
 
     try {
       setModalVisible(!modalVisible);
@@ -47,12 +46,6 @@ const OrdersModal = (props) => {
     setIsCity(false);
     setSelectedCities([]);
   }, [isCity, filterOption, hasCurrentOrder, selectedCities, dispatch]);
-
-  // const resetFilters = (state) => {
-  //   if (!modalVisible) {
-  //     setFilterObj(state);
-  //   }
-  // };
 
   return (
     <ErrorBoundary>
@@ -89,7 +82,6 @@ const OrdersModal = (props) => {
                 }}
                 isParentScrollDisabled={false}
                 onStatusChanged={(filter) => {
-                  console.log('filter', filter);
                   setFilterOption(filter);
                 }}
                 disableSwitch={false}

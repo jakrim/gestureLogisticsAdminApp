@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   TouchableNativeFeedback,
-  Platform
+  Platform,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
 
-const StyledButton = props => {
+const StyledButton = (props) => {
   let ButtonComponent = TouchableOpacity;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -31,20 +31,20 @@ const StyledButton = props => {
 const styles = StyleSheet.create({
   buttonContainer: {
     borderRadius: 25,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   button: {
     backgroundColor: Colors.primaryColor,
     paddingVertical: 12,
     paddingHorizontal: 30,
-    borderRadius: 25
+    borderRadius: 25,
   },
   buttonText: {
     color: 'white',
     fontFamily: 'dm-sans-regular',
     fontSize: 18,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default StyledButton;

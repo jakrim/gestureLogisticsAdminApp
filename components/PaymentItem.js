@@ -2,13 +2,11 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 import Card from './Card';
 import { MillisToDate, MillisToTime } from './HelperFunctions';

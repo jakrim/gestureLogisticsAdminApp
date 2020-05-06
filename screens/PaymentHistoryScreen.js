@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BallIndicator } from 'react-native-indicators';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
@@ -54,43 +54,47 @@ const PaymentHistoryScreen = (props) => {
 
   if (error) {
     return (
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <View style={styles.centered}>
-          <Text
-            style={{
-              fontSize: 20,
-              color: Colors.darkPurp,
-            }}
-          >
-            An error occurred!
-          </Text>
-          {!isLoading ? (
-            <Button
-              title='Try again'
-              onPress={loadPayments}
-              color={Colors.LightColorText}
-            />
-          ) : (
-            <BallIndicator color={Colors.LightColorText} />
-          )}
-        </View>
-      </LinearGradient>
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <Text
+              style={{
+                fontSize: 20,
+                color: Colors.darkPurp,
+              }}
+            >
+              An error occurred!
+            </Text>
+            {!isLoading ? (
+              <Button
+                title='Try again'
+                onPress={loadPayments}
+                color={Colors.LightColorText}
+              />
+            ) : (
+              <BallIndicator color={Colors.LightColorText} />
+            )}
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
     );
   }
 
   if (isLoading) {
     return (
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <View style={styles.centered}>
-          <BallIndicator color={Colors.backgroundFeed} />
-        </View>
-      </LinearGradient>
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <BallIndicator color={Colors.backgroundFeed} />
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
     );
   }
 
@@ -101,33 +105,35 @@ const PaymentHistoryScreen = (props) => {
   };
 
   return (
-    <LinearGradient
-      colors={[Colors.primaryColor, Colors.lightTeal]}
-      style={styles.gradient}
-    >
-      <OptimizedFlatList
-        scrollIndicatorInsets={{ right: 1 }}
-        showsVerticalScrollIndicator={false}
-        onRefresh={loadPayments}
-        refreshing={isRefreshing}
-        data={payments}
-        keyExtractor={(item) => `${item.orderId}`}
-        renderItem={(itemData) => (
-          <PaymentItem
-            product_name={itemData.item.product_name}
-            payment={itemData.item.payment}
-            bonus={itemData.item.bonus}
-            tip={itemData.item.tips}
-            orderId={itemData.item.orderId}
-            total_time={itemData.item.total_time}
-            completed_date_ms={itemData.item.completed_date_ms}
-            onSelect={() => {
-              selectItemHandler(itemData.item.orderId);
-            }}
-          ></PaymentItem>
-        )}
-      />
-    </LinearGradient>
+    <ErrorBoundary>
+      <LinearGradient
+        colors={[Colors.primaryColor, Colors.lightTeal]}
+        style={styles.gradient}
+      >
+        <OptimizedFlatList
+          scrollIndicatorInsets={{ right: 1 }}
+          showsVerticalScrollIndicator={false}
+          onRefresh={loadPayments}
+          refreshing={isRefreshing}
+          data={payments}
+          keyExtractor={(item) => `${item.orderId}`}
+          renderItem={(itemData) => (
+            <PaymentItem
+              product_name={itemData.item.product_name}
+              payment={itemData.item.payment}
+              bonus={itemData.item.bonus}
+              tip={itemData.item.tips}
+              orderId={itemData.item.orderId}
+              total_time={itemData.item.total_time}
+              completed_date_ms={itemData.item.completed_date_ms}
+              onSelect={() => {
+                selectItemHandler(itemData.item.orderId);
+              }}
+            ></PaymentItem>
+          )}
+        />
+      </LinearGradient>
+    </ErrorBoundary>
   );
 };
 

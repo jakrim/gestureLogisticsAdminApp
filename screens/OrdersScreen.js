@@ -1,11 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useContext,
-  useMemo,
-} from 'react';
-import { Text, View, Button, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
@@ -27,7 +21,7 @@ const OrdersScreen = (props) => {
   const [error, setError] = useState();
   const orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
-  const { filters, setFilters } = useContext(OrderFiltersContext);
+  const { filters } = useContext(OrderFiltersContext);
 
   const { navigation } = props;
 
