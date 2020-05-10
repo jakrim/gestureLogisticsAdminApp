@@ -1,6 +1,14 @@
 import React from 'react';
-import { View, Text, Switch, Platform, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Switch,
+  Platform,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import Colors from '../constants/Colors';
+const { width } = Dimensions.get('window');
 
 const FilterSwitch = (props) => {
   return (
@@ -9,12 +17,14 @@ const FilterSwitch = (props) => {
         <Text style={{ fontFamily: 'dm-sans-regularItalic' }} t>
           {props.label}
         </Text>
-        <Switch
-          trackColor={{ true: Colors.primaryColor }}
-          thumbColor={Platform.OS === 'android' ? Colors.primaryColor : ''}
-          value={props.state}
-          onValueChange={props.onChange}
-        />
+        <View style={{ alignItems: 'flex-end' }}>
+          <Switch
+            trackColor={{ true: Colors.primaryColor }}
+            thumbColor={Platform.OS === 'android' ? Colors.primaryColor : ''}
+            value={props.state}
+            onValueChange={props.onChange}
+          />
+        </View>
       </View>
     </View>
   );
@@ -29,10 +39,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   filterContainer: {
-    flexDirection: 'row',
-    // justifyContent: 'space-around',
-    // alignItems: 'flex-start',
-    width: '100%',
+    width: Platform.OS === 'android' ? '100%' : '100%',
+    paddingHorizontal: 5,
   },
 });
 

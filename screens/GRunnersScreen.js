@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as gRunnerActions from '../store/actions/gRunner';
 import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 import GrunnerItem from '../components/GrunnerItem';
+import Search from '../components/Search';
 import Colors from '../constants/Colors';
 import { GrunnerFiltersContext } from '../components/FiltersContext';
 import { capitalizeLetter } from '../components/HelperFunctions';
@@ -148,6 +149,7 @@ const GRunnersScreen = (props) => {
         colors={[Colors.primaryColor, Colors.lightTeal]}
         style={styles.gradient}
       >
+        <Search />
         <OptimizedFlatList
           scrollIndicatorInsets={{ right: 1 }}
           showsVerticalScrollIndicator={false}

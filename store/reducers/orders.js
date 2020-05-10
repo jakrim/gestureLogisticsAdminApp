@@ -3,6 +3,7 @@ import {
   SET_ORDER,
   FETCH_ZONES,
   RESET_FILTERS,
+  SEARCH_TEXT,
 } from '../actions/orders';
 
 import { makeLowercaseCities } from '../../components/HelperFunctions';
@@ -12,13 +13,13 @@ const initialState = {
   filters: [],
   order: [],
   zones: [],
+  searchValue: '',
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDERS:
       const appliedFilters = action.filters;
-
       if (appliedFilters === undefined || appliedFilters === {}) {
         return {
           ...state,
@@ -67,6 +68,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         filters: [],
+      };
+    case SEARCH_TEXT:
+      console.log('action.searchValue', state.searchValue);
+      return {
+        searchValue: action.searchValue,
       };
     default:
       return state;

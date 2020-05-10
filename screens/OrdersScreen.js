@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
+var _ = require('lodash');
 
 import LogoTitle from '../components/LogoTitle';
 import OrdersModal from '../components/OrdersModal';
@@ -11,34 +12,49 @@ import { Ionicons } from '@expo/vector-icons';
 import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 import StyledButton from '../components/StyledButton';
 import * as ordersActions from '../store/actions/orders';
+import Search from '../components/Search';
 import OrderItem from '../components/OrderItem';
 import Colors from '../constants/Colors';
 import { OrderFiltersContext } from '../components/FiltersContext';
+
+let noFilters = {
+  cities: [],
+  filter: 'noFilter',
+  isCity: false,
+};
 
 const OrdersScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+  const [hasFilters, setHasFilters] = useState(false);
   const orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
-  const { filters } = useContext(OrderFiltersContext);
+  const { filters, setFilters } = useContext(OrderFiltersContext);
 
   const { navigation } = props;
 
   const loadOrders = useCallback(async () => {
     setError(null);
-    // setIsLoading(true);
+    setIsLoading(true);
     setIsRefreshing(true);
     try {
+      //! Not sure why this is happening -> Crashing the app
+      if (_.isEqual(filters, noFilters)) {
+        setHasFilters(false);
+      } else {
+        setHasFilters(true);
+      }
       await dispatch(ordersActions.fetchOrders(filters));
       await dispatch(ordersActions.fetchZones());
     } catch (err) {
       setError(err.message);
     }
     dispatch(ordersActions.resetFilters());
-    // setIsLoading(false);
+    setIsLoading(false);
     setIsRefreshing(false);
-  }, [dispatch, filters, setIsRefreshing, setError]);
+    // setFilters({});
+  }, [dispatch, filters, hasFilters, setIsLoading, setIsRefreshing, setError]);
 
   useEffect(() => {
     let mount = true;
@@ -62,7 +78,9 @@ const OrdersScreen = (props) => {
         });
     }
     return () => (effect = false);
-  }, [dispatch, loadOrders]);
+  }, [dispatch, loadOrders, setIsLoading]);
+
+  const handleResetButton = () => {};
 
   if (error) {
     return (
@@ -108,26 +126,26 @@ const OrdersScreen = (props) => {
     );
   }
 
-  if (!isLoading && orders.length === 0) {
-    return (
-      <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text style={styles.errorText}>
-              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
-                No Orders:
-              </Text>{' '}
-              {'\n'}
-              Check your filters on the top right!
-            </Text>
-          </View>
-        </LinearGradient>
-      </ErrorBoundary>
-    );
-  }
+  // if (!isLoading && orders.length === 0) {
+  //   return (
+  //     <ErrorBoundary>
+  //       <LinearGradient
+  //         colors={[Colors.primaryColor, Colors.lightTeal]}
+  //         style={styles.gradient}
+  //       >
+  //         <View style={styles.centered}>
+  //           <Text style={styles.errorText}>
+  //             <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+  //               No Orders:
+  //             </Text>{' '}
+  //             {'\n'}
+  //             Check your filters on the top right!
+  //           </Text>
+  //         </View>
+  //       </LinearGradient>
+  //     </ErrorBoundary>
+  //   );
+  // }
 
   const selectItemHandler = (id) => {
     navigation.navigate('OrderDetailsScreen', {
@@ -141,6 +159,7 @@ const OrdersScreen = (props) => {
         colors={[Colors.primaryColor, Colors.lightTeal]}
         style={styles.gradient}
       >
+        <Search />
         <OptimizedFlatList
           maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
@@ -165,6 +184,13 @@ const OrdersScreen = (props) => {
             ></OrderItem>
           )}
         />
+        {hasFilters && (
+          <View style={styles.resetButtonContainer}>
+            <StyledButton style={styles.resetButton}>
+              Reset Filters
+            </StyledButton>
+          </View>
+        )}
       </LinearGradient>
     </ErrorBoundary>
   );
@@ -207,7 +233,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
+    margin: 10,
   },
   errorText: {
     textAlign: 'center',
@@ -218,6 +244,17 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: Colors.accentColor,
+  },
+  resetButtonContainer: {
+    paddingTop: 5,
+    paddingBottom: 20,
+  },
+  resetButton: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    color: Colors.accentColor,
+    fontSize: 20,
+    width: 200,
   },
   headerButtonLeft: {
     paddingLeft: 15,

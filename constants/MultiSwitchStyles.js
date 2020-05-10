@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, Platform } from 'react-native';
 const { width } = Dimensions.get('window');
 import ColorsConst from './Colors';
 
@@ -10,7 +10,7 @@ const Colors = {
 };
 
 const Metrics = {
-  containerWidth: width - 70,
+  containerWidth: width - 80,
   switchWidth: width / 3.5,
 };
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     // position: 'absolute',
-    top: 7,
+    top: 5,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },

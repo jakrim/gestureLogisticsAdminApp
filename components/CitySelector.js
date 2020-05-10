@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
+
 import {
   Platform,
   TouchableOpacity,
   FlatList,
   TouchableNativeFeedback,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import FilterSwitch from './FilterSwitch';
 import { createCitySelectorState } from '../components/HelperFunctions';
+const { width } = Dimensions.get('window');
 
 const CitySelector = (props) => {
   let cities = useSelector((state) => state.orders.cities);
+  console.log('CitySelector -> cities', cities);
   let cityState = createCitySelectorState(cities);
   const [values, setValues] = useState(cityState);
 
@@ -51,14 +55,12 @@ const CitySelector = (props) => {
       numColumns={2}
       renderItem={({ item, index }) => {
         return (
-          <TouchableComp style={styles.component}>
-            <FilterSwitch
-              // style={{ alignItems: 'center' }}
-              label={item}
-              state={values.listKeys[index].switch}
-              onChange={(value) => setSwitchValue(value, index)}
-            />
-          </TouchableComp>
+          <FilterSwitch
+            style={styles.switch}
+            label={item}
+            state={values.listKeys[index].switch}
+            onChange={(value) => setSwitchValue(value, index)}
+          />
         );
       }}
     />
@@ -67,17 +69,15 @@ const CitySelector = (props) => {
 
 const styles = StyleSheet.create({
   list: {
-    width: '100%',
+    width: Platform.OS === 'android' ? '50%' : '100%',
     height: 400,
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  component: {
+  switch: {
     paddingHorizontal: 5,
     width: 160,
-    alignItems: 'flex-start',
-    fontFamily: 'dm-sans-italic',
     padding: 2,
   },
 });

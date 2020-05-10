@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    paddingTop: 120,
+    paddingTop: Platform.OS === 'android' ? 85 : 120,
     alignItems: 'center',
   },
   modalView: {

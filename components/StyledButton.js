@@ -21,7 +21,9 @@ const StyledButton = (props) => {
     <View style={styles.buttonContainer}>
       <ButtonComponent onPress={props.onPress}>
         <View style={{ ...styles.button, ...props.style }}>
-          <Text style={styles.buttonText}>{props.children}</Text>
+          <Text style={{ ...styles.buttonText, ...props.style }}>
+            {props.children}
+          </Text>
         </View>
       </ButtonComponent>
     </View>

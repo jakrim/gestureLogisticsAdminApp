@@ -60,10 +60,12 @@ const OrderDetailsScreen = (props) => {
                     { color: Colors.accentColor, fontSize: 18 })
                   }
                 >
-                  On Demand
+                  <B>On Demand</B>
                 </Text>
               ) : (
-                <Text style={styles.scheduledTime}>Scheduled</Text>
+                <Text style={styles.scheduledTime}>
+                  <B>Scheduled</B>
+                </Text>
               )}
             </View>
             <Text style={styles.product}>
@@ -79,7 +81,8 @@ const OrderDetailsScreen = (props) => {
             <></>
           ) : (
             <Text style={styles.scheduledTime}>
-              Scheduled For: {MillisToDate(selectedOrder.schedule)}
+              <B>Scheduled For: </B>
+              {MillisToDate(selectedOrder.schedule)}
             </Text>
           )}
 
@@ -300,7 +303,7 @@ const styles = StyleSheet.create({
     fontFamily: 'dm-sans-regular',
   },
   scheduledTime: {
-    fontFamily: 'dm-sans-bold',
+    fontFamily: 'dm-sans-regular',
     color: 'red',
     fontSize: 16,
     textAlign: 'center',

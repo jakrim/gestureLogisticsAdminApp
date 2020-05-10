@@ -7,6 +7,7 @@ export const SET_ORDER = 'SET_ORDER';
 export const SET_FILTERS = 'SET_FILTERS';
 export const FETCH_ZONES = 'FETCH_ZONES';
 export const RESET_FILTERS = 'RESET_FILTERS';
+export const SEARCH_TEXT = 'SEARCH_TEXT';
 
 export const fetchOrders = (filters) => {
   return async (dispatch) => {
@@ -131,6 +132,10 @@ export const fetchZones = () => {
       console.log('Error in fetching zones!', err);
     }
   };
+};
+
+export const searchText = (searchValue) => {
+  return { type: SEARCH_TEXT, searchValue };
 };
 
 export const resetFilters = () => {

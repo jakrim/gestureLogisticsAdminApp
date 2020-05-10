@@ -39,15 +39,8 @@ const OrderItem = (props) => {
               )}
               {props.schedule ? (
                 <Text style={styles.scheduled}>
-                  Time:{' '}
-                  <Text
-                    style={{
-                      fontFamily: 'dm-sans-regular',
-                      color: Colors.delayRed,
-                    }}
-                  >
-                    {MillisToDate(props.schedule)}
-                  </Text>
+                  <B>Time: </B>
+                  <Text>{MillisToDate(props.schedule)}</Text>
                 </Text>
               ) : (
                 <Text style={styles.onDemand}>On Demand</Text>
@@ -75,7 +68,8 @@ const styles = StyleSheet.create({
   product: {
     height: 170,
     width: 340,
-    margin: 15,
+    marginTop: 10,
+    marginBottom: 15,
     backgroundColor: Colors.backgroundFeed,
   },
   touchable: {
@@ -83,8 +77,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   orderDetails: {
-    // alignItems: 'flex-start',
-    // height: '17%',
     padding: 10,
     backgroundColor: Colors.backgroundFeed,
   },
@@ -107,7 +99,7 @@ const styles = StyleSheet.create({
   },
   scheduled: {
     paddingTop: 5,
-    fontFamily: 'dm-sans-bold',
+    fontFamily: 'dm-sans-regular',
     fontSize: 15,
     color: Colors.delayRed,
   },

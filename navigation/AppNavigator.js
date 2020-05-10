@@ -17,12 +17,21 @@ const AppNavigator = (props) => {
     (state) => state.auth.message === 'Authenticated'
   );
 
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({
+    cities: [],
+    filter: 'noFilter',
+    isCity: false,
+  });
   const providerValue = useMemo(() => ({ filters, setFilters }), [
     filters,
     setFilters,
   ]);
-  const [gfilters, setGFilters] = useState({});
+  const [gfilters, setGFilters] = useState({
+    hasOrder: false,
+    isCity: false,
+    cities: [],
+    filter: 'noFilter',
+  });
   const gProviderValue = useMemo(() => ({ gfilters, setGFilters }), [
     gfilters,
     setGFilters,
