@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import {
   View,
   Text,
@@ -11,30 +11,81 @@ import {
   ScrollView,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // import { Ionicons } from '@expo/vector-icons';
 import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 import Colors from '../constants/Colors';
 import * as ordersActions from '../store/actions/orders';
+import {
+  OrdersSearchContext,
+  AreSearchingOrders,
+} from '../components/FiltersContext';
 
 const Search = (props) => {
   const [searchValue, setSearchValue] = useState('');
-  const dispatch = useDispatch();
+  // const [searching, setSearching] = useState(false);
+  // const dispatch = useDispatch();
 
-  // const handleTextChange = (text) => {
-  //   setSearchValue(text);
-  //   dispatch(ordersActions.searchText(searchValue));
-  // };
+  let ordersData = useSelector((state) => state.orders.orders);
+  const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
+  const { areSearchingOrders, setAreSearchingOrders } = useContext(
+    AreSearchingOrders
+  );
 
-  const handleTextChange = useCallback((text) => {
-    try {
-      setSearchValue(text);
-      dispatch(ordersActions.searchText(searchValue));
-    } catch (err) {
-      throwError(new Error('Asynchronous error', err));
+  setSearchOrders(ordersData);
+
+  // console.log('searchFilterFunction -> searchOrders', searchOrders);
+  // console.log('Search -> searchingOrders', searchingOrders);
+  const searchFilterFunction = (text) => {
+    setSearchValue(text);
+    if (text.length) {
+      setAreSearchingOrders(true);
+    } else {
+      setAreSearchingOrders(false);
     }
-  }, []);
+    const newData = searchOrders.filter((item) => {
+      // console.log(
+      //   'searchFilterFunction -> item.product_name',
+      //   item.product_name
+      // );
+      if (
+        !item.product_name.toLowerCase().includes(searchValue.toLowerCase())
+      ) {
+        return false;
+      }
+      // if (!item.order_ID.includes(searchValue)) {
+      //   return false;
+      // }
+      // if (!item.category_name.includes(searchValue)) {
+      //   return false;
+      // }
+      // if (!item.zone.includes(searchValue)) {
+      //   return false;
+      // }
+
+      // const itemData = `${item.name.title.toUpperCase()}
+      // ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
+
+      // const textData = text.toUpperCase();
+
+      // return itemData.indexOf(textData) > -1;
+      return true;
+    });
+
+    // console.log('searchFilterFunction -> newData', newData);
+    setSearchOrders(newData);
+    console.log('searchFilterFunction -> newData', newData);
+  };
+
+  // const handleTextChange = useCallback((text) => {
+  //   try {
+  //     setSearchValue(text);
+  //     dispatch(ordersActions.searchText(searchValue));
+  //   } catch (err) {
+  //     throwError(new Error('Asynchronous error', err));
+  //   }
+  // }, []);
 
   return (
     <ErrorBoundary>
@@ -46,6 +97,13 @@ const Search = (props) => {
           // search.blur();
           // }}
         >
+          {/* <Ionicons name='ios-search' />
+          <TextInput
+            placeholder='Search...'
+            style={styles.input}
+            onChangeText={(text) => handleTextChange(text)}
+            value={searchValue}
+          /> */}
           <SearchBar
             lightTheme
             round
@@ -54,8 +112,9 @@ const Search = (props) => {
             inputStyle={styles.input}
             placeholder='Search...'
             style={styles.searchBar}
-            onChangeText={(text) => handleTextChange(text)}
+            onChangeText={(text) => searchFilterFunction(text)}
             value={searchValue}
+            autoCorrect={false}
           />
         </ScrollView>
       </View>
@@ -82,6 +141,8 @@ const styles = StyleSheet.create({
   },
   input: {
     color: '#555',
+    // backgroundColor: 'white',
+    // height: 30,
   },
 });
 

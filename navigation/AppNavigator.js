@@ -8,6 +8,8 @@ import LoadingScreen from '../screens/LoadingScreen';
 import {
   OrderFiltersContext,
   GrunnerFiltersContext,
+  OrdersSearchContext,
+  AreSearchingOrders,
 } from '../components/FiltersContext';
 
 const AppNavigator = (props) => {
@@ -36,16 +38,30 @@ const AppNavigator = (props) => {
     gfilters,
     setGFilters,
   ]);
+  const [searchOrders, setSearchOrders] = useState([]);
+  const searchedOrders = useMemo(() => ({ searchOrders, setSearchOrders }), [
+    searchOrders,
+    setSearchOrders,
+  ]);
+  const [areSearchingOrders, setAreSearchingOrders] = useState(false);
+  const isSearching = useMemo(
+    () => ({ areSearchingOrders, setAreSearchingOrders }),
+    [areSearchingOrders, setAreSearchingOrders]
+  );
 
   return (
     <NavigationContainer>
       {isAuth && !authMessage && <LoadingScreen />}
 
-      <OrderFiltersContext.Provider value={providerValue}>
-        <GrunnerFiltersContext.Provider value={gProviderValue}>
-          {isAuth && authMessage && <GestureNavigator />}
-        </GrunnerFiltersContext.Provider>
-      </OrderFiltersContext.Provider>
+      <AreSearchingOrders.Provider value={isSearching}>
+        <OrdersSearchContext.Provider value={searchedOrders}>
+          <OrderFiltersContext.Provider value={providerValue}>
+            <GrunnerFiltersContext.Provider value={gProviderValue}>
+              {isAuth && authMessage && <GestureNavigator />}
+            </GrunnerFiltersContext.Provider>
+          </OrderFiltersContext.Provider>
+        </OrdersSearchContext.Provider>
+      </AreSearchingOrders.Provider>
 
       {!isAuth && didTryAutoLogin && <AuthNavigator />}
       {!isAuth && !didTryAutoLogin && <StartupScreen />}

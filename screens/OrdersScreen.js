@@ -15,7 +15,11 @@ import * as ordersActions from '../store/actions/orders';
 import Search from '../components/Search';
 import OrderItem from '../components/OrderItem';
 import Colors from '../constants/Colors';
-import { OrderFiltersContext } from '../components/FiltersContext';
+import {
+  OrderFiltersContext,
+  OrdersSearchContext,
+  AreSearchingOrders,
+} from '../components/FiltersContext';
 
 let noFilters = {
   cities: [],
@@ -28,9 +32,16 @@ const OrdersScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const [hasFilters, setHasFilters] = useState(false);
-  const orders = useSelector((state) => state.orders.orders);
+  const [ordersData, setOrdersData] = useState([]);
+  let orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
   const { filters, setFilters } = useContext(OrderFiltersContext);
+  const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
+  const { areSearchingOrders, setAreSearchingOrders } = useContext(
+    AreSearchingOrders
+  );
+  setSearchOrders(orders);
+  // console.log('OrdersScreen -> searchOrders', searchOrders);
 
   const { navigation } = props;
 
@@ -47,6 +58,11 @@ const OrdersScreen = (props) => {
       }
       await dispatch(ordersActions.fetchOrders(filters));
       await dispatch(ordersActions.fetchZones());
+      // if (searchingOrders.length) {
+      //   setOrdersData(searchOrders);
+      // } else {
+      //   setOrdersData(orders);
+      // }
     } catch (err) {
       setError(err.message);
     }
@@ -167,7 +183,7 @@ const OrdersScreen = (props) => {
           onRefresh={loadOrders}
           initialNumToRender={7}
           refreshing={isRefreshing}
-          data={orders}
+          data={searchOrders}
           keyExtractor={(item) => item.order_ID.toString()}
           renderItem={(itemData) => (
             <OrderItem

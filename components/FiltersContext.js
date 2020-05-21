@@ -12,3 +12,7 @@ export const GrunnerFiltersContext = createContext({
   cities: [],
   filter: 'noFilter',
 });
+
+export const OrdersSearchContext = createContext([]);
+
+export const AreSearchingOrders = createContext(false);
