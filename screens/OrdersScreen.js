@@ -32,25 +32,31 @@ const OrdersScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const [hasFilters, setHasFilters] = useState(false);
-  const [ordersData, setOrdersData] = useState([]);
+  // const [ordersData, setOrdersData] = useState([]);
   let orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
   const { filters, setFilters } = useContext(OrderFiltersContext);
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
+  // console.log('OrdersScreen -> searchOrders', searchOrders);
   const { areSearchingOrders, setAreSearchingOrders } = useContext(
     AreSearchingOrders
   );
-  setSearchOrders(orders);
-  // console.log('OrdersScreen -> searchOrders', searchOrders);
 
   const { navigation } = props;
+
+  useEffect(() => {
+    if (areSearchingOrders === false) {
+      setSearchOrders(orders);
+    } else {
+      setSearchOrders(searchOrders);
+    }
+  }, [orders, searchOrders, areSearchingOrders]);
 
   const loadOrders = useCallback(async () => {
     setError(null);
     setIsLoading(true);
     setIsRefreshing(true);
     try {
-      //! Not sure why this is happening -> Crashing the app
       if (_.isEqual(filters, noFilters)) {
         setHasFilters(false);
       } else {
@@ -58,6 +64,7 @@ const OrdersScreen = (props) => {
       }
       await dispatch(ordersActions.fetchOrders(filters));
       await dispatch(ordersActions.fetchZones());
+
       // if (searchingOrders.length) {
       //   setOrdersData(searchOrders);
       // } else {

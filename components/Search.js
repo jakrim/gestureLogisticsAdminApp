@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   View,
   Text,
@@ -35,45 +35,36 @@ const Search = (props) => {
 
   setSearchOrders(ordersData);
 
-  // console.log('searchFilterFunction -> searchOrders', searchOrders);
-  // console.log('Search -> searchingOrders', searchingOrders);
-  const searchFilterFunction = (text) => {
+  useEffect(() => {
+    searchFilterFunction(searchValue);
+  }, [searchValue]);
+
+  const searchFilterFunction = async (text) => {
     setSearchValue(text);
-    if (text.length) {
+    console.log('searchFilterFunction -> searchValue', searchValue);
+
+    await setSearchValue(text);
+    if (searchValue.length) {
       setAreSearchingOrders(true);
     } else {
       setAreSearchingOrders(false);
     }
     const newData = searchOrders.filter((item) => {
-      // console.log(
-      //   'searchFilterFunction -> item.product_name',
-      //   item.product_name
-      // );
       if (
         !item.product_name.toLowerCase().includes(searchValue.toLowerCase())
       ) {
         return false;
       }
-      // if (!item.order_ID.includes(searchValue)) {
-      //   return false;
-      // }
-      // if (!item.category_name.includes(searchValue)) {
-      //   return false;
-      // }
-      // if (!item.zone.includes(searchValue)) {
-      //   return false;
-      // }
+      if (!item.order_ID.includes(searchValue.toUpperCase())) {
+        return false;
+      }
+      if (!item.zone.includes(searchValue)) {
+        return false;
+      }
 
-      // const itemData = `${item.name.title.toUpperCase()}
-      // ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
-
-      // const textData = text.toUpperCase();
-
-      // return itemData.indexOf(textData) > -1;
       return true;
     });
 
-    // console.log('searchFilterFunction -> newData', newData);
     setSearchOrders(newData);
     console.log('searchFilterFunction -> newData', newData);
   };
@@ -92,7 +83,7 @@ const Search = (props) => {
       <View style={styles.inputContainer}>
         <ScrollView
           // onPress={() => {
-          keyboardShouldPersistTaps='handled'
+          keyboardShouldPersistTaps='never'
           // Keyboard.dismiss();
           // search.blur();
           // }}
@@ -115,6 +106,7 @@ const Search = (props) => {
             onChangeText={(text) => searchFilterFunction(text)}
             value={searchValue}
             autoCorrect={false}
+            autoCapitalize='none'
           />
         </ScrollView>
       </View>
