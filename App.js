@@ -1,3 +1,5 @@
+// import './wdyr';
+
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';

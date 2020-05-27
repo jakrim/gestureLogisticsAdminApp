@@ -12,11 +12,10 @@ import {
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
+var _ = require('lodash');
 
-// import { Ionicons } from '@expo/vector-icons';
 import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 import Colors from '../constants/Colors';
-import * as ordersActions from '../store/actions/orders';
 import {
   OrdersSearchContext,
   AreSearchingOrders,
@@ -24,8 +23,6 @@ import {
 
 const Search = (props) => {
   const [searchValue, setSearchValue] = useState('');
-  // const [searching, setSearching] = useState(false);
-  // const dispatch = useDispatch();
 
   let ordersData = useSelector((state) => state.orders.orders);
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
@@ -33,15 +30,19 @@ const Search = (props) => {
     AreSearchingOrders
   );
 
-  setSearchOrders(ordersData);
-
   useEffect(() => {
-    searchFilterFunction(searchValue);
-  }, [searchValue]);
+    let mount = true;
+
+    if (mount) {
+      setSearchOrders(ordersData);
+      searchFilterFunction(searchValue);
+    }
+
+    return () => (mount = false);
+  }, [searchValue, ordersData]);
 
   const searchFilterFunction = async (text) => {
     setSearchValue(text);
-    console.log('searchFilterFunction -> searchValue', searchValue);
 
     await setSearchValue(text);
     if (searchValue.length) {
@@ -49,34 +50,21 @@ const Search = (props) => {
     } else {
       setAreSearchingOrders(false);
     }
-    const newData = searchOrders.filter((item) => {
-      if (
-        !item.product_name.toLowerCase().includes(searchValue.toLowerCase())
-      ) {
-        return false;
-      }
-      if (!item.order_ID.includes(searchValue.toUpperCase())) {
-        return false;
-      }
-      if (!item.zone.includes(searchValue)) {
-        return false;
-      }
 
-      return true;
+    var filtered = searchOrders.filter((item) => {
+      var condition1 = item.product_name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+      var condition2 = item.orderID.includes(searchValue.toUpperCase());
+      var condition3 = item.zone.includes(searchValue);
+
+      return condition1 || condition2 || condition3;
     });
+    console.log('Search -> searchValue', searchValue);
 
-    setSearchOrders(newData);
-    console.log('searchFilterFunction -> newData', newData);
+    setSearchOrders(filtered);
+    // console.log('searchFilterFunction -> newData', filtered);
   };
-
-  // const handleTextChange = useCallback((text) => {
-  //   try {
-  //     setSearchValue(text);
-  //     dispatch(ordersActions.searchText(searchValue));
-  //   } catch (err) {
-  //     throwError(new Error('Asynchronous error', err));
-  //   }
-  // }, []);
 
   return (
     <ErrorBoundary>
@@ -88,13 +76,6 @@ const Search = (props) => {
           // search.blur();
           // }}
         >
-          {/* <Ionicons name='ios-search' />
-          <TextInput
-            placeholder='Search...'
-            style={styles.input}
-            onChangeText={(text) => handleTextChange(text)}
-            value={searchValue}
-          /> */}
           <SearchBar
             lightTheme
             round

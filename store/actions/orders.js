@@ -63,11 +63,11 @@ export const fetchOrders = (filters) => {
   };
 };
 
-export const fetchOrder = (orderId) => {
+export const fetchOrder = (orderID) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logisticsOrder?orderId=${orderId}`
+        `https://us-central1-gesture-dev.cloudfunctions.net/logisticsOrder?orderId=${orderID}`
       );
 
       const resData = await response.json();

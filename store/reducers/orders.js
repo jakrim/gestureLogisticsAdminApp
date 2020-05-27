@@ -70,7 +70,6 @@ export default (state = initialState, action) => {
         filters: [],
       };
     case SEARCH_TEXT:
-      // console.log('action.searchValue', StaticRange.searchValue);
       return {
         searchValue: action.searchValue,
       };

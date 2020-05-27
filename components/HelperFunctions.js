@@ -93,25 +93,6 @@ export const mapCities = (citiesArr) => {
   return finalCities;
 };
 
-// export const mapOrderCities = (ordersArr) => {
-//   // console.log('mapOrderCities -> ordersArr', ordersArr);
-//   let fixedCities = [];
-
-//   // let mapped = ordersArr.map((el) => capitalizeLetter(el.city));
-
-//   for (var order of ordersArr) {
-//     console.log('mapOrderCities -> ordersArr', ordersArr[order]);
-
-//     if (ordersArr[order].city !== null && ordersArr[order].city !== undefined) {
-//       ordersArr[order].city = capitalizeLetter(ordersArr[order].city);
-//     }
-
-//     fixedCities.push(order);
-//     console.log('fixedCities', fixedCities);
-//     return fixedCities;
-//   }
-// };
-
 export const makeLowercaseCities = (citiesArr) => {
   if (citiesArr.length === 0) {
     return;

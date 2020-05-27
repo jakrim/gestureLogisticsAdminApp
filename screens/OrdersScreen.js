@@ -32,12 +32,10 @@ const OrdersScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const [hasFilters, setHasFilters] = useState(false);
-  // const [ordersData, setOrdersData] = useState([]);
   let orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
   const { filters, setFilters } = useContext(OrderFiltersContext);
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
-  // console.log('OrdersScreen -> searchOrders', searchOrders);
   const { areSearchingOrders, setAreSearchingOrders } = useContext(
     AreSearchingOrders
   );
@@ -53,31 +51,26 @@ const OrdersScreen = (props) => {
   }, [orders, searchOrders, areSearchingOrders]);
 
   const loadOrders = useCallback(async () => {
-    setError(null);
-    setIsLoading(true);
-    setIsRefreshing(true);
-    try {
-      if (_.isEqual(filters, noFilters)) {
-        setHasFilters(false);
-      } else {
-        setHasFilters(true);
+    let loadOrdersMount = true;
+    if (loadOrdersMount) {
+      setError(null);
+      setIsRefreshing(true);
+      try {
+        if (_.isEqual(filters, noFilters)) {
+          setHasFilters(false);
+        } else {
+          setHasFilters(true);
+        }
+        await dispatch(ordersActions.fetchOrders(filters));
+        await dispatch(ordersActions.fetchZones());
+      } catch (err) {
+        setError(err.message);
       }
-      await dispatch(ordersActions.fetchOrders(filters));
-      await dispatch(ordersActions.fetchZones());
-
-      // if (searchingOrders.length) {
-      //   setOrdersData(searchOrders);
-      // } else {
-      //   setOrdersData(orders);
-      // }
-    } catch (err) {
-      setError(err.message);
+      dispatch(ordersActions.resetFilters());
+      setIsRefreshing(false);
     }
-    dispatch(ordersActions.resetFilters());
-    setIsLoading(false);
-    setIsRefreshing(false);
-    // setFilters({});
-  }, [dispatch, filters, hasFilters, setIsLoading, setIsRefreshing, setError]);
+    return () => (loadOrdersMount = false);
+  }, [dispatch, filters, hasFilters, noFilters, setError]);
 
   useEffect(() => {
     let mount = true;
@@ -101,9 +94,11 @@ const OrdersScreen = (props) => {
         });
     }
     return () => (effect = false);
-  }, [dispatch, loadOrders, setIsLoading]);
+  }, [dispatch, loadOrders]);
 
-  const handleResetButton = () => {};
+  const handleResetButton = () => {
+    setFilters(noFilters);
+  };
 
   if (error) {
     return (
@@ -116,7 +111,7 @@ const OrdersScreen = (props) => {
             <Text
               style={{
                 fontSize: 20,
-                color: Colors.darkPurp,
+                color: Colors.backgroundFeed,
               }}
             >
               An error occurred in fetching orders!
@@ -172,7 +167,7 @@ const OrdersScreen = (props) => {
 
   const selectItemHandler = (id) => {
     navigation.navigate('OrderDetailsScreen', {
-      order_ID: id,
+      orderID: id,
     });
   };
 
@@ -188,13 +183,15 @@ const OrdersScreen = (props) => {
           showsVerticalScrollIndicator={false}
           scrollIndicatorInsets={{ right: 1 }}
           onRefresh={loadOrders}
-          initialNumToRender={7}
+          initialNumToRender={searchOrders.length}
           refreshing={isRefreshing}
+          highermaxToRenderPerBatch={5}
           data={searchOrders}
-          keyExtractor={(item) => item.order_ID.toString()}
+          keyExtractor={(item) => `${item.orderID}`}
+          style={{ flex: 0 }}
           renderItem={(itemData) => (
             <OrderItem
-              order_ID={itemData.item.order_ID}
+              orderID={itemData.item.orderID}
               product_name={itemData.item.product_name}
               address_string={itemData.item.address_string}
               time_order_placed={itemData.item.time_order_placed}
@@ -202,14 +199,17 @@ const OrdersScreen = (props) => {
               address_string_2={itemData.item.address_string_2}
               zone={itemData.item.zone}
               onSelect={() => {
-                selectItemHandler(itemData.item.order_ID);
+                selectItemHandler(itemData.item.orderID);
               }}
             ></OrderItem>
           )}
         />
         {hasFilters && (
           <View style={styles.resetButtonContainer}>
-            <StyledButton style={styles.resetButton}>
+            <StyledButton
+              style={styles.resetButton}
+              onPress={handleResetButton}
+            >
               Reset Filters
             </StyledButton>
           </View>
@@ -240,7 +240,6 @@ export const ordersScreenHeaderOptions = (props) => {
       shadowColor: 'transparent',
       elevation: 0,
     },
-    // headerTitleAlign: 'center',
     headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor,
   };
 };

@@ -21,9 +21,9 @@ import StyledButton from '../components/StyledButton';
 
 const OrderDetailsScreen = (props) => {
   const { route } = props;
-  const order_ID = route.params.order_ID;
+  const orderID = route.params.orderID;
   const selectedOrder = useSelector((state) =>
-    state.orders.orders.find((order) => order.order_ID === order_ID)
+    state.orders.orders.find((order) => order.orderID === orderID)
   );
 
   let TouchableComp = TouchableOpacity;
@@ -257,7 +257,7 @@ const OrderDetailsScreen = (props) => {
               {MillisToDate(selectedOrder.time_order_placed)}
             </Text>
             <Text style={styles.recipientRow}>
-              <B>Order ID:</B> {selectedOrder.order_ID}
+              <B>Order ID:</B> {selectedOrder.orderID}
             </Text>
           </View>
           <StyledButton style={styles.button1}>DELAY</StyledButton>

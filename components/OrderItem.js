@@ -55,7 +55,7 @@ const OrderItem = (props) => {
             </Text>
             <Text style={styles.orderDetails2Text}>
               <B>Order ID: </B>
-              {props.order_ID}
+              {props.orderID}
             </Text>
           </View>
         </View>

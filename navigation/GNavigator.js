@@ -59,7 +59,11 @@ export const AuthNavigator = () => (
 );
 
 const OrderNavigator = ({ navigation }) => (
-  <OrderStack.Navigator>
+  <OrderStack.Navigator
+    screenOptions={{
+      headerTintColor: Colors.primaryColor,
+    }}
+  >
     <OrderStack.Screen
       name='Orders'
       component={OrdersScreen}
@@ -74,7 +78,11 @@ const OrderNavigator = ({ navigation }) => (
 );
 
 export const GRunnerNavigator = ({ navigation }) => (
-  <GRunnerStack.Navigator>
+  <GRunnerStack.Navigator
+    screenOptions={{
+      headerTintColor: Colors.primaryColor,
+    }}
+  >
     <GRunnerStack.Screen
       name='GRunners'
       component={GRunnersScreen}

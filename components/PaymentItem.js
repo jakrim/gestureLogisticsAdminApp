@@ -58,7 +58,7 @@ const PaymentItem = (props) => {
         <View>
           <View style={styles.completed}>
             <Text style={styles.paymentText}>
-              <B>Order ID: </B> {props.orderId}
+              <B>Order ID: </B> {props.order_ID}
             </Text>
             <Text>
               <B>Completed: </B>

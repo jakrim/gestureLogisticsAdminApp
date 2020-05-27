@@ -27,15 +27,12 @@ const OrdersModal = (props) => {
       cities: [],
       filter: 'noFilter',
     };
-    // setIsLoading(true);
     const appliedFilters = {
       hasCurrentOrder: hasCurrentOrder,
       isCity: isCity,
       cities: selectedCities,
       filter: filterOption,
     };
-    // console.log('saveFilters -> appliedFilters', appliedFilters);
-
     try {
       setModalVisible(!modalVisible);
       setGFilters(appliedFilters);
