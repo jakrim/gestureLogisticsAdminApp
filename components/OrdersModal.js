@@ -9,7 +9,7 @@ import MultiSwitch from './MultiSwitch/index';
 import StyledButton from './StyledButton';
 import CitySelector from './CitySelector';
 import FilterSwitch from './FilterSwitch';
-import { OrderFiltersContext } from '../components/FiltersContext';
+import { OrderFiltersContext } from './ApplicationContexts';
 
 const OrdersModal = (props) => {
   const dispatch = useDispatch();

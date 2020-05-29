@@ -9,7 +9,7 @@ import GRunMultiSwitch from './GRunMultiSwitch/index';
 import StyledButton from './StyledButton';
 import CitySelector from './CitySelector';
 import FilterSwitch from './FilterSwitch';
-import { GrunnerFiltersContext } from '../components/FiltersContext';
+import { GrunnerFiltersContext } from './ApplicationContexts';
 
 const OrdersModal = (props) => {
   const dispatch = useDispatch();

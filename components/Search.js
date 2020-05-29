@@ -19,50 +19,109 @@ import Colors from '../constants/Colors';
 import {
   OrdersSearchContext,
   AreSearchingOrders,
-} from '../components/FiltersContext';
+  ScreenContext,
+  GRunnersSearchContext,
+  AreSearchingGrunners,
+} from './ApplicationContexts';
 
 const Search = (props) => {
   const [searchValue, setSearchValue] = useState('');
-
-  let ordersData = useSelector((state) => state.orders.orders);
+  const [searchableData, setSearchableData] = useState({});
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
+  const { screenContext, setScreenContext } = useContext(ScreenContext);
   const { areSearchingOrders, setAreSearchingOrders } = useContext(
     AreSearchingOrders
   );
+  const { searchGrunners, setSearchGrunners } = useContext(
+    GRunnersSearchContext
+  );
+
+  const { areSearchingGrunners, setAreSearchingGrunners } = useContext(
+    AreSearchingGrunners
+  );
+  let ordersData = useSelector((state) => state.orders.orders);
+  let gRunnersData = useSelector((state) => state.gRunners.gRunners);
 
   useEffect(() => {
     let mount = true;
+    // console.log('Search -> screenContext', screenContext);
 
     if (mount) {
       setSearchOrders(ordersData);
-      searchFilterFunction(searchValue);
+      setSearchGrunners(gRunnersData);
+
+      screenContext === 'orders'
+        ? setSearchableData(ordersData)
+        : setSearchableData(gRunnersData);
+
+      // searchFilterFunction(searchValue);
     }
+    console.log('searchValue IN USEEFFECT', searchValue);
 
+    // console.log('Search -> areSearchingGrunners', areSearchingGrunners);
     return () => (mount = false);
-  }, [searchValue, ordersData]);
+  }, [searchValue, searchableData, screenContext]);
 
-  const searchFilterFunction = async (text) => {
-    setSearchValue(text);
+  const searchFilterFunction = () => {
+    // setSearchValue(text);
+    console.log(
+      'searchFilterFunction -> searchValue IN FILTER FUNC',
+      searchValue
+    );
 
-    await setSearchValue(text);
     if (searchValue.length) {
       setAreSearchingOrders(true);
+      setAreSearchingGrunners(true);
     } else {
       setAreSearchingOrders(false);
+      setAreSearchingGrunners(false);
     }
 
-    var filtered = searchOrders.filter((item) => {
-      var condition1 = item.product_name
-        .toLowerCase()
-        .includes(searchValue.toLowerCase());
-      var condition2 = item.orderID.includes(searchValue.toUpperCase());
-      var condition3 = item.zone.includes(searchValue);
+    // console.log('Search -> searchableData', searchableData);
 
-      return condition1 || condition2 || condition3;
+    var newData = searchableData.filter((item) => {
+      // var condition1 = item.product_name
+      //   .toLowerCase()
+      //   .includes(searchValue.toLowerCase());
+      // var condition2 = item.orderID.includes(searchValue.toUpperCase());
+      // var condition3 = item.zone.includes(searchValue);
+
+      // return condition1 || condition2 || condition3;
+      let itemData;
+
+      let pubID = item.public_courier_id
+        ? item.public_courier_id.toUpperCase()
+        : '';
+      let first_name = item.first_name ? item.first_name.toUpperCase() : '';
+      let last_name = item.last_name ? item.last_name.toUpperCase() : '';
+      let current_zone = item.current_zone
+        ? item.current_zone.toUpperCase()
+        : '';
+      let current_order = item.current_order
+        ? item.current_order.toUpperCase()
+        : '';
+
+      const textData = searchValue.toUpperCase();
+
+      if (screenContext === 'orders') {
+        itemData = `${item.product_name.toUpperCase()}
+        ${item.orderID.toUpperCase()}
+        ${item.zone.toUpperCase()}`;
+      } else if (screenContext === 'gRunners') {
+        itemData = `${pubID} ${first_name} ${last_name} ${current_zone} ${current_order}`;
+      }
+      // ${item.first_name.toUpperCase()}
+      // ${item.last_name.toUpperCase()}
+      // ${item.current_zone.toUpperCase()}
+      // ${item.current_order.toUpperCase()};
+
+      return itemData.indexOf(textData) > -1;
     });
-    console.log('Search -> searchValue', searchValue);
+    console.log('Search -> searchValue BOTTOM OF FUNC', searchValue);
 
-    setSearchOrders(filtered);
+    screenContext === 'orders'
+      ? setSearchOrders(newData)
+      : setSearchGrunners(newData);
     // console.log('searchFilterFunction -> newData', filtered);
   };
 
@@ -84,7 +143,7 @@ const Search = (props) => {
             inputStyle={styles.input}
             placeholder='Search...'
             style={styles.searchBar}
-            onChangeText={(text) => searchFilterFunction(text)}
+            onChangeText={searchFilterFunction}
             value={searchValue}
             autoCorrect={false}
             autoCapitalize='none'

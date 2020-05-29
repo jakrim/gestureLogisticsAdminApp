@@ -4,45 +4,81 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
+var _ = require('lodash');
 
 import LogoTitle from '../components/LogoTitle';
 import GRunnerModal from '../components/GRunnerModal';
 import { Ionicons } from '@expo/vector-icons';
 import * as gRunnerActions from '../store/actions/gRunner';
 import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
+import StyledButton from '../components/StyledButton';
 import GrunnerItem from '../components/GrunnerItem';
 import Search from '../components/Search';
 import Colors from '../constants/Colors';
-import { GrunnerFiltersContext } from '../components/FiltersContext';
+import {
+  GrunnerFiltersContext,
+  ScreenContext,
+  GRunnersSearchContext,
+  AreSearchingGrunners,
+} from '../components/ApplicationContexts';
 import { capitalizeLetter } from '../components/HelperFunctions';
+
+let noFilters = {
+  hasOrder: 'false',
+  isCity: false,
+  cities: [],
+  filter: 'noFilter',
+};
 
 const GRunnersScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
+  const [hasFilters, setHasFilters] = useState(false);
   const dispatch = useDispatch();
   const gRunners = useSelector((state) => state.gRunners.gRunners);
 
-  const { gfilters } = useContext(GrunnerFiltersContext);
+  const { gfilters, setGFilters } = useContext(GrunnerFiltersContext);
+  const { screenContext, setScreenContext } = useContext(ScreenContext);
+  const { searchGrunners, setSearchGrunners } = useContext(
+    GRunnersSearchContext
+  );
+  const { areSearchingGrunners, setAreSearchingGrunners } = useContext(
+    AreSearchingGrunners
+  );
 
   const { navigation } = props;
 
-  const loadGrunners = useCallback(async () => {
-    setError(null);
-    setIsRefreshing(true);
-    try {
-      setIsLoading(true);
-      await dispatch(gRunnerActions.fetchZones())
-        .then(() => {
-          dispatch(gRunnerActions.fetchGrunners(gfilters));
-        })
-        .catch((err) => console.log(err));
-    } catch (err) {
-      setError(err.message);
+  useEffect(() => {
+    if (areSearchingGrunners === false) {
+      setSearchGrunners(gRunners);
+    } else {
+      setSearchGrunners(searchGrunners);
     }
-    setIsLoading(false);
-    setIsRefreshing(false);
-  }, [dispatch, gfilters, setIsLoading, setIsRefreshing, setError]);
+    // console.log('GRunnersScreen -> searchGrunners', searchGrunners);
+  }, [gRunners, searchGrunners, areSearchingGrunners]);
+
+  const loadGrunners = useCallback(async () => {
+    let loadGrunnersMount = true;
+    if (loadGrunnersMount) {
+      setError(null);
+      setIsRefreshing(true);
+      setScreenContext('gRunners');
+      try {
+        if (_.isEqual(gfilters, noFilters)) {
+          setHasFilters(false);
+        } else {
+          setHasFilters(true);
+        }
+        await dispatch(gRunnerActions.fetchGrunners(gfilters));
+        await dispatch(gRunnerActions.fetchZones());
+      } catch (err) {
+        setError(err.message);
+      }
+      setIsRefreshing(false);
+    }
+    return () => (loadGrunnersMount = false);
+  }, [dispatch, gfilters, hasFilters, noFilters, isRefreshing, error]);
 
   useEffect(() => {
     let mount = true;
@@ -58,10 +94,10 @@ const GRunnersScreen = (props) => {
   useEffect(() => {
     let effect = true;
     if (effect) {
-      setIsLoading(true);
+      // setIsLoading(true);
       loadGrunners()
         .then(() => {
-          setIsLoading(false);
+          // setIsLoading(false);
         })
         .catch((e) => {
           throwError(new Error('Asynchronous error'));
@@ -70,10 +106,8 @@ const GRunnersScreen = (props) => {
     return () => (effect = false);
   }, [dispatch, loadGrunners, setIsLoading]);
 
-  const selectItemHandler = (uid) => {
-    navigation.navigate('GRunner', {
-      uid,
-    });
+  const handleResetButton = () => {
+    setGFilters(noFilters);
   };
 
   if (error) {
@@ -122,26 +156,32 @@ const GRunnersScreen = (props) => {
     );
   }
 
-  if (!isLoading && gRunners.length === 0) {
-    return (
-      <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text style={styles.errorText}>
-              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
-                No G Runners:
-              </Text>{' '}
-              {'\n'}
-              Check your filters on the top right!
-            </Text>
-          </View>
-        </LinearGradient>
-      </ErrorBoundary>
-    );
-  }
+  // if (!isLoading && gRunners.length === 0) {
+  //   return (
+  //     <ErrorBoundary>
+  //       <LinearGradient
+  //         colors={[Colors.primaryColor, Colors.lightTeal]}
+  //         style={styles.gradient}
+  //       >
+  //         <View style={styles.centered}>
+  //           <Text style={styles.errorText}>
+  //             <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+  //               No G Runners:
+  //             </Text>{' '}
+  //             {'\n'}
+  //             Check your filters on the top right!
+  //           </Text>
+  //         </View>
+  //       </LinearGradient>
+  //     </ErrorBoundary>
+  //   );
+  // }
+
+  const selectItemHandler = (uid) => {
+    navigation.navigate('GRunner', {
+      uid,
+    });
+  };
 
   return (
     <ErrorBoundary>
@@ -156,7 +196,7 @@ const GRunnersScreen = (props) => {
           onRefresh={loadGrunners}
           initialNumToRender={10}
           refreshing={isRefreshing}
-          data={gRunners}
+          data={searchGrunners}
           keyExtractor={(gRunner) => gRunner.uid}
           renderItem={(itemData) => {
             return (
@@ -184,6 +224,16 @@ const GRunnersScreen = (props) => {
             );
           }}
         />
+        {hasFilters && (
+          <View style={styles.resetButtonContainer}>
+            <StyledButton
+              style={styles.resetButton}
+              onPress={handleResetButton}
+            >
+              Reset Filters
+            </StyledButton>
+          </View>
+        )}
       </LinearGradient>
     </ErrorBoundary>
   );
@@ -234,6 +284,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Colors.backgroundFeed,
     padding: 10,
+  },
+  resetButtonContainer: {
+    paddingTop: 5,
+    paddingBottom: 20,
+  },
+  resetButton: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    color: Colors.accentColor,
+    fontSize: 20,
+    width: 200,
   },
   headerButtonLeft: {
     paddingLeft: 15,

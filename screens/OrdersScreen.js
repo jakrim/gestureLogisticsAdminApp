@@ -19,7 +19,8 @@ import {
   OrderFiltersContext,
   OrdersSearchContext,
   AreSearchingOrders,
-} from '../components/FiltersContext';
+  ScreenContext,
+} from '../components/ApplicationContexts';
 
 let noFilters = {
   cities: [],
@@ -36,6 +37,7 @@ const OrdersScreen = (props) => {
   const dispatch = useDispatch();
   const { filters, setFilters } = useContext(OrderFiltersContext);
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
+  const { screenContext, setScreenContext } = useContext(ScreenContext);
   const { areSearchingOrders, setAreSearchingOrders } = useContext(
     AreSearchingOrders
   );
@@ -55,6 +57,7 @@ const OrdersScreen = (props) => {
     if (loadOrdersMount) {
       setError(null);
       setIsRefreshing(true);
+      setScreenContext('orders');
       try {
         if (_.isEqual(filters, noFilters)) {
           setHasFilters(false);
@@ -66,11 +69,10 @@ const OrdersScreen = (props) => {
       } catch (err) {
         setError(err.message);
       }
-      dispatch(ordersActions.resetFilters());
       setIsRefreshing(false);
     }
     return () => (loadOrdersMount = false);
-  }, [dispatch, filters, hasFilters, noFilters, setError]);
+  }, [dispatch, filters, hasFilters, noFilters, isRefreshing, setError]);
 
   useEffect(() => {
     let mount = true;
@@ -263,9 +265,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Colors.backgroundFeed,
     padding: 10,
-  },
-  button: {
-    backgroundColor: Colors.accentColor,
   },
   resetButtonContainer: {
     paddingTop: 5,

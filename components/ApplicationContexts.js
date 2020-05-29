@@ -16,3 +16,9 @@ export const GrunnerFiltersContext = createContext({
 export const OrdersSearchContext = createContext([]);
 
 export const AreSearchingOrders = createContext(false);
+
+export const GRunnersSearchContext = createContext([]);
+
+export const AreSearchingGrunners = createContext(false);
+
+export const ScreenContext = createContext('');

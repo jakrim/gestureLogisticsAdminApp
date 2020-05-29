@@ -126,7 +126,7 @@ export const GestureNavigator = () => (
       },
     }}
   >
-    <Drawer.Screen name='Orders' component={OrderNavigator} />
     <Drawer.Screen name='G Runners' component={GRunnerNavigator} />
+    <Drawer.Screen name='Orders' component={OrderNavigator} />
   </Drawer.Navigator>
 );
