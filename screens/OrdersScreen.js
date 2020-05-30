@@ -50,7 +50,7 @@ const OrdersScreen = (props) => {
     } else {
       setSearchOrders(searchOrders);
     }
-  }, [orders, searchOrders, areSearchingOrders]);
+  }, [areSearchingOrders]);
 
   const loadOrders = useCallback(async () => {
     let loadOrdersMount = true;
@@ -72,7 +72,7 @@ const OrdersScreen = (props) => {
       setIsRefreshing(false);
     }
     return () => (loadOrdersMount = false);
-  }, [dispatch, filters, hasFilters, noFilters, isRefreshing, setError]);
+  }, [dispatch, filters]);
 
   useEffect(() => {
     let mount = true;

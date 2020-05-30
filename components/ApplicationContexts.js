@@ -7,7 +7,7 @@ export const OrderFiltersContext = createContext({
 });
 
 export const GrunnerFiltersContext = createContext({
-  hasOrder: 'false',
+  hasOrder: false,
   isCity: false,
   cities: [],
   filter: 'noFilter',

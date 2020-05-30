@@ -21,12 +21,6 @@ const OrdersModal = (props) => {
   const { setGFilters } = useContext(GrunnerFiltersContext);
 
   const saveFilters = useCallback(() => {
-    const initialState = {
-      hasOrder: false,
-      isCity: false,
-      cities: [],
-      filter: 'noFilter',
-    };
     const appliedFilters = {
       hasCurrentOrder: hasCurrentOrder,
       isCity: isCity,

@@ -24,7 +24,7 @@ import {
 import { capitalizeLetter } from '../components/HelperFunctions';
 
 let noFilters = {
-  hasOrder: 'false',
+  hasOrder: false,
   isCity: false,
   cities: [],
   filter: 'noFilter',
@@ -55,8 +55,7 @@ const GRunnersScreen = (props) => {
     } else {
       setSearchGrunners(searchGrunners);
     }
-    // console.log('GRunnersScreen -> searchGrunners', searchGrunners);
-  }, [gRunners, searchGrunners, areSearchingGrunners]);
+  }, [areSearchingGrunners]);
 
   const loadGrunners = useCallback(async () => {
     let loadGrunnersMount = true;
@@ -78,7 +77,7 @@ const GRunnersScreen = (props) => {
       setIsRefreshing(false);
     }
     return () => (loadGrunnersMount = false);
-  }, [dispatch, gfilters, hasFilters, noFilters, isRefreshing, error]);
+  }, [dispatch, gfilters]);
 
   useEffect(() => {
     let mount = true;
@@ -94,17 +93,18 @@ const GRunnersScreen = (props) => {
   useEffect(() => {
     let effect = true;
     if (effect) {
-      // setIsLoading(true);
+      setIsLoading(true);
       loadGrunners()
         .then(() => {
-          // setIsLoading(false);
+          setIsLoading(false);
+          console.log('GRunnersScreen -> gRunners', gRunners);
         })
         .catch((e) => {
           throwError(new Error('Asynchronous error'));
         });
     }
     return () => (effect = false);
-  }, [dispatch, loadGrunners, setIsLoading]);
+  }, [dispatch, loadGrunners]);
 
   const handleResetButton = () => {
     setGFilters(noFilters);
