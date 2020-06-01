@@ -181,7 +181,7 @@ const OrdersScreen = (props) => {
       >
         <Search />
         <OptimizedFlatList
-          maxToRenderPerBatch={10}
+          // maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
           scrollIndicatorInsets={{ right: 1 }}
           onRefresh={loadOrders}

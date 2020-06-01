@@ -39,13 +39,17 @@ const GRunnerDetailsScreen = (props) => {
 
   const loadGrunner = useCallback(async () => {
     // setIsLoading(true);
-    setError(null);
-    try {
-      await dispatch(gRunnerActions.fetchGrunner(uid));
-    } catch (err) {
-      setError(err.message);
-      // setIsLoading(false);
+    let effect = true;
+    if (effect) {
+      setError(null);
+      try {
+        await dispatch(gRunnerActions.fetchGrunner(uid));
+      } catch (err) {
+        setError(err.message);
+        // setIsLoading(false);
+      }
     }
+    return () => (effect = false);
   }, [dispatch, setIsLoading, setError]);
 
   useEffect(() => {

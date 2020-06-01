@@ -11,7 +11,7 @@ export const fetchGrunners = (gfilters) => {
     let city_zones = getState().gRunners.city_zones;
     try {
       const response = await fetch(
-        'https://us-central1-gesture-dev.cloudfunctions.net/logisticsGRunners'
+        'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunners'
       );
 
       if (!response.ok) {
@@ -79,7 +79,8 @@ export const fetchGrunner = (uid) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logGRunnerInfo?courierId=${uid}`
+        // `https://us-central1-gesture-dev.cloudfunctions.net/logGRunnerInfo?courierId=${uid}`
+        `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunner?courierId=${uid}`
       );
 
       if (!response.ok) {

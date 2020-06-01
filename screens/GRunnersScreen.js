@@ -36,7 +36,7 @@ const GRunnersScreen = (props) => {
   const [error, setError] = useState();
   const [hasFilters, setHasFilters] = useState(false);
   const dispatch = useDispatch();
-  const gRunners = useSelector((state) => state.gRunners.gRunners);
+  let gRunners = useSelector((state) => state.gRunners.gRunners);
 
   const { gfilters, setGFilters } = useContext(GrunnerFiltersContext);
   const { screenContext, setScreenContext } = useContext(ScreenContext);
@@ -51,10 +51,12 @@ const GRunnersScreen = (props) => {
 
   useEffect(() => {
     if (areSearchingGrunners === false) {
-      setSearchGrunners(gRunners);
+      console.log('HERE IN FALSE -> G screen') && setSearchGrunners(gRunners);
     } else {
-      setSearchGrunners(searchGrunners);
+      console.log('HERE IN TRUE -> G screen') &&
+        setSearchGrunners(searchGrunners);
     }
+    // console.log('GRunnersScreen -> searchGrunners', searchGrunners);
   }, [areSearchingGrunners]);
 
   const loadGrunners = useCallback(async () => {
@@ -85,9 +87,7 @@ const GRunnersScreen = (props) => {
       navigation.addListener('focus', loadGrunners);
     }
 
-    return () => {
-      mount = false;
-    };
+    return () => (mount = false);
   }, [navigation, loadGrunners]);
 
   useEffect(() => {
@@ -97,7 +97,6 @@ const GRunnersScreen = (props) => {
       loadGrunners()
         .then(() => {
           setIsLoading(false);
-          console.log('GRunnersScreen -> gRunners', gRunners);
         })
         .catch((e) => {
           throwError(new Error('Asynchronous error'));
@@ -156,26 +155,26 @@ const GRunnersScreen = (props) => {
     );
   }
 
-  // if (!isLoading && gRunners.length === 0) {
-  //   return (
-  //     <ErrorBoundary>
-  //       <LinearGradient
-  //         colors={[Colors.primaryColor, Colors.lightTeal]}
-  //         style={styles.gradient}
-  //       >
-  //         <View style={styles.centered}>
-  //           <Text style={styles.errorText}>
-  //             <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
-  //               No G Runners:
-  //             </Text>{' '}
-  //             {'\n'}
-  //             Check your filters on the top right!
-  //           </Text>
-  //         </View>
-  //       </LinearGradient>
-  //     </ErrorBoundary>
-  //   );
-  // }
+  if (!isLoading && gRunners.length === 0) {
+    return (
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <Text style={styles.errorText}>
+              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+                No G Runners:
+              </Text>{' '}
+              {'\n'}
+              Check your filters on the top right!
+            </Text>
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
+    );
+  }
 
   const selectItemHandler = (uid) => {
     navigation.navigate('GRunner', {
@@ -196,33 +195,33 @@ const GRunnersScreen = (props) => {
           onRefresh={loadGrunners}
           initialNumToRender={10}
           refreshing={isRefreshing}
+          highermaxToRenderPerBatch={5}
           data={searchGrunners}
           keyExtractor={(gRunner) => gRunner.uid}
-          renderItem={(itemData) => {
-            return (
-              <GrunnerItem
-                public_courier_id={itemData.item.public_courier_id}
-                os={itemData.item.os}
-                full_name={
-                  itemData.item.first_name && itemData.item.last_name
-                    ? capitalizeLetter(itemData.item.first_name) +
-                      ' ' +
-                      capitalizeLetter(itemData.item.last_name)
-                    : itemData.item.first_name
-                    ? capitalizeLetter(itemData.item.first_name) + ' '
-                    : itemData.item.last_name
-                    ? capitalizeLetter(itemData.item.last_name)
-                    : null
-                }
-                current_zone={itemData.item.current_zone}
-                current_status={itemData.item.current_status}
-                current_order={itemData.item.current_order}
-                onSelect={() => {
-                  selectItemHandler(itemData.item.uid);
-                }}
-              ></GrunnerItem>
-            );
-          }}
+          style={{ flex: 0 }}
+          renderItem={(itemData) => (
+            <GrunnerItem
+              public_courier_id={itemData.item.public_courier_id}
+              os={itemData.item.os}
+              full_name={
+                itemData.item.first_name && itemData.item.last_name
+                  ? capitalizeLetter(itemData.item.first_name) +
+                    ' ' +
+                    capitalizeLetter(itemData.item.last_name)
+                  : itemData.item.first_name
+                  ? capitalizeLetter(itemData.item.first_name) + ' '
+                  : itemData.item.last_name
+                  ? capitalizeLetter(itemData.item.last_name)
+                  : null
+              }
+              current_zone={itemData.item.current_zone}
+              current_status={itemData.item.current_status}
+              current_order={itemData.item.current_order}
+              onSelect={() => {
+                selectItemHandler(itemData.item.uid);
+              }}
+            ></GrunnerItem>
+          )}
         />
         {hasFilters && (
           <View style={styles.resetButtonContainer}>

@@ -2,11 +2,12 @@ import { Payment } from '../../models/Payment';
 
 export const SET_PAYMENTS = 'SET_PAYMENTS';
 
-export const fetchPayments = (uid) => {
+export const fetchPayments = (courierId) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logistics_payment_history?uid=${uid}`
+        // `https://us-central1-gesture-dev.cloudfunctions.net/logistics_payment_history?uid=${uid}`
+        `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_payment_history?uid=${courierId}`
       );
 
       if (!response.ok) {
@@ -14,6 +15,7 @@ export const fetchPayments = (uid) => {
       }
 
       const resData = await response.json();
+      console.log('fetchPayments -> resData', resData);
 
       const loadPayments = [];
       const payments = resData.result.data;
