@@ -1,5 +1,6 @@
 import { Keys } from '../../api-key';
 import { AsyncStorage } from 'react-native';
+import { token, basicUrl, URL } from '../../database/index.js';
 
 export const SIGNIN = 'SIGNIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
@@ -20,7 +21,7 @@ export const signedIn = (userId, token) => {
 export const signin = (email, password) => {
   return async (dispatch) => {
     const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${Keys.apiKey}`,
+      basicUrl`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${Keys.apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

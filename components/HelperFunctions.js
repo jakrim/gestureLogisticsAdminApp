@@ -81,13 +81,43 @@ export const mapCities = (citiesArr) => {
       .find((el) => el === 'Sanfrancisco')
       .replace('Sanfrancisco', 'San Francisco')
   );
+  capitalizeCities.push(
+    capitalizeCities
+      .find((el) => el === 'Desmoines')
+      .replace('Desmoines', 'Des Moines')
+  );
+  capitalizeCities.push(
+    capitalizeCities
+      .find((el) => el === 'Fortlauderdale')
+      .replace('Fortlauderdale', 'Fort Lauderdale')
+  );
+  capitalizeCities.push(
+    capitalizeCities
+      .find((el) => el === 'Oklahomacity')
+      .replace('Oklahomacity', 'Oklahoma City')
+  );
+  capitalizeCities.push(
+    capitalizeCities
+      .find((el) => el === 'Sandiego')
+      .replace('Sandiego', 'San Diego')
+  );
+  capitalizeCities.push(
+    capitalizeCities
+      .find((el) => el === 'Stlouis')
+      .replace('Stlouis', 'St Louis')
+  );
 
   let finalCities = capitalizeCities.filter(
     (el) =>
       el !== 'Washingtondc' &&
       el !== 'Lasvegas' &&
       el !== 'Losangeles' &&
-      el !== 'Sanfrancisco'
+      el !== 'Sanfrancisco' &&
+      el !== 'Desmoines' &&
+      el !== 'Fortlauderdale' &&
+      el !== 'Sandiego' &&
+      el !== 'Stlouis' &&
+      el !== 'Oklahomacity'
   );
 
   return finalCities;

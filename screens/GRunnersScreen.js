@@ -51,13 +51,13 @@ const GRunnersScreen = (props) => {
 
   useEffect(() => {
     if (areSearchingGrunners === false) {
-      console.log('HERE IN FALSE -> G screen') && setSearchGrunners(gRunners);
+      console.log('areSearchingGrunners === false');
+      setSearchGrunners(gRunners);
     } else {
-      console.log('HERE IN TRUE -> G screen') &&
-        setSearchGrunners(searchGrunners);
+      console.log('areSearchingGrunners === true');
+      setSearchGrunners(searchGrunners);
     }
-    // console.log('GRunnersScreen -> searchGrunners', searchGrunners);
-  }, [areSearchingGrunners]);
+  }, [areSearchingGrunners, searchGrunners]);
 
   const loadGrunners = useCallback(async () => {
     let loadGrunnersMount = true;
@@ -73,6 +73,11 @@ const GRunnersScreen = (props) => {
         }
         await dispatch(gRunnerActions.fetchGrunners(gfilters));
         await dispatch(gRunnerActions.fetchZones());
+        // if (areSearchingGrunners === false) {
+        //   setSearchGrunners(gRunners);
+        // } else {
+        //   setSearchGrunners(searchGrunners);
+        // }
       } catch (err) {
         setError(err.message);
       }
@@ -193,7 +198,7 @@ const GRunnersScreen = (props) => {
           scrollIndicatorInsets={{ right: 1 }}
           showsVerticalScrollIndicator={false}
           onRefresh={loadGrunners}
-          initialNumToRender={10}
+          initialNumToRender={searchGrunners.length}
           refreshing={isRefreshing}
           highermaxToRenderPerBatch={5}
           data={searchGrunners}

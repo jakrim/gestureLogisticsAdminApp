@@ -90,15 +90,17 @@ const OrdersModal = (props) => {
               </View>
               <View style={styles.cities}>
                 {isCity ? (
-                  <CitySelector
-                    setSelectedCities={setSelectedCities}
-                    selectedCities={selectedCities}
-                  />
+                  <View style={{ height: 400 }}>
+                    <CitySelector
+                      setSelectedCities={setSelectedCities}
+                      selectedCities={selectedCities}
+                    />
+                  </View>
                 ) : (
                   <></>
                 )}
               </View>
-              <View>
+              <View style={{ paddingTop: 10 }}>
                 <StyledButton
                   style={{ backgroundColor: Colors.accentColor }}
                   onPress={saveFilters}

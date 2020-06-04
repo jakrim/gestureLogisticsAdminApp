@@ -52,6 +52,7 @@ const CitySelector = (props) => {
       keyExtractor={(item) => item}
       data={cities}
       numColumns={2}
+      contentContainerStyle={{ flexGrow: 1 }}
       renderItem={({ item, index }) => {
         return (
           <FilterSwitch

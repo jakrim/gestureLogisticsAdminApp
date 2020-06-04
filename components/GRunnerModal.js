@@ -96,10 +96,12 @@ const OrdersModal = (props) => {
                 />
               </View>
               {isCity ? (
-                <CitySelector
-                  setSelectedCities={setSelectedCities}
-                  selectedCities={selectedCities}
-                />
+                <View style={{ height: 400 }}>
+                  <CitySelector
+                    setSelectedCities={setSelectedCities}
+                    selectedCities={selectedCities}
+                  />
+                </View>
               ) : (
                 <></>
               )}

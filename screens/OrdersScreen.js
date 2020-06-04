@@ -50,7 +50,7 @@ const OrdersScreen = (props) => {
     } else {
       setSearchOrders(searchOrders);
     }
-  }, [areSearchingOrders]);
+  }, [areSearchingOrders, searchOrders]);
 
   const loadOrders = useCallback(async () => {
     let loadOrdersMount = true;
@@ -181,7 +181,6 @@ const OrdersScreen = (props) => {
       >
         <Search />
         <OptimizedFlatList
-          // maxToRenderPerBatch={10}
           showsVerticalScrollIndicator={false}
           scrollIndicatorInsets={{ right: 1 }}
           onRefresh={loadOrders}

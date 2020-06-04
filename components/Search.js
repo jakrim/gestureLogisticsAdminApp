@@ -41,6 +41,7 @@ const Search = (props) => {
   let ordersData = useSelector((state) => state.orders.orders);
   let gRunnersData = useSelector((state) => state.gRunners.gRunners);
   // console.log('Search -> gRunnersData', gRunnersData);
+  console.log('Search -> screenContext', screenContext);
 
   useEffect(() => {
     let mount = true;
@@ -50,13 +51,9 @@ const Search = (props) => {
 
       if (screenContext === 'orders') {
         setSearchableData(searchOrders);
-      }
-      if (screenContext === 'gRunners') {
+      } else if (screenContext === 'gRunners') {
         setSearchableData(searchGrunners);
       }
-
-      console.log('Search -> screenContext', screenContext);
-      // console.log('searchFilterFunction -> searchableData', searchableData);
     }
 
     return () => (mount = false);
@@ -70,9 +67,12 @@ const Search = (props) => {
       setSearchValue(text);
 
       if (searchValue.length) {
-        setAreSearchingOrders(true) && setAreSearchingGrunners(true);
+        setAreSearchingOrders(true);
+        setAreSearchingGrunners(true);
+        console.log('areSearchingGrunners', areSearchingGrunners);
       } else {
-        setAreSearchingOrders(false) && setAreSearchingGrunners(false);
+        setAreSearchingOrders(false);
+        setAreSearchingGrunners(false);
       }
       console.log('Search -> searchValue', searchValue);
 
@@ -95,8 +95,8 @@ const Search = (props) => {
 
         if (screenContext === 'orders') {
           itemData = `${item.product_name.toUpperCase()}
-            ${item.orderID.toUpperCase()}
-            ${item.zone.toUpperCase()}`;
+          ${item.orderID.toUpperCase()}
+          ${item.zone.toUpperCase()}`;
         } else if (screenContext === 'gRunners') {
           itemData = `${pubID} ${first_name} ${last_name} ${current_zone} ${current_order}`;
         }
@@ -104,17 +104,19 @@ const Search = (props) => {
         return itemData.indexOf(textData) > -1;
       });
 
-      screenContext === 'orders'
-        ? setSearchOrders(newData)
-        : console.log('Search -> newData', newData) &&
-          setSearchGrunners(newData);
+      console.log('Search -> newData', newData);
+      if (screenContext === 'orders') {
+        setSearchOrders(newData);
+      } else if (screenContext === 'gRunners') {
+        setSearchGrunners(newData);
+      }
     },
     [
       searchValue,
       searchableData,
-      areSearchingOrders,
+      // areSearchingOrders,
+      // areSearchingGrunners,
       screenContext,
-      areSearchingGrunners,
       searchOrders,
       searchGrunners,
     ]

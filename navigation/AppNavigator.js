@@ -54,7 +54,7 @@ const AppNavigator = (props) => {
   const [searchGrunners, setSearchGrunners] = useState([]);
   const searchedGrunners = useMemo(
     () => ({ searchGrunners, setSearchGrunners }),
-    [searchOrders, setSearchOrders]
+    [searchGrunners, setSearchGrunners]
   );
   const [areSearchingGrunners, setAreSearchingGrunners] = useState(false);
   const isSearchingGrunners = useMemo(
