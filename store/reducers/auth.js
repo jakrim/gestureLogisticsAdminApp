@@ -3,6 +3,7 @@ import {
   AUTHENTICATE,
   LOGOUT,
   SET_DID_TRY_AL,
+  SIGNINERROR,
 } from '../actions/auth';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   userId: null,
   message: null,
   didTryAutoLogin: false,
+  signInError: null,
 };
 
 export default (state = initialState, action) => {
@@ -21,6 +23,12 @@ export default (state = initialState, action) => {
         userId: action.userId,
         didTryAutoLogin: true,
       };
+    case SIGNINERROR: {
+      return {
+        ...state,
+        signInError: action.errorMessage,
+      };
+    }
     case SET_DID_TRY_AL:
       return {
         ...state,

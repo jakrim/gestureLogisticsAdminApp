@@ -1,12 +1,14 @@
-import { Keys } from '../../api-key';
 import { AsyncStorage } from 'react-native';
-import { token, basicUrl, URL } from '../../database/index.js';
+import { token, basicUrl, URL, firebaseSignin } from '../../database/index.js';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export const SIGNIN = 'SIGNIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const SIGNEDIN = 'SIGNEDIN';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
+export const SIGNINERROR = 'SIGNINERROR';
 
 export const setDidTryAL = () => {
   return { type: SET_DID_TRY_AL };
@@ -18,54 +20,79 @@ export const signedIn = (userId, token) => {
   };
 };
 
-export const signin = (email, password) => {
-  return async (dispatch) => {
-    const response = await fetch(
-      basicUrl`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${Keys.apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          password,
-          returnSecureToken: true,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = 'Something went wrong!';
-      if (errorId === 'EMAIL_NOT_FOUND') {
-        message = 'Your email is unauthorized to use this app!';
-      } else if (errorId === 'INVALID_PASSWORD') {
-        message = 'This password is invalid!';
-      }
-      throw new Error(message);
+export const signin = (email, password, callback) => {
+  return async (dispatch, getState) => {
+    let userToken = token();
+    try {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((data) => {
+          // console.log('signin -> data', data.user);
+          dispatch(signedIn(data.user.uid, userToken));
+          // const expirationDate = new Date(
+          //   new Date().getTime() + parseInt(data.expirationTime) * 1000
+          // );
+          saveDataToStorage(userToken, data.user.uid);
+        })
+        .catch((errorMessage) => {
+          dispatch({ type: SIGNINERROR, errorMessage });
+          console.log('error in dispatch catch', errorMessage);
+        });
+    } catch (err) {
+      console.log('Error in try catch block', err);
+      // dispatch({ type: SIGNIN_ERROR, payload: "Invalid login credentials" });
     }
+    // ----------------------------------------------------------------
+    // return async (dispatch) => {
+    //   const response = await fetch(
+    //     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${Keys.apiKey}`,
+    //     {
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify({
+    //         email,
+    //         password,
+    //         returnSecureToken: true,
+    //       }),
+    //     }
+    //   );
 
-    const resData = await response.json();
-    dispatch(
-      signedIn(
-        resData.localId,
-        resData.idToken,
-        parseInt(resData.expiresIn) * 1000
-      )
-    );
-    const expirationDate = new Date(
-      new Date().getTime() + parseInt(resData.expiresIn) * 1000
-    );
-    saveDataToStorage(resData.idToken, resData.localId, expirationDate);
+    //   if (!response.ok) {
+    //     const errorResData = await response.json();
+    //     const errorId = errorResData.error.message;
+    //     let message = 'Something went wrong!';
+    //     if (errorId === 'EMAIL_NOT_FOUND') {
+    //       message = 'Your email is unauthorized to use this app!';
+    //     } else if (errorId === 'INVALID_PASSWORD') {
+    //       message = 'This password is invalid!';
+    //     }
+    //     throw new Error(message);
+    //   }
+
+    //   const resData = await response.json();
+    //   dispatch(
+    //     signedIn(
+    //       resData.localId,
+    //       resData.idToken,
+    //       parseInt(resData.expiresIn) * 1000
+    //     )
+    //   );
+    //   const expirationDate = new Date(
+    //     new Date().getTime() + parseInt(resData.expiresIn) * 1000
+    //   );
+    //   saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
 
 export const authenticate = () => {
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
+    // var _basicUrl = await basicUrl();
 
     const response = await fetch(
-      `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=${userId}`,
+      // `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=${userId}`,
+      `${URL}/logistics_auth?${basicUrl}&uid=${userId}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,6 +122,7 @@ const saveDataToStorage = (token, userId, expirationDate) => {
     JSON.stringify({
       token,
       userId,
+      // expirationDate,
     })
   );
 };

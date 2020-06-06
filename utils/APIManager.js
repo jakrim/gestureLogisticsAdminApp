@@ -19,7 +19,7 @@ const basicUrl = async () => {
 };
 
 // const URL = __DEV__ ? 'https://us-central1-gesture-dev.cloudfunctions.net' : 'https://us-central1-yourgestureapp.cloudfunctions.net'
-const URL = 'https://us-central1-gesture-dev.cloudfunctions.net';
+const URL = 'https://us-central1-yourgestureapp.cloudfunctions.net/';
 
 /**
  * Get user's infomation

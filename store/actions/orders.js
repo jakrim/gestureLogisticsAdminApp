@@ -1,6 +1,7 @@
 import { Order } from '../../models/Order';
 
 import { properTimeFunc, mapCities } from '../../components/HelperFunctions';
+import { basicUrl, URL } from '../../database/index.js';
 
 export const SET_ORDERS = 'SET_ORDERS';
 export const SET_ORDER = 'SET_ORDER';
@@ -11,9 +12,12 @@ export const SEARCH_TEXT = 'SEARCH_TEXT';
 
 export const fetchOrders = (filters) => {
   return async (dispatch) => {
+    var _basicUrl = await basicUrl();
     try {
       const response = await fetch(
-        'https://us-central1-gesture-dev.cloudfunctions.net/logPendingOrders'
+        `${URL}/logistics_orders?${_basicUrl}`
+        // 'https://us-central1-gesture-dev.cloudfunctions.net/logPendingOrders'
+        // `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_orders?${basicUrl}`
       );
 
       if (!response.ok) {
@@ -67,7 +71,8 @@ export const fetchOrder = (orderID) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `https://us-central1-gesture-dev.cloudfunctions.net/logisticsOrder?orderId=${orderID}`
+        // `https://us-central1-gesture-dev.cloudfunctions.net/logisticsOrder?orderId=${orderID}`
+        `${URL}/logistics_order?${basicUrl}&orderId=${orderID}`
       );
 
       const resData = await response.json();

@@ -1,4 +1,5 @@
 import { Payment } from '../../models/Payment';
+import { basicUrl, URL } from '../../database/index.js';
 
 export const SET_PAYMENTS = 'SET_PAYMENTS';
 
@@ -7,7 +8,9 @@ export const fetchPayments = (courierId) => {
     try {
       const response = await fetch(
         // `https://us-central1-gesture-dev.cloudfunctions.net/logistics_payment_history?uid=${uid}`
-        `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_payment_history?uid=${courierId}`
+        // `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_payment_history?uid=${courierId}`
+        // `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_payment_history`
+        `${URL}/logistics_payment_history?${basicUrl}&uid=${courierId}`
       );
 
       if (!response.ok) {

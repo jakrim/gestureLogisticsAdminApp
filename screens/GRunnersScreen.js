@@ -51,10 +51,8 @@ const GRunnersScreen = (props) => {
 
   useEffect(() => {
     if (areSearchingGrunners === false) {
-      console.log('areSearchingGrunners === false');
       setSearchGrunners(gRunners);
     } else {
-      console.log('areSearchingGrunners === true');
       setSearchGrunners(searchGrunners);
     }
   }, [areSearchingGrunners, searchGrunners]);

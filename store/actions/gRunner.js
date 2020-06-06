@@ -1,5 +1,6 @@
 import { Grunners } from '../../models/Grunners';
 import { mapCities } from '../../components/HelperFunctions';
+import { basicUrl, URL } from '../../database/index.js';
 
 export const SET_GRUNNERS = 'SET_GRUNNERS';
 export const SET_GRUNNER = 'SET_GRUNNER';
@@ -11,7 +12,8 @@ export const fetchGrunners = (gfilters) => {
     let city_zones = getState().gRunners.city_zones;
     try {
       const response = await fetch(
-        'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunners'
+        `${URL}/logistics_grunners?${basicUrl}`
+        // 'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunners?uid=D2LzzJFvKOM8sIEB4z4iU8VUiu72'
       );
 
       if (!response.ok) {
@@ -76,11 +78,13 @@ export const fetchGrunners = (gfilters) => {
 };
 
 export const fetchGrunner = (uid) => {
+  console.log('fetchGrunner -> uid', uid);
   return async (dispatch) => {
     try {
       const response = await fetch(
         // `https://us-central1-gesture-dev.cloudfunctions.net/logGRunnerInfo?courierId=${uid}`
-        `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunner?courierId=${uid}`
+        // `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunner?courierId=${uid}`
+        `${URL}/logistics_grunner?${basicUrl}&courierId=${uid}`
       );
 
       if (!response.ok) {

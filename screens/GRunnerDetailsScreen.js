@@ -162,11 +162,25 @@ const GRunnerDetailsScreen = (props) => {
                   {gRunner.currentStatus}
                 </Text>
               </View>
-            ) : (
+            ) : gRunner.currentStatus === 'offline' ? (
               <View style={styles.status}>
                 <Text
                   style={{
                     color: 'red',
+                    textAlign: 'center',
+                    fontFamily: 'dm-sans-bold',
+                    paddingTop: 4,
+                    fontSize: 18,
+                  }}
+                >
+                  {gRunner.currentStatus}
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.status}>
+                <Text
+                  style={{
+                    color: Colors.accentColor,
                     textAlign: 'center',
                     fontFamily: 'dm-sans-bold',
                     paddingTop: 4,
@@ -210,7 +224,9 @@ const GRunnerDetailsScreen = (props) => {
               )}
             </View>
             <Text style={styles.description}>
-              <B style={{ color: 'black', fontSize: 14 }}>Courier id: </B>
+              <B style={{ color: 'black', fontSize: 14 }}>
+                Public Courier id:{' '}
+              </B>
               {gRunner.publicCourierId}
             </Text>
             <View style={styles.buttonContainer}>

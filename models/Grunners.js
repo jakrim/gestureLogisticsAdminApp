@@ -22,18 +22,20 @@ export class Grunners {
 
 export class Grunner {
   constructor(
-    publicCourierId,
-    profileImageUrl,
-    lastName,
-    firstName,
+    courierId,
     currentStatus,
-    isLock
+    firstName,
+    isLock,
+    lastName,
+    profileImageUrl,
+    publicCourierId
   ) {
-    (this.publicCourierId = publicCourierId),
-      (this.profileImageUrl = profileImageUrl),
-      (this.lastName = lastName),
-      (this.firstName = firstName),
+    (this.courierId = courierId),
       (this.currentStatus = currentStatus),
-      (this.isLock = isLock);
+      (this.firstName = firstName),
+      (this.isLock = isLock),
+      (this.lastName = lastName),
+      (this.profileImageUrl = profileImageUrl),
+      (this.publicCourierId = publicCourierId);
   }
 }

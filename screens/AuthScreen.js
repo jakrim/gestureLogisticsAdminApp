@@ -4,6 +4,7 @@ import {
   Button,
   ActivityIndicator,
   Alert,
+  Text,
   ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -13,7 +14,7 @@ import {
   Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
 import Input from '../components/Input';
@@ -66,6 +67,14 @@ const AuthScreen = (props) => {
   const [error, setError] = useState();
   const [formHasSubmitted, setFormHasSubmitted] = useState(false);
   const dispatch = useDispatch();
+
+  // let errorMessage = useSelector((state) => state.auth.signInError);
+  // console.log('AuthScreen -> errorMessage', errorMessage);
+  // let errorMessageJSX = (
+  //   <View>
+  //     <Text>{errorMessage.message}</Text>
+  //   </View>
+  // );
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -171,6 +180,7 @@ const AuthScreen = (props) => {
                 formHasSubmitted={formHasSubmitted}
               />
               <View style={styles.buttonContainer}>
+                {/* {errorMessage ? errorMessageJSX : <></>} */}
                 {isLoading ? (
                   <ActivityIndicator size='small' color={Colors.primaryColor} />
                 ) : (
@@ -224,3 +234,42 @@ const styles = StyleSheet.create({
 });
 
 export default AuthScreen;
+
+// return async (dispatch) => {
+//   const response = await fetch(
+//     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${Keys.apiKey}`,
+//     {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({
+//         email,
+//         password,
+//         returnSecureToken: true,
+//       }),
+//     }
+//   );
+
+//   if (!response.ok) {
+//     const errorResData = await response.json();
+//     const errorId = errorResData.error.message;
+//     let message = 'Something went wrong!';
+//     if (errorId === 'EMAIL_NOT_FOUND') {
+//       message = 'Your email is unauthorized to use this app!';
+//     } else if (errorId === 'INVALID_PASSWORD') {
+//       message = 'This password is invalid!';
+//     }
+//     throw new Error(message);
+//   }
+
+//   const resData = await response.json();
+//   dispatch(
+//     signedIn(
+//       resData.localId,
+//       resData.idToken,
+//       parseInt(resData.expiresIn) * 1000
+//     )
+//   );
+//   const expirationDate = new Date(
+//     new Date().getTime() + parseInt(resData.expiresIn) * 1000
+//   );
+//   saveDataToStorage(resData.idToken, resData.localId, expirationDate);

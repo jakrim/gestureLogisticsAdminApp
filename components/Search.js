@@ -41,7 +41,6 @@ const Search = (props) => {
   let ordersData = useSelector((state) => state.orders.orders);
   let gRunnersData = useSelector((state) => state.gRunners.gRunners);
   // console.log('Search -> gRunnersData', gRunnersData);
-  console.log('Search -> screenContext', screenContext);
 
   useEffect(() => {
     let mount = true;
@@ -69,12 +68,10 @@ const Search = (props) => {
       if (searchValue.length) {
         setAreSearchingOrders(true);
         setAreSearchingGrunners(true);
-        console.log('areSearchingGrunners', areSearchingGrunners);
       } else {
         setAreSearchingOrders(false);
         setAreSearchingGrunners(false);
       }
-      console.log('Search -> searchValue', searchValue);
 
       var newData = searchableData.filter((item) => {
         let itemData;
@@ -104,7 +101,6 @@ const Search = (props) => {
         return itemData.indexOf(textData) > -1;
       });
 
-      console.log('Search -> newData', newData);
       if (screenContext === 'orders') {
         setSearchOrders(newData);
       } else if (screenContext === 'gRunners') {
