@@ -22,17 +22,14 @@ export const signedIn = (userId, token) => {
 
 export const signin = (email, password, callback) => {
   return async (dispatch, getState) => {
-    let userToken = token();
+    let userToken = await token();
     try {
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((data) => {
-          // console.log('signin -> data', data.user);
           dispatch(signedIn(data.user.uid, userToken));
-          // const expirationDate = new Date(
-          //   new Date().getTime() + parseInt(data.expirationTime) * 1000
-          // );
+
           saveDataToStorage(userToken, data.user.uid);
         })
         .catch((errorMessage) => {
@@ -43,56 +40,17 @@ export const signin = (email, password, callback) => {
       console.log('Error in try catch block', err);
       // dispatch({ type: SIGNIN_ERROR, payload: "Invalid login credentials" });
     }
-    // ----------------------------------------------------------------
-    // return async (dispatch) => {
-    //   const response = await fetch(
-    //     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${Keys.apiKey}`,
-    //     {
-    //       method: 'POST',
-    //       headers: { 'Content-Type': 'application/json' },
-    //       body: JSON.stringify({
-    //         email,
-    //         password,
-    //         returnSecureToken: true,
-    //       }),
-    //     }
-    //   );
-
-    //   if (!response.ok) {
-    //     const errorResData = await response.json();
-    //     const errorId = errorResData.error.message;
-    //     let message = 'Something went wrong!';
-    //     if (errorId === 'EMAIL_NOT_FOUND') {
-    //       message = 'Your email is unauthorized to use this app!';
-    //     } else if (errorId === 'INVALID_PASSWORD') {
-    //       message = 'This password is invalid!';
-    //     }
-    //     throw new Error(message);
-    //   }
-
-    //   const resData = await response.json();
-    //   dispatch(
-    //     signedIn(
-    //       resData.localId,
-    //       resData.idToken,
-    //       parseInt(resData.expiresIn) * 1000
-    //     )
-    //   );
-    //   const expirationDate = new Date(
-    //     new Date().getTime() + parseInt(resData.expiresIn) * 1000
-    //   );
-    //   saveDataToStorage(resData.idToken, resData.localId, expirationDate);
   };
 };
 
 export const authenticate = () => {
   return async (dispatch, getState) => {
-    const userId = getState().auth.userId;
-    // var _basicUrl = await basicUrl();
+    // const userId = getState().auth.userId;
+    var _basicUrl = await basicUrl();
 
     const response = await fetch(
       // `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=${userId}`,
-      `${URL}/logistics_auth?${basicUrl}&uid=${userId}`,
+      `${URL}/logistics_auth?${_basicUrl}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

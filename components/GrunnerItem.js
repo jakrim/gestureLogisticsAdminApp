@@ -120,8 +120,9 @@ const GRunnerItem = (props) => {
 const styles = StyleSheet.create({
   card: {
     // height: 190,
-    width: 320,
-    margin: 15,
+    width: 340,
+    marginBottom: 15,
+    marginTop: 10,
     backgroundColor: Colors.backgroundFeed,
   },
   touchable: {

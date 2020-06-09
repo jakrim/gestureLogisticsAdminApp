@@ -9,10 +9,11 @@ export const FETCH_ZONES = 'FETCH_ZONES';
 
 export const fetchGrunners = (gfilters) => {
   return async (dispatch, getState) => {
+    var _basicUrl = await basicUrl();
     let city_zones = getState().gRunners.city_zones;
     try {
       const response = await fetch(
-        `${URL}/logistics_grunners?${basicUrl}`
+        `${URL}/logistics_grunners?${_basicUrl}`
         // 'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunners?uid=D2LzzJFvKOM8sIEB4z4iU8VUiu72'
       );
 
@@ -78,13 +79,13 @@ export const fetchGrunners = (gfilters) => {
 };
 
 export const fetchGrunner = (uid) => {
-  console.log('fetchGrunner -> uid', uid);
   return async (dispatch) => {
+    var _basicUrl = await basicUrl();
     try {
       const response = await fetch(
         // `https://us-central1-gesture-dev.cloudfunctions.net/logGRunnerInfo?courierId=${uid}`
         // `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_grunner?courierId=${uid}`
-        `${URL}/logistics_grunner?${basicUrl}&courierId=${uid}`
+        `${URL}/logistics_grunner?${_basicUrl}&courierId=${uid}`
       );
 
       if (!response.ok) {
@@ -109,7 +110,7 @@ export const fetchZones = () => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        'https://us-central1-gesture-dev.cloudfunctions.net/logistics_zones'
+        'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_zones'
       );
 
       if (!response.ok) {

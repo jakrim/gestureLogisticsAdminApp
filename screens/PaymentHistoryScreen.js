@@ -19,13 +19,13 @@ const PaymentHistoryScreen = (props) => {
   const payments = useSelector((state) => state.payments.payments);
 
   const { navigation, route } = props;
-  const uid = route.params.uid;
+  const courierId = route.params.courierId;
 
   const loadPayments = useCallback(async () => {
     setError(null);
     setIsRefreshing(true);
     try {
-      await dispatch(paymentActions.fetchPayments(uid));
+      await dispatch(paymentActions.fetchPayments(courierId));
     } catch (err) {
       setError(err.message);
     }

@@ -41,7 +41,7 @@ const PaymentItem = (props) => {
         useForeground
       >
         <View>
-          <Text style={styles.productName}>{props.product_name}</Text>
+          {/* <Text style={styles.productName}>{props.product_name}</Text> */}
           <Text style={styles.paymentText}>
             <B>Payment: </B> {props.payment}
           </Text>
