@@ -19,10 +19,10 @@ const LoadingScreen = (props) => {
     try {
       dispatch(ordersActions.fetchZones());
       setIsLoading(true);
-      // logout();
       setTimeout(() => {
         dispatch(authActions.authenticate());
       }, 1000);
+      // logout();
     } catch (err) {
       setTimeout(() => {
         setError(message);

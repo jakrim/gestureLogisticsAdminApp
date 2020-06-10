@@ -124,10 +124,9 @@ export const fetchOrder = (orderID) => {
 
 export const fetchZones = () => {
   return async (dispatch) => {
+    var _basicUrl = await basicUrl();
     try {
-      const response = await fetch(
-        'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_zones'
-      );
+      const response = await fetch(`${URL}/logistics_zones?${_basicUrl}`);
 
       if (!response.ok) {
         throw new Error('Something went wrong in fetching zones!');

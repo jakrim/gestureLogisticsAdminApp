@@ -330,12 +330,12 @@ const PaymentOrderScreen = (props) => {
             <Text style={styles.textHeader}>Order Details</Text>
 
             <View style={styles.orderDetailsContainer}>
-              <Text style={styles.recipientRow}>Order ID: {order.orderId}</Text>
-              <Text style={styles.recipientRow}>
+              <Text style={styles.orderDetails}>Order ID: {orderId}</Text>
+              <Text style={styles.orderDetails}>
                 Order Placed: {MillisToDate(order.time_order_placed)}
               </Text>
             </View>
-            <StyledButton style={styles.button}>DELAY</StyledButton>
+            {/* <StyledButton style={styles.button}>DELAY</StyledButton> */}
           </ScrollView>
         </Card>
       </LinearGradient>
@@ -396,6 +396,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingBottom: 4,
     color: Colors.darkPurp,
+  },
+  orderDetails: {
+    flexDirection: 'row',
+    fontFamily: 'dm-sans-regular',
+    fontSize: 16,
+    paddingBottom: 4,
+    color: Colors.primaryColor,
   },
   orderDetailsContainer: {
     padding: 10,

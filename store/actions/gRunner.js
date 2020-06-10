@@ -108,9 +108,11 @@ export const fetchGrunner = (uid) => {
 
 export const fetchZones = () => {
   return async (dispatch) => {
+    var _basicUrl = await basicUrl();
     try {
       const response = await fetch(
-        'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_zones'
+        `${URL}/logistics_zones?${_basicUrl}`
+        // 'https://us-central1-yourgestureapp.cloudfunctions.net/logistics_zones'
       );
 
       if (!response.ok) {

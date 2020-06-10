@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { token, basicUrl, URL, firebaseSignin } from '../../database/index.js';
+import { token, basicUrl, URL } from '../../database/index.js';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -8,7 +8,7 @@ export const AUTHENTICATE = 'AUTHENTICATE';
 export const SIGNEDIN = 'SIGNEDIN';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
-export const SIGNINERROR = 'SIGNINERROR';
+export const SIGNIN_ERROR = 'SIGNIN_ERROR';
 
 export const setDidTryAL = () => {
   return { type: SET_DID_TRY_AL };
@@ -29,11 +29,10 @@ export const signin = (email, password, callback) => {
         .signInWithEmailAndPassword(email, password)
         .then((data) => {
           dispatch(signedIn(data.user.uid, userToken));
-
           saveDataToStorage(userToken, data.user.uid);
         })
         .catch((errorMessage) => {
-          dispatch({ type: SIGNINERROR, errorMessage });
+          dispatch({ type: SIGNIN_ERROR, errorMessage });
           console.log('error in dispatch catch', errorMessage);
         });
     } catch (err) {
@@ -45,9 +44,7 @@ export const signin = (email, password, callback) => {
 
 export const authenticate = () => {
   return async (dispatch, getState) => {
-    // const userId = getState().auth.userId;
     var _basicUrl = await basicUrl();
-
     const response = await fetch(
       // `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=${userId}`,
       `${URL}/logistics_auth?${_basicUrl}`,

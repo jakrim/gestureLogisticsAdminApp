@@ -3,7 +3,7 @@ import {
   AUTHENTICATE,
   LOGOUT,
   SET_DID_TRY_AL,
-  SIGNINERROR,
+  SIGNIN_ERROR,
 } from '../actions/auth';
 
 const initialState = {
@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
         userId: action.userId,
         didTryAutoLogin: true,
       };
-    case SIGNINERROR: {
+    case SIGNIN_ERROR: {
       return {
         ...state,
         signInError: action.errorMessage,
