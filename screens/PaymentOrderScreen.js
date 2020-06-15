@@ -31,14 +31,7 @@ const PaymentOrderScreen = (props) => {
   const dispatch = useDispatch();
   const { navigation, route } = props;
 
-  let TouchableComp = TouchableOpacity;
-
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableComp = TouchableNativeFeedback;
-  }
-
   const order = useSelector((state) => state.orders.order);
-  console.log('PaymentOrderScreen -> order', order);
   const orderId = route.params.orderId;
 
   const loadOrder = useCallback(async () => {
@@ -128,7 +121,22 @@ const PaymentOrderScreen = (props) => {
         colors={[Colors.primaryColor, Colors.lightTeal]}
         style={styles.gradient}
       >
-        <OrderDetails />
+        <OrderDetails
+          schedule={order.schedule}
+          product_name={order.product_name}
+          category_name={order.category_name}
+          recipient_name={order.recipient_name}
+          recipient_phone_number={order.recipient_phone_number}
+          recipient_email={order.recipient_email}
+          address_string={order.address_string}
+          address_string_2={order.address_string_2}
+          delivery_note={order.delivery_note}
+          sender_name={order.sender_name}
+          sender_phone_number={order.sender_phone_number}
+          sender_email={order.sender_email}
+          time_order_placed={order.time_order_placed}
+          orderID={orderId}
+        />
       </LinearGradient>
     </ErrorBoundary>
   );

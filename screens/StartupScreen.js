@@ -22,6 +22,8 @@ const StartupScreen = (props) => {
       }
       const transformedData = JSON.parse(userData);
       const { token, userId } = transformedData;
+      console.log('tryLogin -> userId', userId);
+      console.log('tryLogin -> token', token);
 
       dispatch(authActions.signedIn(userId, token));
     };

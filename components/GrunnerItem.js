@@ -92,10 +92,10 @@ const GRunnerItem = (props) => {
                 </Text>
               )}
             </View>
-            <Text style={styles.gRunnerDetails2Text}>
+            {/* <Text style={styles.gRunnerDetails2Text}>
               <B>Zone: </B>
               {props.current_zone}
-            </Text>
+            </Text> */}
             {props.current_order !== null ? (
               <Text style={styles.gRunnerDetails2Text}>
                 <B>Order ID: </B>

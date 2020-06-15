@@ -18,7 +18,7 @@ import Colors from '../constants/Colors';
 import {
   OrderFiltersContext,
   OrdersSearchContext,
-  AreSearchingOrders,
+  AreSearching,
   ScreenContext,
 } from '../components/ApplicationContexts';
 
@@ -38,19 +38,17 @@ const OrdersScreen = (props) => {
   const { filters, setFilters } = useContext(OrderFiltersContext);
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
   const { screenContext, setScreenContext } = useContext(ScreenContext);
-  const { areSearchingOrders, setAreSearchingOrders } = useContext(
-    AreSearchingOrders
-  );
+  const { areSearching, setAreSearching } = useContext(AreSearching);
 
   const { navigation } = props;
 
   useEffect(() => {
-    if (areSearchingOrders === false) {
+    if (areSearching === false) {
       setSearchOrders(orders);
     } else {
       setSearchOrders(searchOrders);
     }
-  }, [areSearchingOrders, searchOrders]);
+  }, [areSearching, searchOrders]);
 
   const loadOrders = useCallback(async () => {
     let loadOrdersMount = true;

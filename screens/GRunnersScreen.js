@@ -19,7 +19,7 @@ import {
   GrunnerFiltersContext,
   ScreenContext,
   GRunnersSearchContext,
-  AreSearchingGrunners,
+  AreSearching,
 } from '../components/ApplicationContexts';
 import { capitalizeLetter } from '../components/HelperFunctions';
 
@@ -43,19 +43,17 @@ const GRunnersScreen = (props) => {
   const { searchGrunners, setSearchGrunners } = useContext(
     GRunnersSearchContext
   );
-  const { areSearchingGrunners, setAreSearchingGrunners } = useContext(
-    AreSearchingGrunners
-  );
+  const { areSearching, setAreSearching } = useContext(AreSearching);
 
   const { navigation } = props;
 
   useEffect(() => {
-    if (areSearchingGrunners === false) {
+    if (areSearching === false) {
       setSearchGrunners(gRunners);
     } else {
       setSearchGrunners(searchGrunners);
     }
-  }, [areSearchingGrunners, searchGrunners]);
+  }, [areSearching, searchGrunners]);
 
   const loadGrunners = useCallback(async () => {
     let loadGrunnersMount = true;
@@ -71,11 +69,6 @@ const GRunnersScreen = (props) => {
         }
         await dispatch(gRunnerActions.fetchGrunners(gfilters));
         await dispatch(gRunnerActions.fetchZones());
-        // if (areSearchingGrunners === false) {
-        //   setSearchGrunners(gRunners);
-        // } else {
-        //   setSearchGrunners(searchGrunners);
-        // }
       } catch (err) {
         setError(err.message);
       }

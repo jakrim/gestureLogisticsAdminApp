@@ -123,7 +123,7 @@ const PaymentHistoryScreen = (props) => {
               payment={itemData.item.payment}
               bonus={itemData.item.bonus}
               tip={itemData.item.tips}
-              order_ID={itemData.item.order_ID}
+              order_ID={itemData.item.orderId}
               total_time={itemData.item.total_time}
               completed_date_ms={itemData.item.completed_date_ms}
               onSelect={() => {

@@ -89,13 +89,13 @@ const OrdersModal = (props) => {
                   state={hasCurrentOrder}
                   onChange={() => setHasCurrentOrder(!hasCurrentOrder)}
                 />
-                <FilterSwitch
+                {/* <FilterSwitch
                   label='Cities'
                   state={isCity}
                   onChange={() => setIsCity(!isCity)}
-                />
+                /> */}
               </View>
-              {isCity ? (
+              {/* {isCity ? (
                 <View style={{ height: 400 }}>
                   <CitySelector
                     setSelectedCities={setSelectedCities}
@@ -104,7 +104,7 @@ const OrdersModal = (props) => {
                 </View>
               ) : (
                 <></>
-              )}
+              )} */}
               <View>
                 <StyledButton
                   style={{ backgroundColor: Colors.accentColor }}

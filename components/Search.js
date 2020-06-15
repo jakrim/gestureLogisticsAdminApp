@@ -18,10 +18,9 @@ import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
 import Colors from '../constants/Colors';
 import {
   OrdersSearchContext,
-  AreSearchingOrders,
+  AreSearching,
   ScreenContext,
   GRunnersSearchContext,
-  AreSearchingGrunners,
 } from './ApplicationContexts';
 
 const Search = (props) => {
@@ -32,12 +31,7 @@ const Search = (props) => {
   const { searchGrunners, setSearchGrunners } = useContext(
     GRunnersSearchContext
   );
-  const { areSearchingOrders, setAreSearchingOrders } = useContext(
-    AreSearchingOrders
-  );
-  const { areSearchingGrunners, setAreSearchingGrunners } = useContext(
-    AreSearchingGrunners
-  );
+  const { areSearching, setAreSearching } = useContext(AreSearching);
   let ordersData = useSelector((state) => state.orders.orders);
   let gRunnersData = useSelector((state) => state.gRunners.gRunners);
   // console.log('Search -> gRunnersData', gRunnersData);
@@ -66,11 +60,9 @@ const Search = (props) => {
       setSearchValue(text);
 
       if (searchValue.length) {
-        setAreSearchingOrders(true);
-        setAreSearchingGrunners(true);
+        setAreSearching(true);
       } else {
-        setAreSearchingOrders(false);
-        setAreSearchingGrunners(false);
+        setAreSearching(false);
       }
 
       var newData = searchableData.filter((item) => {
@@ -110,8 +102,7 @@ const Search = (props) => {
     [
       searchValue,
       searchableData,
-      // areSearchingOrders,
-      // areSearchingGrunners,
+      areSearching,
       screenContext,
       searchOrders,
       searchGrunners,

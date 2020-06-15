@@ -9,10 +9,9 @@ import {
   OrderFiltersContext,
   GrunnerFiltersContext,
   OrdersSearchContext,
-  AreSearchingOrders,
+  AreSearching,
   ScreenContext,
   GRunnersSearchContext,
-  AreSearchingGrunners,
 } from '../components/ApplicationContexts';
 
 const AppNavigator = (props) => {
@@ -46,21 +45,17 @@ const AppNavigator = (props) => {
     searchOrders,
     setSearchOrders,
   ]);
-  const [areSearchingOrders, setAreSearchingOrders] = useState(false);
-  const isSearchingOrders = useMemo(
-    () => ({ areSearchingOrders, setAreSearchingOrders }),
-    [areSearchingOrders, setAreSearchingOrders]
-  );
+
   const [searchGrunners, setSearchGrunners] = useState([]);
   const searchedGrunners = useMemo(
     () => ({ searchGrunners, setSearchGrunners }),
     [searchGrunners, setSearchGrunners]
   );
-  const [areSearchingGrunners, setAreSearchingGrunners] = useState(false);
-  const isSearchingGrunners = useMemo(
-    () => ({ areSearchingGrunners, setAreSearchingGrunners }),
-    [areSearchingGrunners, setAreSearchingGrunners]
-  );
+  const [areSearching, setAreSearching] = useState(false);
+  const isSearching = useMemo(() => ({ areSearching, setAreSearching }), [
+    areSearching,
+    setAreSearching,
+  ]);
 
   const [screenContext, setScreenContext] = useState('');
   const ScreenContextForSearch = useMemo(
@@ -72,21 +67,19 @@ const AppNavigator = (props) => {
     <NavigationContainer>
       {isAuth && !authMessage && <LoadingScreen />}
 
-      <AreSearchingGrunners.Provider value={isSearchingGrunners}>
+      <AreSearching.Provider value={isSearching}>
         <GRunnersSearchContext.Provider value={searchedGrunners}>
-          <AreSearchingOrders.Provider value={isSearchingOrders}>
-            <OrdersSearchContext.Provider value={searchedOrders}>
-              <OrderFiltersContext.Provider value={providerValue}>
-                <GrunnerFiltersContext.Provider value={gProviderValue}>
-                  <ScreenContext.Provider value={ScreenContextForSearch}>
-                    {isAuth && authMessage && <GestureNavigator />}
-                  </ScreenContext.Provider>
-                </GrunnerFiltersContext.Provider>
-              </OrderFiltersContext.Provider>
-            </OrdersSearchContext.Provider>
-          </AreSearchingOrders.Provider>
+          <OrdersSearchContext.Provider value={searchedOrders}>
+            <OrderFiltersContext.Provider value={providerValue}>
+              <GrunnerFiltersContext.Provider value={gProviderValue}>
+                <ScreenContext.Provider value={ScreenContextForSearch}>
+                  {isAuth && authMessage && <GestureNavigator />}
+                </ScreenContext.Provider>
+              </GrunnerFiltersContext.Provider>
+            </OrderFiltersContext.Provider>
+          </OrdersSearchContext.Provider>
         </GRunnersSearchContext.Provider>
-      </AreSearchingGrunners.Provider>
+      </AreSearching.Provider>
 
       {!isAuth && didTryAutoLogin && <AuthNavigator />}
       {!isAuth && !didTryAutoLogin && <StartupScreen />}
