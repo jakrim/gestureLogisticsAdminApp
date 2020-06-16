@@ -55,16 +55,13 @@ const Search = (props) => {
   // useEffect(() => {
   //   let mount = true;
   //   if (mount) {
-  const searchFilterFunction = useCallback(
-    (text) => {
-      setSearchValue(text);
-
-      if (searchValue.length) {
-        setAreSearching(true);
-      } else {
-        setAreSearching(false);
-      }
-
+  const searchFilterFunction = useCallback(() => {
+    if (searchValue.length) {
+      setAreSearching(true);
+    } else {
+      setAreSearching(false);
+    }
+    if (searchableData) {
       var newData = searchableData.filter((item) => {
         let itemData;
 
@@ -73,9 +70,9 @@ const Search = (props) => {
           : '';
         let first_name = item.first_name ? item.first_name.toUpperCase() : '';
         let last_name = item.last_name ? item.last_name.toUpperCase() : false;
-        let current_zone = item.current_zone
-          ? item.current_zone.toUpperCase()
-          : '';
+        // let current_zone = item.current_zone
+        //   ? item.current_zone.toUpperCase()
+        //   : '';
         let current_order = item.current_order
           ? item.current_order.toUpperCase()
           : '';
@@ -87,27 +84,27 @@ const Search = (props) => {
           ${item.orderID.toUpperCase()}
           ${item.zone.toUpperCase()}`;
         } else if (screenContext === 'gRunners') {
-          itemData = `${pubID} ${first_name} ${last_name} ${current_zone} ${current_order}`;
+          itemData = `${pubID} ${first_name} ${last_name} ${current_order}`;
+          // itemData = `${item.public_courier_id.toUpperCase()} ${item.first_name.toUpperCase()} ${item.last_name.toUpperCase()} ${item.current_order.toUpperCase()}`;
         }
 
         return itemData.indexOf(textData) > -1;
       });
+    }
 
-      if (screenContext === 'orders') {
-        setSearchOrders(newData);
-      } else if (screenContext === 'gRunners') {
-        setSearchGrunners(newData);
-      }
-    },
-    [
-      searchValue,
-      searchableData,
-      areSearching,
-      screenContext,
-      searchOrders,
-      searchGrunners,
-    ]
-  );
+    if (screenContext === 'orders') {
+      setSearchOrders(newData);
+    } else if (screenContext === 'gRunners') {
+      setSearchGrunners(newData);
+    }
+  }, [
+    searchValue,
+    searchableData,
+    areSearching,
+    screenContext,
+    searchOrders,
+    searchGrunners,
+  ]);
   //     searchFilterFunction(searchValue);
   //   }
 
@@ -117,11 +114,13 @@ const Search = (props) => {
   //     areSearchingOrders,
   //     screenContext,
   //     areSearchingGrunners,]);
-
-  const handleChange = (text) => {
-    setSearchValue(text);
-    searchFilterFunction(text);
-  };
+  useEffect(() => {
+    // const handleChange = async (text) => {
+    if (searchValue) {
+      searchFilterFunction(searchValue);
+    }
+    // };
+  }, [searchValue]);
 
   return (
     <ErrorBoundary>
@@ -141,7 +140,13 @@ const Search = (props) => {
             inputStyle={styles.input}
             placeholder='Search...'
             style={styles.searchBar}
-            onChangeText={handleChange}
+            onChangeText={(text) => setSearchValue(text)}
+            onClear={() => {
+              screenContext === 'orders'
+                ? setSearchOrders(ordersData)
+                : setSearchGrunners(gRunnersData);
+            }}
+            cancelIcon={false}
             value={searchValue}
             autoCorrect={false}
             autoCapitalize='none'

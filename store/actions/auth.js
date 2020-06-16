@@ -23,15 +23,11 @@ export const signedIn = (userId, token) => {
 export const signin = (email, password, callback) => {
   return async (dispatch, getState) => {
     try {
-      // firebase.auth().onAuthStateChanged(async function (user) {
-      //   console.log('signin -> user', user);
-      //   if (user) {
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(async (data) => {
           let userToken = await token();
-          console.log('signin -> userToken', userToken);
           dispatch(signedIn(data.user.uid, userToken));
           saveDataToStorage(userToken, data.user.uid);
         })
@@ -39,12 +35,6 @@ export const signin = (email, password, callback) => {
           dispatch({ type: SIGNIN_ERROR, errorMessage });
           console.log('error in dispatch catch', errorMessage);
         });
-      // User is signed in.
-      // } else {
-      //   // No user is signed in.
-      //   console.log('herehrerererhnere');
-      // }
-      // });
     } catch (err) {
       console.log('Error in try catch block', err);
       // dispatch({ type: SIGNIN_ERROR, payload: "Invalid login credentials" });
