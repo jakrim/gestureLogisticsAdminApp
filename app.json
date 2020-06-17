@@ -1,14 +1,15 @@
 {
   "expo": {
     "name": "gestureLogisticsAdmin",
+    "description": "A Gesture app to support Operations and Logistics by tracking orders and runners.",
     "slug": "gestureLogisticsAdmin",
     "privacy": "public",
     "platforms": ["ios", "android", "web"],
     "version": "0.0.1",
     "orientation": "portrait",
-    "icon": "./assets/gesture-icon.png",
+    "icon": "./assets/Gesture-icon-280.png",
     "splash": {
-      "image": "./assets/gesture-icon.png",
+      "image": "./assets/Gesture-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,8 +18,18 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.gesture.logisticsadmin",
+      "buildNumber": "0.0.1",
       "supportsTablet": true,
       "infoPlist": {}
+    },
+    "android": {
+      "package": "com.gesture.logisticsadmin",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/Gesture-icon-280.png",
+        "backgroundColor": "#ffffff"
+      }
     }
   }
 }
