@@ -97,6 +97,22 @@ const PaymentHistoryScreen = (props) => {
       </ErrorBoundary>
     );
   }
+  if (payments.length === 0) {
+    return (
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <Text style={styles.noPaymentsText}>
+              This G Runner has no Payment History or Order History
+            </Text>
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
+    );
+  }
 
   const selectItemHandler = (orderId) => {
     navigation.navigate('PaymentOrderScreen', {
@@ -148,6 +164,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     paddingVertical: 80,
+  },
+  noPaymentsText: {
+    color: Colors.backgroundFeed,
+    fontSize: 22,
+    textAlign: 'center',
   },
 });
 
