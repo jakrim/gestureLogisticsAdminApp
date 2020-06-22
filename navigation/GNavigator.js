@@ -58,7 +58,7 @@ export const AuthNavigator = () => (
   </AuthStack.Navigator>
 );
 
-const OrderNavigator = ({ navigation }) => (
+export const OrderNavigator = ({ navigation }) => (
   <OrderStack.Navigator
     screenOptions={{
       headerTintColor: Colors.primaryColor,

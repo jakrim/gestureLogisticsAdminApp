@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
@@ -33,6 +40,7 @@ const OrdersScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const [hasFilters, setHasFilters] = useState(false);
+  const [ascending, setAscending] = useState(false);
   let orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
   const { filters, setFilters } = useContext(OrderFiltersContext);
@@ -65,6 +73,7 @@ const OrdersScreen = (props) => {
         await dispatch(ordersActions.fetchOrders(filters));
         await dispatch(ordersActions.fetchZones());
       } catch (err) {
+        console.log('loadOrders -> err', err);
         setError(err.message);
       }
       setIsRefreshing(false);
@@ -98,6 +107,28 @@ const OrdersScreen = (props) => {
 
   const handleResetButton = () => {
     setFilters(noFilters);
+  };
+
+  const selectItemHandler = (id) => {
+    navigation.navigate('OrderDetailsScreen', {
+      orderID: id,
+    });
+  };
+
+  let TouchableComp = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableComp = TouchableNativeFeedback;
+  }
+  useEffect(() => {
+    if (ascending) {
+      searchOrders.sort((a, b) => a > b);
+      // ascending ? !searchOrders.sort((a, b) => a > b) : searchOrders;
+    }
+  }, [ascending]);
+
+  const ascendingOrderButton = () => {
+    setAscending(!ascending);
   };
 
   if (error) {
@@ -144,32 +175,26 @@ const OrdersScreen = (props) => {
     );
   }
 
-  // if (!isLoading && orders.length === 0) {
-  //   return (
-  //     <ErrorBoundary>
-  //       <LinearGradient
-  //         colors={[Colors.primaryColor, Colors.lightTeal]}
-  //         style={styles.gradient}
-  //       >
-  //         <View style={styles.centered}>
-  //           <Text style={styles.errorText}>
-  //             <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
-  //               No Orders:
-  //             </Text>{' '}
-  //             {'\n'}
-  //             Check your filters on the top right!
-  //           </Text>
-  //         </View>
-  //       </LinearGradient>
-  //     </ErrorBoundary>
-  //   );
-  // }
-
-  const selectItemHandler = (id) => {
-    navigation.navigate('OrderDetailsScreen', {
-      orderID: id,
-    });
-  };
+  if (!isLoading && orders.length === 0) {
+    return (
+      <ErrorBoundary>
+        <LinearGradient
+          colors={[Colors.primaryColor, Colors.lightTeal]}
+          style={styles.gradient}
+        >
+          <View style={styles.centered}>
+            <Text style={styles.errorText}>
+              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+                No Orders:
+              </Text>{' '}
+              {'\n'}
+              Check your filters on the top right!
+            </Text>
+          </View>
+        </LinearGradient>
+      </ErrorBoundary>
+    );
+  }
 
   return (
     <ErrorBoundary>
@@ -177,7 +202,19 @@ const OrdersScreen = (props) => {
         colors={[Colors.primaryColor, Colors.lightTeal]}
         style={styles.gradient}
       >
+        {/* <View style={styles.searchContainer}> */}
         <Search />
+        <View style={styles.orderSort}>
+          <TouchableComp style={styles.orderBox} onPress={ascendingOrderButton}>
+            <Ionicons
+              name={ascending ? 'ios-arrow-up' : 'ios-arrow-down'}
+              size={22}
+              color='black'
+              style={styles.iconStyle}
+            />
+          </TouchableComp>
+        </View>
+        {/* </View> */}
         <OptimizedFlatList
           showsVerticalScrollIndicator={false}
           scrollIndicatorInsets={{ right: 1 }}
@@ -262,6 +299,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Colors.backgroundFeed,
     padding: 10,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    padding: 2,
+  },
+  orderSort: {
+    position: 'absolute',
+    right: 3,
+    top: 25,
+  },
+  orderBox: {
+    backgroundColor: '#ccc',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 4,
   },
   resetButtonContainer: {
     paddingTop: 5,

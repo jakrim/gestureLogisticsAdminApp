@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthNavigator, GestureNavigator } from './GNavigator';
 import StartupScreen from '../screens/StartupScreen';
 import LoadingScreen from '../screens/LoadingScreen';
+import OrdersScreen from '../screens/OrdersScreen';
 import {
   OrderFiltersContext,
   GrunnerFiltersContext,
@@ -26,7 +27,7 @@ const AppNavigator = (props) => {
     filter: 'noFilter',
     isCity: false,
   });
-  const providerValue = useMemo(() => ({ filters, setFilters }), [
+  const filterFunction = useMemo(() => ({ filters, setFilters }), [
     filters,
     setFilters,
   ]);
@@ -36,7 +37,7 @@ const AppNavigator = (props) => {
     cities: [],
     filter: 'noFilter',
   });
-  const gProviderValue = useMemo(() => ({ gfilters, setGFilters }), [
+  const gFilterFunction = useMemo(() => ({ gfilters, setGFilters }), [
     gfilters,
     setGFilters,
   ]);
@@ -66,12 +67,11 @@ const AppNavigator = (props) => {
   return (
     <NavigationContainer>
       {isAuth && !authMessage && <LoadingScreen />}
-
       <AreSearching.Provider value={isSearching}>
         <GRunnersSearchContext.Provider value={searchedGrunners}>
           <OrdersSearchContext.Provider value={searchedOrders}>
-            <OrderFiltersContext.Provider value={providerValue}>
-              <GrunnerFiltersContext.Provider value={gProviderValue}>
+            <OrderFiltersContext.Provider value={filterFunction}>
+              <GrunnerFiltersContext.Provider value={gFilterFunction}>
                 <ScreenContext.Provider value={ScreenContextForSearch}>
                   {isAuth && authMessage && <GestureNavigator />}
                 </ScreenContext.Provider>

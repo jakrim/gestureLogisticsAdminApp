@@ -97,6 +97,7 @@ const PaymentHistoryScreen = (props) => {
       </ErrorBoundary>
     );
   }
+
   if (payments.length === 0) {
     return (
       <ErrorBoundary>
