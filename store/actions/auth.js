@@ -28,16 +28,14 @@ export const signin = (email, password, callback) => {
         .signInWithEmailAndPassword(email, password)
         .then(async (data) => {
           let userToken = await token();
-          dispatch(signedIn(data.user.uid, userToken));
           saveDataToStorage(userToken, data.user.uid);
+          dispatch(signedIn(data.user.uid, userToken));
         })
         .catch((errorMessage) => {
           dispatch({ type: SIGNIN_ERROR, errorMessage });
-          console.log('error in dispatch catch', errorMessage.message);
         });
     } catch (err) {
       console.log('Error in try catch block', err);
-      // dispatch({ type: SIGNIN_ERROR, payload: "Invalid login credentials" });
     }
   };
 };
@@ -45,15 +43,11 @@ export const signin = (email, password, callback) => {
 export const authenticate = () => {
   return async (dispatch, getState) => {
     var _basicUrl = await basicUrl();
-    const response = await fetch(
-      // `https://us-central1-gesture-dev.cloudfunctions.net/logistics_auth?uid=${userId}`,
-      `${URL}/logistics_auth?${_basicUrl}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
-      }
-    );
+    const response = await fetch(`${URL}/logistics_auth?${_basicUrl}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
 
     const resData = await response.json();
 
@@ -71,13 +65,12 @@ export const logout = () => {
   return { type: LOGOUT };
 };
 
-const saveDataToStorage = (token, userId, expirationDate) => {
+const saveDataToStorage = (token, userId) => {
   AsyncStorage.setItem(
     'userData',
     JSON.stringify({
       token,
       userId,
-      // expirationDate,
     })
   );
 };

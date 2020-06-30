@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
 import { BallIndicator } from 'react-native-indicators';
-import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import Colors from '../constants/Colors';
 import { useSelector, useDispatch } from 'react-redux';
@@ -123,7 +122,7 @@ const PaymentHistoryScreen = (props) => {
 
   return (
     <ErrorBoundary>
-      <OptimizedFlatList
+      <FlatList
         scrollIndicatorInsets={{ right: 1 }}
         showsVerticalScrollIndicator={false}
         onRefresh={loadPayments}

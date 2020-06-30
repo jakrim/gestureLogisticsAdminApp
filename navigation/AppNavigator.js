@@ -73,6 +73,7 @@ const AppNavigator = (props) => {
   return (
     <NavigationContainer>
       {isAuth && !authMessage && <LoadingScreen />}
+
       <AscendingData.Provider value={AscendingDataForSearch}>
         <AreSearching.Provider value={isSearching}>
           <GRunnersSearchContext.Provider value={searchedGrunners}>

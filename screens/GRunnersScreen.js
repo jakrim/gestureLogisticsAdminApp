@@ -3,7 +3,6 @@ import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
-import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 var _ = require('lodash');
 
 import LogoTitle from '../components/LogoTitle';

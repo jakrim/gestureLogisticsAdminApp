@@ -74,7 +74,15 @@ export const OrderNavigator = ({ navigation }) => (
     <OrderStack.Screen
       name='OrderDetailsScreen'
       component={OrderDetailsScreen}
-      options={{ headerTitle: 'Order Details' }}
+      options={{
+        headerTitle: 'Order Details',
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: Colors.primaryColor,
+          shadowColor: 'transparent',
+          elevation: 0,
+        },
+      }}
     />
   </OrderStack.Navigator>
 );
@@ -93,17 +101,41 @@ export const GRunnerNavigator = ({ navigation }) => (
     <GRunnerStack.Screen
       name='GRunner'
       component={GRunnerScreen}
-      options={{ headerTitle: 'G Runner' }}
+      options={{
+        headerTitle: 'G Runner',
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: Colors.primaryColor,
+          shadowColor: 'transparent',
+          elevation: 0,
+        },
+      }}
     />
     <GRunnerStack.Screen
       name='PaymentHistoryScreen'
       component={PaymentHistoryScreen}
-      options={{ headerTitle: 'Payment History' }}
+      options={{
+        headerTitle: 'Payment History',
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: Colors.primaryColor,
+          shadowColor: 'transparent',
+          elevation: 0,
+        },
+      }}
     />
     <GRunnerStack.Screen
       name='PaymentOrderScreen'
       component={PaymentOrderScreen}
-      options={{ headerTitle: 'Order Details' }}
+      options={{
+        headerTitle: 'Order Details',
+        headerTintColor: 'white',
+        headerStyle: {
+          backgroundColor: Colors.primaryColor,
+          shadowColor: 'transparent',
+          elevation: 0,
+        },
+      }}
     />
   </GRunnerStack.Navigator>
 );
