@@ -43,7 +43,7 @@ const OrdersModal = (props) => {
       <View style={styles.icon}>
         <Ionicons
           name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
-          color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+          color={'white'}
           size={25}
           onPress={() => setModalVisible(!modalVisible)}
         />

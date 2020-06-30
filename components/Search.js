@@ -1,31 +1,32 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
   View,
-  Text,
-  TextInput,
   StyleSheet,
   Platform,
   Dimensions,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
+  TouchableOpacity,
+  TouchableNativeFeedback,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 var _ = require('lodash');
 
 import ErrorBoundary, { throwError } from '../components/ErrorBoundary';
-import Colors from '../constants/Colors';
 import {
   OrdersSearchContext,
   AreSearching,
   ScreenContext,
   GRunnersSearchContext,
+  AscendingData,
 } from './ApplicationContexts';
+
+const windowWidth = Dimensions.get('window').width;
 
 const Search = (props) => {
   const [searchValue, setSearchValue] = useState('');
   const [searchableData, setSearchableData] = useState();
+  const { ascending, setAscending } = useContext(AscendingData);
   const { screenContext, setScreenContext } = useContext(ScreenContext);
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
   const { searchGrunners, setSearchGrunners } = useContext(
@@ -34,7 +35,12 @@ const Search = (props) => {
   const { areSearching, setAreSearching } = useContext(AreSearching);
   let ordersData = useSelector((state) => state.orders.orders);
   let gRunnersData = useSelector((state) => state.gRunners.gRunners);
-  // console.log('Search -> gRunnersData', gRunnersData);
+
+  let TouchableComp = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableComp = TouchableNativeFeedback;
+  }
 
   useEffect(() => {
     let mount = true;
@@ -52,9 +58,6 @@ const Search = (props) => {
     return () => (mount = false);
   }, [searchableData, screenContext]);
 
-  // useEffect(() => {
-  //   let mount = true;
-  //   if (mount) {
   const searchFilterFunction = useCallback(() => {
     if (searchValue.length) {
       setAreSearching(true);
@@ -70,9 +73,6 @@ const Search = (props) => {
           : '';
         let first_name = item.first_name ? item.first_name.toUpperCase() : '';
         let last_name = item.last_name ? item.last_name.toUpperCase() : false;
-        // let current_zone = item.current_zone
-        //   ? item.current_zone.toUpperCase()
-        //   : '';
         let current_order = item.current_order
           ? item.current_order.toUpperCase()
           : '';
@@ -85,7 +85,6 @@ const Search = (props) => {
           ${item.zone.toUpperCase()}`;
         } else if (screenContext === 'gRunners') {
           itemData = `${pubID} ${first_name} ${last_name} ${current_order}`;
-          // itemData = `${item.public_courier_id.toUpperCase()} ${item.first_name.toUpperCase()} ${item.last_name.toUpperCase()} ${item.current_order.toUpperCase()}`;
         }
 
         return itemData.indexOf(textData) > -1;
@@ -93,9 +92,13 @@ const Search = (props) => {
     }
 
     if (screenContext === 'orders') {
-      setSearchOrders(newData);
+      ascending
+        ? setSearchOrders(newData)
+        : setSearchOrders(newData.sort((a, b) => a > b));
     } else if (screenContext === 'gRunners') {
-      setSearchGrunners(newData);
+      ascending
+        ? setSearchGrunners(newData)
+        : setSearchGrunners(newData.sort((a, b) => a > b));
     }
   }, [
     searchValue,
@@ -104,40 +107,52 @@ const Search = (props) => {
     screenContext,
     searchOrders,
     searchGrunners,
+    ascending,
   ]);
-  //     searchFilterFunction(searchValue);
-  //   }
 
-  //   return () => (mount = false);
-  // }, [searchValue,
-  //     searchableData,
-  //     areSearchingOrders,
-  //     screenContext,
-  //     areSearchingGrunners,]);
   useEffect(() => {
-    // const handleChange = async (text) => {
-    if (searchValue) {
+    if (searchValue.length) {
       searchFilterFunction(searchValue);
+    } else {
+      if (screenContext === 'orders') {
+        setSearchOrders(ordersData);
+      } else if (screenContext === 'gRunners') {
+        setSearchGrunners(gRunnersData);
+      }
     }
-    // };
   }, [searchValue]);
+
+  useEffect(() => {
+    if (ascending) {
+      if (screenContext === 'orders') {
+        setSearchOrders(ordersData.sort((a, b) => a > b));
+      } else if (screenContext === 'gRunners') {
+        setSearchGrunners(gRunnersData.sort((a, b) => a > b));
+      }
+    } else if (!ascending) {
+      if (screenContext === 'orders') {
+        setSearchOrders(ordersData.sort((a, b) => a < b));
+      } else if (screenContext === 'gRunners') {
+        setSearchGrunners(gRunnersData.sort((a, b) => a < b));
+      }
+    }
+  }, [ascending, searchOrders, searchGrunners, gRunnersData, ordersData]);
+
+  const ascendingOrderButton = () => {
+    setAscending(!ascending);
+  };
 
   return (
     <ErrorBoundary>
-      <View style={styles.inputContainer}>
-        <ScrollView
-          // onPress={() => {
-          keyboardShouldPersistTaps='never'
-          // Keyboard.dismiss();
-          // search.blur();
-          // }}
-        >
+      <View style={styles.searchContainer}>
+        <View style={styles.inputContainer}>
           <SearchBar
             lightTheme
             round
             showLoadingIcon={true}
             containerStyle={styles.searchBar}
             inputStyle={styles.input}
+            inputContainerStyle={styles.inputContainerStyle}
             placeholder='Search...'
             style={styles.searchBar}
             onChangeText={(text) => setSearchValue(text)}
@@ -151,7 +166,19 @@ const Search = (props) => {
             autoCorrect={false}
             autoCapitalize='none'
           />
-        </ScrollView>
+        </View>
+        {screenContext === 'orders' ? (
+          <TouchableComp style={styles.orderBox} onPress={ascendingOrderButton}>
+            <Ionicons
+              name={ascending ? 'ios-arrow-up' : 'ios-arrow-down'}
+              size={22}
+              color='black'
+              style={styles.iconStyle}
+            />
+          </TouchableComp>
+        ) : (
+          <></>
+        )}
       </View>
     </ErrorBoundary>
   );
@@ -159,25 +186,43 @@ const Search = (props) => {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    width: 340,
-    borderRadius: 10,
+    width: windowWidth / 1.4,
     borderWidth: 0.5,
     borderColor: 'black',
     overflow: 'hidden',
     marginTop: 6,
-    marginBottom: 10,
+    marginBottom: 5,
     borderRadius: 8,
-    backgroundColor: Colors.searchGrey,
+  },
+  inputContainerStyle: {
+    backgroundColor: '#ddd',
+    height: 35,
   },
   searchBar: {
-    // width: '80%',
-    backgroundColor: '#eee',
-    // justifyContent: 'center',
+    width: windowWidth / 1.4,
+    backgroundColor: '#ddd',
+    padding: 4,
   },
   input: {
-    color: '#555',
-    // backgroundColor: 'white',
-    // height: 30,
+    backgroundColor: '#ddd',
+    color: '#000',
+  },
+
+  searchContainer: {
+    flexDirection: 'row',
+    width: windowWidth,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    paddingBottom: 4,
+  },
+  orderBox: {
+    backgroundColor: '#ccc',
+    borderColor: Platform.OS === 'ios' ? null : '#555',
+    borderWidth: 0.5,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 4,
   },
 });
 

@@ -41,7 +41,7 @@ const OrdersModal = (props) => {
       <View style={styles.icon}>
         <Ionicons
           name={Platform.OS === 'android' ? 'md-funnel' : 'md-funnel'}
-          color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+          color={'white'}
           size={25}
           onPress={() => setModalVisible(!modalVisible)}
         />
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: 340,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     borderRadius: 20,
     paddingVertical: 15,
     alignItems: 'center',
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 15,
     textAlign: 'center',
+    color: Colors.primaryColor,
   },
   cities: {
     width: '100%',

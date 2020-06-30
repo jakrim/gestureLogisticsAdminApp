@@ -21,6 +21,8 @@ import Card from '../components/Card';
 import StyledButton from '../components/StyledButton';
 import { capitalizeLetter } from '../components/HelperFunctions';
 
+const windowWidth = Dimensions.get('window').width;
+
 const B = (props) => (
   <Text {...props} style={{ fontFamily: 'dm-sans-bold', ...props.style }}>
     {props.children}
@@ -257,14 +259,15 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     padding: 10,
-    width: 350,
+    width: windowWidth - 20,
+    borderRadius: 10,
   },
   imageContainer: {
     alignItems: 'center',
   },
   image: {
-    width: Dimensions.get('window').width * 0.7,
-    height: Dimensions.get('window').width * 0.7,
+    width: windowWidth * 0.7,
+    height: windowWidth * 0.7,
     // borderRadius: (Dimensions.get('window').width * 0.7) / 2,
     borderRadius: 10,
     borderWidth: 0.5,

@@ -60,9 +60,11 @@ export const AuthNavigator = () => (
 
 export const OrderNavigator = ({ navigation }) => (
   <OrderStack.Navigator
-    screenOptions={{
-      headerTintColor: Colors.primaryColor,
-    }}
+    screenOptions={
+      {
+        // headerTintColor: Colors.primaryColor,
+      }
+    }
   >
     <OrderStack.Screen
       name='Orders'

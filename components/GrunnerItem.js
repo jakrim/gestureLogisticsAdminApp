@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import Card from './Card';
 import Colors from '../constants/Colors';
+
+const windowWidth = Dimensions.get('window').width;
 
 const GRunnerItem = (props) => {
   let TouchableComp = TouchableOpacity;
@@ -119,14 +122,13 @@ const GRunnerItem = (props) => {
 
 const styles = StyleSheet.create({
   card: {
-    // height: 190,
-    width: 340,
-    marginBottom: 15,
-    marginTop: 10,
+    height: 150,
+    width: windowWidth,
+    marginTop: 4,
     backgroundColor: Colors.backgroundFeed,
   },
   touchable: {
-    borderRadius: 10,
+    // borderRadius: 10,
     overflow: 'hidden',
   },
   gRunnerDetailsContainer: {
@@ -137,12 +139,12 @@ const styles = StyleSheet.create({
     fontFamily: 'dm-sans-bold',
     fontSize: 18,
     paddingBottom: 5,
-    color: Colors.primaryColor,
+    color: Colors.LightColorText,
   },
   gRunnerDetails: {
     fontFamily: 'dm-sans-regular',
     fontSize: 15,
-    color: Colors.primaryColor,
+    color: Colors.LightColorText,
   },
   gRunnerDetails2: {
     paddingBottom: 10,
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
   gRunnerDetails2Text: {
     fontFamily: 'dm-sans-regular',
     fontSize: 14,
-    color: Colors.primaryColor,
+    color: Colors.LightColorText,
   },
   actions: {
     flexDirection: 'row',

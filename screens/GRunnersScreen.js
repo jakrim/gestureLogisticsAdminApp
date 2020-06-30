@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { Text, View, Button, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Text, View, Button, FlatList, StyleSheet } from 'react-native';
+// import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
@@ -108,30 +108,25 @@ const GRunnersScreen = (props) => {
   if (error) {
     return (
       <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text
-              style={{
-                fontSize: 20,
-                color: Colors.accentColor,
-              }}
-            >
-              An error occurred!
-            </Text>
-            {!isLoading ? (
-              <Button
-                title='Press to try again'
-                onPress={loadGrunners}
-                color={Colors.backgroundFeed}
-              />
-            ) : (
-              <BallIndicator color={Colors.LightColorText} />
-            )}
-          </View>
-        </LinearGradient>
+        <View style={styles.centered}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: Colors.accentColor,
+            }}
+          >
+            An error occurred!
+          </Text>
+          {!isLoading ? (
+            <Button
+              title='Press to try again'
+              onPress={loadGrunners}
+              color={Colors.primaryColor}
+            />
+          ) : (
+            <BallIndicator color={Colors.primaryColor} />
+          )}
+        </View>
       </ErrorBoundary>
     );
   }
@@ -139,14 +134,9 @@ const GRunnersScreen = (props) => {
   if (isLoading) {
     return (
       <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <BallIndicator color={Colors.backgroundFeed} />
-          </View>
-        </LinearGradient>
+        <View style={styles.centered}>
+          <BallIndicator color={Colors.primaryColor} />
+        </View>
       </ErrorBoundary>
     );
   }
@@ -154,20 +144,15 @@ const GRunnersScreen = (props) => {
   if (!isLoading && gRunners.length === 0) {
     return (
       <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text style={styles.errorText}>
-              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
-                No G Runners:
-              </Text>{' '}
-              {'\n'}
-              Check your filters on the top right!
-            </Text>
-          </View>
-        </LinearGradient>
+        <View style={styles.centered}>
+          <Text style={styles.errorText}>
+            <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+              No G Runners:
+            </Text>{' '}
+            {'\n'}
+            Check your filters on the top right!
+          </Text>
+        </View>
       </ErrorBoundary>
     );
   }
@@ -180,59 +165,50 @@ const GRunnersScreen = (props) => {
 
   return (
     <ErrorBoundary>
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <Search />
-        <OptimizedFlatList
-          scrollIndicatorInsets={{ right: 1 }}
-          showsVerticalScrollIndicator={false}
-          onRefresh={loadGrunners}
-          initialNumToRender={searchGrunners.length}
-          refreshing={isRefreshing}
-          highermaxToRenderPerBatch={5}
-          data={searchGrunners}
-          keyExtractor={(gRunner) => gRunner.uid}
-          style={{ flex: 0 }}
-          renderItem={(itemData) => (
-            <GrunnerItem
-              public_courier_id={itemData.item.public_courier_id}
-              os={itemData.item.os}
-              full_name={
-                itemData.item.first_name && itemData.item.last_name
-                  ? capitalizeLetter(itemData.item.first_name) +
-                    ' ' +
-                    capitalizeLetter(itemData.item.last_name)
-                  : itemData.item.first_name
-                  ? capitalizeLetter(itemData.item.first_name) + ' '
-                  : itemData.item.last_name
-                  ? capitalizeLetter(itemData.item.last_name)
-                  : null
-              }
-              current_zone={itemData.item.current_zone}
-              current_status={itemData.item.current_status}
-              current_order={itemData.item.current_order}
-              onSelect={() => {
-                selectItemHandler(itemData.item.uid);
-              }}
-            ></GrunnerItem>
-          )}
-        />
-        {hasFilters && (
-          <View style={styles.resetButtonContainer}>
-            <StyledButton
-              style={styles.resetButton}
-              onPress={handleResetButton}
-            >
-              Reset Filters
-            </StyledButton>
-          </View>
+      <Search />
+      <FlatList
+        scrollIndicatorInsets={{ right: 1 }}
+        showsVerticalScrollIndicator={false}
+        onRefresh={loadGrunners}
+        initialNumToRender={searchGrunners.length}
+        refreshing={isRefreshing}
+        highermaxToRenderPerBatch={5}
+        data={searchGrunners}
+        keyExtractor={(gRunner) => gRunner.uid}
+        style={{ flex: 0 }}
+        renderItem={(itemData) => (
+          <GrunnerItem
+            public_courier_id={itemData.item.public_courier_id}
+            os={itemData.item.os}
+            full_name={
+              itemData.item.first_name && itemData.item.last_name
+                ? capitalizeLetter(itemData.item.first_name) +
+                  ' ' +
+                  capitalizeLetter(itemData.item.last_name)
+                : itemData.item.first_name
+                ? capitalizeLetter(itemData.item.first_name) + ' '
+                : itemData.item.last_name
+                ? capitalizeLetter(itemData.item.last_name)
+                : null
+            }
+            current_zone={itemData.item.current_zone}
+            current_status={itemData.item.current_status}
+            current_order={itemData.item.current_order}
+            onSelect={() => {
+              selectItemHandler(itemData.item.uid);
+            }}
+          ></GrunnerItem>
         )}
-      </LinearGradient>
+      />
+      {hasFilters && (
+        <View style={styles.resetButtonContainer}>
+          <StyledButton style={styles.resetButton} onPress={handleResetButton}>
+            Reset Filters
+          </StyledButton>
+        </View>
+      )}
     </ErrorBoundary>
   );
-  // });
 };
 
 export const gRunnersScreenHeaderOptions = (props) => {
@@ -242,7 +218,7 @@ export const gRunnersScreenHeaderOptions = (props) => {
       <Ionicons
         style={styles.headerButtonLeft}
         name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-        color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+        color={Platform.OS === 'android' ? 'white' : 'white'}
         size={25}
         onPress={() => {
           props.navigation.toggleDrawer();
@@ -252,7 +228,7 @@ export const gRunnersScreenHeaderOptions = (props) => {
     headerRight: () => <GRunnerModal style={styles.modalButton} />,
     headerStyle: {
       backgroundColor:
-        Platform.OS === 'android' ? Colors.primaryColor : 'white',
+        Platform.OS === 'android' ? Colors.primaryColor : Colors.primaryColor,
       shadowColor: 'transparent',
       elevation: 0,
     },

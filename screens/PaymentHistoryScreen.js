@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+// import { LinearGradient } from 'expo-linear-gradient';
 import { BallIndicator } from 'react-native-indicators';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
@@ -55,30 +55,30 @@ const PaymentHistoryScreen = (props) => {
   if (error) {
     return (
       <ErrorBoundary>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[Colors.primaryColor, Colors.lightTeal]}
           style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text
-              style={{
-                fontSize: 20,
-                color: Colors.darkPurp,
-              }}
-            >
-              An error occurred!
-            </Text>
-            {!isLoading ? (
-              <Button
-                title='Try again'
-                onPress={loadPayments}
-                color={Colors.LightColorText}
-              />
-            ) : (
-              <BallIndicator color={Colors.LightColorText} />
-            )}
-          </View>
-        </LinearGradient>
+        > */}
+        <View style={styles.centered}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: Colors.darkPurp,
+            }}
+          >
+            An error occurred!
+          </Text>
+          {!isLoading ? (
+            <Button
+              title='Try again'
+              onPress={loadPayments}
+              color={Colors.LightColorText}
+            />
+          ) : (
+            <BallIndicator color={Colors.LightColorText} />
+          )}
+        </View>
+        {/* </LinearGradient> */}
       </ErrorBoundary>
     );
   }
@@ -86,14 +86,14 @@ const PaymentHistoryScreen = (props) => {
   if (isLoading) {
     return (
       <ErrorBoundary>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[Colors.primaryColor, Colors.lightTeal]}
           style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <BallIndicator color={Colors.backgroundFeed} />
-          </View>
-        </LinearGradient>
+        > */}
+        <View style={styles.centered}>
+          <BallIndicator color={Colors.backgroundFeed} />
+        </View>
+        {/* </LinearGradient> */}
       </ErrorBoundary>
     );
   }
@@ -101,16 +101,16 @@ const PaymentHistoryScreen = (props) => {
   if (payments.length === 0) {
     return (
       <ErrorBoundary>
-        <LinearGradient
+        {/* <LinearGradient
           colors={[Colors.primaryColor, Colors.lightTeal]}
           style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text style={styles.noPaymentsText}>
-              This G Runner has no Payment History or Order History
-            </Text>
-          </View>
-        </LinearGradient>
+        > */}
+        <View style={styles.centered}>
+          <Text style={styles.noPaymentsText}>
+            This G Runner has no Payment History or Order History
+          </Text>
+        </View>
+        {/* </LinearGradient> */}
       </ErrorBoundary>
     );
   }
@@ -123,33 +123,28 @@ const PaymentHistoryScreen = (props) => {
 
   return (
     <ErrorBoundary>
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        <OptimizedFlatList
-          scrollIndicatorInsets={{ right: 1 }}
-          showsVerticalScrollIndicator={false}
-          onRefresh={loadPayments}
-          refreshing={isRefreshing}
-          data={payments}
-          keyExtractor={(item) => `${item.orderId}`}
-          renderItem={(itemData) => (
-            <PaymentItem
-              product_name={itemData.item.product_name}
-              payment={itemData.item.payment}
-              bonus={itemData.item.bonus}
-              tip={itemData.item.tips}
-              order_ID={itemData.item.orderId}
-              total_time={itemData.item.total_time}
-              completed_date_ms={itemData.item.completed_date_ms}
-              onSelect={() => {
-                selectItemHandler(itemData.item.orderId);
-              }}
-            ></PaymentItem>
-          )}
-        />
-      </LinearGradient>
+      <OptimizedFlatList
+        scrollIndicatorInsets={{ right: 1 }}
+        showsVerticalScrollIndicator={false}
+        onRefresh={loadPayments}
+        refreshing={isRefreshing}
+        data={payments}
+        keyExtractor={(item) => `${item.orderId}`}
+        renderItem={(itemData) => (
+          <PaymentItem
+            product_name={itemData.item.product_name}
+            payment={itemData.item.payment}
+            bonus={itemData.item.bonus}
+            tip={itemData.item.tips}
+            order_ID={itemData.item.orderId}
+            total_time={itemData.item.total_time}
+            completed_date_ms={itemData.item.completed_date_ms}
+            onSelect={() => {
+              selectItemHandler(itemData.item.orderId);
+            }}
+          ></PaymentItem>
+        )}
+      />
     </ErrorBoundary>
   );
 };
@@ -162,12 +157,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
   },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+  },
   text: {
     fontSize: 30,
     paddingVertical: 80,
   },
   noPaymentsText: {
-    color: Colors.backgroundFeed,
+    color: Colors.LightColorText,
     fontSize: 22,
     textAlign: 'center',
   },

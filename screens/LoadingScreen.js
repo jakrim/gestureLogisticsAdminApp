@@ -6,7 +6,7 @@ import { BallIndicator } from 'react-native-indicators';
 import { useSelector, useDispatch } from 'react-redux';
 import * as authActions from '../store/actions/auth';
 import * as ordersActions from '../store/actions/orders';
-// import { logout } from '../store/actions/auth';
+import { logout } from '../store/actions/auth';
 
 const LoadingScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,12 +17,12 @@ const LoadingScreen = (props) => {
 
   useEffect(() => {
     try {
+      logout();
       dispatch(ordersActions.fetchZones());
       setIsLoading(true);
       setTimeout(() => {
         dispatch(authActions.authenticate());
       }, 1000);
-      // logout();
     } catch (err) {
       setTimeout(() => {
         setError(message);

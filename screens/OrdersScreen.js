@@ -6,8 +6,11 @@ import {
   Button,
   TouchableOpacity,
   TouchableNativeFeedback,
+  SafeAreaView,
+  Platform,
+  FlatList,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+// import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
 import { OptimizedFlatList } from 'react-native-optimized-flatlist';
@@ -27,6 +30,7 @@ import {
   OrdersSearchContext,
   AreSearching,
   ScreenContext,
+  AscendingData,
 } from '../components/ApplicationContexts';
 
 let noFilters = {
@@ -40,9 +44,9 @@ const OrdersScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
   const [hasFilters, setHasFilters] = useState(false);
-  const [ascending, setAscending] = useState(false);
   let orders = useSelector((state) => state.orders.orders);
   const dispatch = useDispatch();
+  const { ascending, setAscending } = useContext(AscendingData);
   const { filters, setFilters } = useContext(OrderFiltersContext);
   const { searchOrders, setSearchOrders } = useContext(OrdersSearchContext);
   const { screenContext, setScreenContext } = useContext(ScreenContext);
@@ -71,7 +75,6 @@ const OrdersScreen = (props) => {
           setHasFilters(true);
         }
         await dispatch(ordersActions.fetchOrders(filters));
-        await dispatch(ordersActions.fetchZones());
       } catch (err) {
         console.log('loadOrders -> err', err);
         setError(err.message);
@@ -115,47 +118,26 @@ const OrdersScreen = (props) => {
     });
   };
 
-  let TouchableComp = TouchableOpacity;
-
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableComp = TouchableNativeFeedback;
-  }
-  useEffect(() => {
-    if (ascending) {
-      searchOrders.sort((a, b) => a > b);
-      // ascending ? !searchOrders.sort((a, b) => a > b) : searchOrders;
-    }
-  }, [ascending]);
-
-  const ascendingOrderButton = () => {
-    setAscending(!ascending);
-  };
-
   if (error) {
     return (
       <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text
-              style={{
-                fontSize: 20,
-                color: Colors.backgroundFeed,
-              }}
-            >
-              An error occurred in fetching orders!
-            </Text>
-            {!isLoading ? (
-              <StyledButton onPress={loadOrders} color={Colors.LightColorText}>
-                Try again
-              </StyledButton>
-            ) : (
-              <BallIndicator color={Colors.LightColorText} />
-            )}
-          </View>
-        </LinearGradient>
+        <View style={styles.centered}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: Colors.backgroundFeed,
+            }}
+          >
+            An error occurred in fetching orders!
+          </Text>
+          {!isLoading ? (
+            <StyledButton onPress={loadOrders} color={Colors.primaryColor}>
+              Try again
+            </StyledButton>
+          ) : (
+            <BallIndicator color={Colors.primaryColor} />
+          )}
+        </View>
       </ErrorBoundary>
     );
   }
@@ -163,14 +145,9 @@ const OrdersScreen = (props) => {
   if (isLoading) {
     return (
       <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <BallIndicator color={Colors.backgroundFeed} />
-          </View>
-        </LinearGradient>
+        <View style={styles.centered}>
+          <BallIndicator color={Colors.primaryColor} />
+        </View>
       </ErrorBoundary>
     );
   }
@@ -178,44 +155,25 @@ const OrdersScreen = (props) => {
   if (!isLoading && orders.length === 0) {
     return (
       <ErrorBoundary>
-        <LinearGradient
-          colors={[Colors.primaryColor, Colors.lightTeal]}
-          style={styles.gradient}
-        >
-          <View style={styles.centered}>
-            <Text style={styles.errorText}>
-              <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
-                No Orders:
-              </Text>{' '}
-              {'\n'}
-              Check your filters on the top right!
-            </Text>
-          </View>
-        </LinearGradient>
+        <View style={styles.centered}>
+          <Text style={styles.errorText}>
+            <Text style={{ fontSize: 22, fontFamily: 'dm-sans-bold' }}>
+              No Orders:
+            </Text>{' '}
+            {'\n'}
+            Check your filters on the top right!
+          </Text>
+        </View>
       </ErrorBoundary>
     );
   }
 
   return (
     <ErrorBoundary>
-      <LinearGradient
-        colors={[Colors.primaryColor, Colors.lightTeal]}
-        style={styles.gradient}
-      >
-        {/* <View style={styles.searchContainer}> */}
+      <View style={styles.screenView}>
         <Search />
-        <View style={styles.orderSort}>
-          <TouchableComp style={styles.orderBox} onPress={ascendingOrderButton}>
-            <Ionicons
-              name={ascending ? 'ios-arrow-up' : 'ios-arrow-down'}
-              size={22}
-              color='black'
-              style={styles.iconStyle}
-            />
-          </TouchableComp>
-        </View>
-        {/* </View> */}
-        <OptimizedFlatList
+
+        <FlatList
           showsVerticalScrollIndicator={false}
           scrollIndicatorInsets={{ right: 1 }}
           onRefresh={loadOrders}
@@ -250,7 +208,7 @@ const OrdersScreen = (props) => {
             </StyledButton>
           </View>
         )}
-      </LinearGradient>
+      </View>
     </ErrorBoundary>
   );
 };
@@ -262,7 +220,7 @@ export const ordersScreenHeaderOptions = (props) => {
       <Ionicons
         style={styles.headerButtonLeft}
         name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-        color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+        color={Platform.OS === 'android' ? 'white' : 'white'}
         size={25}
         onPress={() => {
           props.navigation.toggleDrawer();
@@ -272,7 +230,7 @@ export const ordersScreenHeaderOptions = (props) => {
     headerRight: () => <OrdersModal style={styles.modalButton} />,
     headerStyle: {
       backgroundColor:
-        Platform.OS === 'android' ? Colors.primaryColor : 'white',
+        Platform.OS === 'android' ? Colors.primaryColor : Colors.primaryColor,
       shadowColor: 'transparent',
       elevation: 0,
     },
@@ -281,7 +239,7 @@ export const ordersScreenHeaderOptions = (props) => {
 };
 
 const styles = StyleSheet.create({
-  gradient: {
+  screenView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -300,29 +258,13 @@ const styles = StyleSheet.create({
     color: Colors.backgroundFeed,
     padding: 10,
   },
-  searchContainer: {
-    flexDirection: 'row',
-    padding: 2,
-  },
-  orderSort: {
-    position: 'absolute',
-    right: 3,
-    top: 25,
-  },
-  orderBox: {
-    backgroundColor: '#ccc',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 4,
-  },
   resetButtonContainer: {
     paddingTop: 5,
     paddingBottom: 20,
   },
   resetButton: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    color: Colors.accentColor,
+    color: 'white',
     fontSize: 20,
     width: 200,
   },

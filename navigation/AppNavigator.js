@@ -13,6 +13,7 @@ import {
   AreSearching,
   ScreenContext,
   GRunnersSearchContext,
+  AscendingData,
 } from '../components/ApplicationContexts';
 
 const AppNavigator = (props) => {
@@ -63,23 +64,30 @@ const AppNavigator = (props) => {
     () => ({ screenContext, setScreenContext }),
     [screenContext, setScreenContext]
   );
+  const [ascending, setAscending] = useState('');
+  const AscendingDataForSearch = useMemo(() => ({ ascending, setAscending }), [
+    ascending,
+    setAscending,
+  ]);
 
   return (
     <NavigationContainer>
       {isAuth && !authMessage && <LoadingScreen />}
-      <AreSearching.Provider value={isSearching}>
-        <GRunnersSearchContext.Provider value={searchedGrunners}>
-          <OrdersSearchContext.Provider value={searchedOrders}>
-            <OrderFiltersContext.Provider value={filterFunction}>
-              <GrunnerFiltersContext.Provider value={gFilterFunction}>
-                <ScreenContext.Provider value={ScreenContextForSearch}>
-                  {isAuth && authMessage && <GestureNavigator />}
-                </ScreenContext.Provider>
-              </GrunnerFiltersContext.Provider>
-            </OrderFiltersContext.Provider>
-          </OrdersSearchContext.Provider>
-        </GRunnersSearchContext.Provider>
-      </AreSearching.Provider>
+      <AscendingData.Provider value={AscendingDataForSearch}>
+        <AreSearching.Provider value={isSearching}>
+          <GRunnersSearchContext.Provider value={searchedGrunners}>
+            <OrdersSearchContext.Provider value={searchedOrders}>
+              <OrderFiltersContext.Provider value={filterFunction}>
+                <GrunnerFiltersContext.Provider value={gFilterFunction}>
+                  <ScreenContext.Provider value={ScreenContextForSearch}>
+                    {isAuth && authMessage && <GestureNavigator />}
+                  </ScreenContext.Provider>
+                </GrunnerFiltersContext.Provider>
+              </OrderFiltersContext.Provider>
+            </OrdersSearchContext.Provider>
+          </GRunnersSearchContext.Provider>
+        </AreSearching.Provider>
+      </AscendingData.Provider>
 
       {!isAuth && didTryAutoLogin && <AuthNavigator />}
       {!isAuth && !didTryAutoLogin && <StartupScreen />}

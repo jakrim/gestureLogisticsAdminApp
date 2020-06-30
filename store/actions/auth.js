@@ -33,7 +33,7 @@ export const signin = (email, password, callback) => {
         })
         .catch((errorMessage) => {
           dispatch({ type: SIGNIN_ERROR, errorMessage });
-          console.log('error in dispatch catch', errorMessage);
+          console.log('error in dispatch catch', errorMessage.message);
         });
     } catch (err) {
       console.log('Error in try catch block', err);

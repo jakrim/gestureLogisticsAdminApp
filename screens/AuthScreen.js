@@ -68,14 +68,21 @@ const AuthScreen = (props) => {
   const [formHasSubmitted, setFormHasSubmitted] = useState(false);
   const dispatch = useDispatch();
 
-  // let errorMessage = useSelector((state) => state.auth.signInError);
+  let errorMessage = useSelector((state) => state.auth.signInError);
   // console.log('AuthScreen -> errorMessage', errorMessage);
-  // let errorMessageJSX = (
-  //   <View>
-  //     <Text>{errorMessage.message}</Text>
-  //   </View>
-  // );
-
+  let errorMessageJSX = (
+    <View>
+      {errorMessage ? (
+        <Text
+          style={{ color: 'red', fontSize: 12, fontFamily: 'dm-sans-regular' }}
+        >
+          {errorMessage.message}
+        </Text>
+      ) : (
+        <></>
+      )}
+    </View>
+  );
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: '',
@@ -146,8 +153,9 @@ const AuthScreen = (props) => {
           <View style={styles.image}>
             <Image source={require('../assets/logo.png')} />
           </View>
-          {/* {message ? <Text>This email is unauthorized</Text> : <></>} */}
           <Card style={styles.authContainer}>
+            {errorMessage !== null ? errorMessageJSX : <></>}
+
             <ScrollView keyboardShouldPersistTaps='always'>
               <Input
                 id='email'
@@ -180,9 +188,34 @@ const AuthScreen = (props) => {
                 formHasSubmitted={formHasSubmitted}
               />
               <View style={styles.buttonContainer}>
-                {/* {errorMessage ? errorMessageJSX : <></>} */}
                 {isLoading ? (
-                  <ActivityIndicator size='small' color={Colors.primaryColor} />
+                  <ActivityIndicator
+                    size='small'
+                    color={Colors.primaryColor}
+                  /> ? (
+                    errorMessage ? (
+                      <Button
+                        title='Login'
+                        type='button'
+                        color={Colors.lightPurp}
+                        onPress={authHandler}
+                        onPressIn={resetInputs}
+                      />
+                    ) : (
+                      <ActivityIndicator
+                        size='small'
+                        color={Colors.primaryColor}
+                      />
+                    )
+                  ) : (
+                    <Button
+                      title='Login'
+                      type='button'
+                      color={Colors.lightPurp}
+                      onPress={authHandler}
+                      onPressIn={resetInputs}
+                    />
+                  )
                 ) : (
                   <Button
                     title='Login'
@@ -222,6 +255,7 @@ const styles = StyleSheet.create({
   },
   authContainer: {
     justifyContent: 'flex-start',
+    borderRadius: 8,
     opacity: 0.85,
     width: '80%',
     maxWidth: 400,

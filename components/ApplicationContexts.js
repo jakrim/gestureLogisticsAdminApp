@@ -20,3 +20,5 @@ export const GRunnersSearchContext = createContext([]);
 export const AreSearching = createContext(false);
 
 export const ScreenContext = createContext('');
+
+export const AscendingData = createContext(false);

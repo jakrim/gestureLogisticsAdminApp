@@ -7,8 +7,9 @@ import {
   TouchableNativeFeedback,
   Platform,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+// import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
@@ -17,6 +18,9 @@ import makeCall from './PhoneCall';
 import sendEmail from './Email';
 import { MillisToDate } from './HelperFunctions';
 import StyledButton from './StyledButton';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const OrderDetails = (props) => {
   let TouchableComp = TouchableOpacity;
@@ -258,15 +262,17 @@ const OrderDetails = (props) => {
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
-    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
   },
   card: {
     flex: 2,
-    padding: 10,
-    width: 350,
+    height: windowHeight,
+    padding: 25,
+    paddingTop: 20,
+    width: windowWidth - 30,
+    borderRadius: 10,
   },
   touchableButton: {
     padding: 5,
@@ -296,7 +302,7 @@ const styles = StyleSheet.create({
   },
   accent: {
     fontFamily: 'dm-sans-bold',
-    color: Colors.darkPurp,
+    color: Colors.primaryColor,
   },
   recipientContainer: {
     padding: 5,
@@ -308,18 +314,17 @@ const styles = StyleSheet.create({
     fontFamily: 'dm-sans-regular',
     fontSize: 18,
     paddingBottom: 4,
-    color: Colors.darkPurp,
   },
   orderDetails: {
     flexDirection: 'row',
     fontFamily: 'dm-sans-regular',
-    fontSize: 16,
+    fontSize: 18,
     paddingBottom: 4,
     color: Colors.primaryColor,
   },
   orderDetailsContainer: {
     paddingTop: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 2,
     alignItems: 'flex-start',
   },
   button1: {

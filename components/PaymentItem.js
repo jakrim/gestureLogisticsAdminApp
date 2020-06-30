@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 import Card from './Card';
 import { MillisToDate, MillisToTime } from './HelperFunctions';
 import Colors from '../constants/Colors';
+
+const windowWidth = Dimensions.get('window').width;
 
 const PaymentItem = (props) => {
   let TouchableComp = TouchableOpacity;
@@ -74,8 +77,8 @@ const PaymentItem = (props) => {
 const styles = StyleSheet.create({
   card: {
     padding: 10,
-    width: 320,
-    margin: 15,
+    width: windowWidth,
+    margin: 4,
     backgroundColor: Colors.backgroundFeed,
   },
   productName: {

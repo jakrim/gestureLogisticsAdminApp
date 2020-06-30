@@ -7,7 +7,7 @@ export default {
   accentColor: '#FDBF2E',
   backgroundFeed: '#F3F3F3',
   SignatureFrameDividingHorizontalLine: '#E6E6E6',
-  LightColorText: '#979797',
+  LightColorText: '#000',
   searchGrey: '#E0E0E0',
   DarkColorText: '#2B2B2B',
   delayRed: '#cb0000',

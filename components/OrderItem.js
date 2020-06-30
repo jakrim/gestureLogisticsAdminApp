@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   Platform,
+  Dimensions,
 } from 'react-native';
 
 import Card from './Card';
 import Colors from '../constants/Colors';
 import { MillisToDate } from './HelperFunctions';
+
+const windowWidth = Dimensions.get('window').width;
 
 const OrderItem = (props) => {
   let TouchableComp = TouchableOpacity;
@@ -27,36 +30,30 @@ const OrderItem = (props) => {
     <Card style={styles.product}>
       <TouchableComp onPress={props.onSelect} useForeground>
         <View style={styles.touchable}>
-          <View>
-            <View style={styles.orderDetails}>
-              <Text style={styles.productName}>{props.product_name}</Text>
-              <Text style={styles.address}>{props.address_string}</Text>
-
+          <View style={styles.orderDetails}>
+            <Text style={styles.productName}>{props.product_name}</Text>
+            <Text style={styles.address}>
+              {props.address_string}
+              {' | '}
               {props.address_string_2 ? (
                 <Text style={styles.address}>{props.address_string_2}</Text>
               ) : (
                 <Text></Text>
               )}
-              {props.schedule ? (
-                <Text style={styles.scheduled}>
-                  <B>Time: </B>
-                  <Text>{MillisToDate(props.schedule)}</Text>
-                </Text>
-              ) : (
-                <Text style={styles.onDemand}>On Demand</Text>
-              )}
-            </View>
-            {/* <View style={styles.actions}>{props.children}</View> */}
+            </Text>
+
+            {props.schedule ? (
+              <Text style={styles.scheduled}>
+                <B>Time: </B>
+                <Text>{MillisToDate(props.schedule)}</Text>
+              </Text>
+            ) : (
+              <Text style={styles.onDemand}>On Demand</Text>
+            )}
           </View>
+          {/* <View style={styles.actions}>{props.children}</View> */}
           <View style={styles.orderDetails2}>
-            <Text style={styles.orderDetails2Text}>
-              <B>Zone: </B>
-              {props.zone}
-            </Text>
-            <Text style={styles.orderDetails2Text}>
-              <B>Order ID: </B>
-              {props.orderID}
-            </Text>
+            <Text style={styles.orderDetails2Text}>{props.orderID}</Text>
           </View>
         </View>
       </TouchableComp>
@@ -66,17 +63,19 @@ const OrderItem = (props) => {
 
 const styles = StyleSheet.create({
   product: {
-    height: 170,
-    width: 340,
-    marginTop: 10,
-    marginBottom: 15,
+    height: 130,
+    width: windowWidth,
+    marginTop: 4,
     backgroundColor: Colors.backgroundFeed,
   },
   touchable: {
-    borderRadius: 10,
     overflow: 'hidden',
+    width: '100%',
+    height: '100%',
   },
   orderDetails: {
+    width: '100%',
+    height: '80%',
     padding: 10,
     backgroundColor: Colors.backgroundFeed,
   },
@@ -84,12 +83,12 @@ const styles = StyleSheet.create({
     fontFamily: 'dm-sans-bold',
     fontSize: 18,
     paddingBottom: 5,
-    color: Colors.primaryColor,
+    color: Colors.LightColorText,
   },
   address: {
     fontFamily: 'dm-sans-regular',
     fontSize: 14,
-    color: Colors.primaryColor,
+    color: Colors.LightColorText,
   },
   onDemand: {
     paddingTop: 5,
@@ -104,14 +103,16 @@ const styles = StyleSheet.create({
     color: Colors.delayRed,
   },
   orderDetails2: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    height: '100%',
+    paddingRight: 10,
+    // paddingVertical: 10,
     alignItems: 'flex-end',
+    // paddingBottom: 50,
   },
   orderDetails2Text: {
     fontFamily: 'dm-sans-regular',
     fontSize: 14,
-    color: Colors.primaryColor,
+    color: '#444',
   },
   actions: {
     flexDirection: 'row',
@@ -120,17 +121,6 @@ const styles = StyleSheet.create({
     // height: '23%',
     // paddingHorizontal: 20
   },
-  // imageContainer: {
-  //   width: '100%',
-  //   height: '60%',
-  //   borderTopLeftRadius: 10,
-  //   borderTopRightRadius: 10,
-  //   overflow: 'hidden'
-  // },
-  // image: {
-  //   width: '100%',
-  //   height: '100%'
-  // },
 });
 
 export default OrderItem;
