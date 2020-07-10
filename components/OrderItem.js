@@ -53,6 +53,9 @@ const OrderItem = (props) => {
           </View>
           {/* <View style={styles.actions}>{props.children}</View> */}
           <View style={styles.orderDetails2}>
+            <Text style={styles.orderDetails2Text}>
+              {MillisToDate(props.time_order_placed)}
+            </Text>
             <Text style={styles.orderDetails2Text}>{props.orderID}</Text>
           </View>
         </View>
@@ -63,7 +66,7 @@ const OrderItem = (props) => {
 
 const styles = StyleSheet.create({
   product: {
-    height: 130,
+    height: 140,
     width: windowWidth,
     marginTop: 4,
     backgroundColor: Colors.backgroundFeed,
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
   },
   orderDetails: {
     width: '100%',
-    height: '80%',
+    height: '72%',
     padding: 10,
     backgroundColor: Colors.backgroundFeed,
   },
@@ -103,7 +106,6 @@ const styles = StyleSheet.create({
     color: Colors.delayRed,
   },
   orderDetails2: {
-    height: '100%',
     paddingRight: 10,
     // paddingVertical: 10,
     alignItems: 'flex-end',

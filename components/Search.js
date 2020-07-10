@@ -90,16 +90,6 @@ const Search = (props) => {
         return itemData.indexOf(textData) > -1;
       });
     }
-
-    if (screenContext === 'orders') {
-      ascending
-        ? setSearchOrders(newData)
-        : setSearchOrders(newData.sort((a, b) => a > b));
-    } else if (screenContext === 'gRunners') {
-      ascending
-        ? setSearchGrunners(newData)
-        : setSearchGrunners(newData.sort((a, b) => a > b));
-    }
   }, [
     searchValue,
     searchableData,
@@ -107,7 +97,6 @@ const Search = (props) => {
     screenContext,
     searchOrders,
     searchGrunners,
-    ascending,
   ]);
 
   useEffect(() => {
