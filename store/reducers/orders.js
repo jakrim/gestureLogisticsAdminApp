@@ -13,6 +13,7 @@ const initialState = {
   filters: [],
   order: [],
   zones: [],
+  cities: [],
   searchValue: '',
 };
 
