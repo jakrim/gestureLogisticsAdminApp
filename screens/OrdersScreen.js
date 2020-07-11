@@ -73,6 +73,7 @@ const OrdersScreen = (props) => {
         } else {
           setHasFilters(true);
         }
+        dispatch(ordersActions.fetchZones());
         await dispatch(ordersActions.fetchOrders(filters));
       } catch (err) {
         console.log('loadOrders -> err', err);

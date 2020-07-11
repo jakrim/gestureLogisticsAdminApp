@@ -18,7 +18,6 @@ const LoadingScreen = (props) => {
   useEffect(() => {
     try {
       // logout();
-      dispatch(ordersActions.fetchZones());
       setIsLoading(true);
       setTimeout(() => {
         dispatch(authActions.authenticate());

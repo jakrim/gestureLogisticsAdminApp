@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "gestureLogisticsAdmin",
-    "description": "A Gesture app to support Operations and Logistics by tracking orders and runners.",
-    "slug": "gestureLogisticsAdmin",
+    "name": "Gesture Admin",
+    "description": "A Gesture app supporting admins by tracking orders and runners.",
+    "slug": "gestureAdmin",
     "privacy": "public",
     "platforms": ["ios", "android", "web"],
     "version": "0.0.1",

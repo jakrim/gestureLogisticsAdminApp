@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 
-import {
-  Platform,
-  TouchableOpacity,
-  FlatList,
-  TouchableNativeFeedback,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { Platform, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import FilterSwitch from './FilterSwitch';
 import { createCitySelectorState } from '../components/HelperFunctions';
-const { width } = Dimensions.get('window');
 
 const CitySelector = (props) => {
   let cities = useSelector((state) => state.orders.cities);
@@ -40,11 +32,6 @@ const CitySelector = (props) => {
       props.setSelectedCities((state) => [...state, city]);
     }
   };
-
-  let TouchableComp = TouchableOpacity;
-  if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchableComp = TouchableNativeFeedback;
-  }
 
   return (
     <FlatList
