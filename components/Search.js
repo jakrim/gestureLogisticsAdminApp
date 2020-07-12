@@ -113,12 +113,14 @@ const Search = (props) => {
 
   useEffect(() => {
     if (ascending) {
+      console.log('Search -> ascending arrow up', ascending);
       if (screenContext === 'orders') {
         setSearchOrders(ordersData.sort((a, b) => a > b));
       } else if (screenContext === 'gRunners') {
         setSearchGrunners(gRunnersData.sort((a, b) => a > b));
       }
     } else if (!ascending) {
+      console.log('Search -> ascending arrow down', ascending);
       if (screenContext === 'orders') {
         setSearchOrders(ordersData.sort((a, b) => a < b));
       } else if (screenContext === 'gRunners') {
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
   },
   inputContainerStyle: {
     backgroundColor: '#ddd',
-    height: 35,
+    height: 30,
   },
   searchBar: {
     width: windowWidth / 1.4,

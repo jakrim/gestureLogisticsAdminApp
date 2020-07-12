@@ -34,7 +34,8 @@ const OrderItem = (props) => {
             <Text style={styles.productName}>{props.product_name}</Text>
             <Text style={styles.address}>
               {props.address_string}
-              {' | '}
+              {'\n'}
+              <B>Apt/Extra: </B>
               {props.address_string_2 ? (
                 <Text style={styles.address}>{props.address_string_2}</Text>
               ) : (
@@ -42,14 +43,17 @@ const OrderItem = (props) => {
               )}
             </Text>
 
-            {props.schedule ? (
-              <Text style={styles.scheduled}>
-                <B>Time: </B>
-                <Text>{MillisToDate(props.schedule)}</Text>
+            {/* {props.schedule ? ( */}
+            <Text style={styles.scheduled}>
+              <B>Delivery Time: </B>
+              <Text style={{ color: Colors.delayRed }}>
+                {MillisToDate(props.properTime)}
+                {/* {MillisToDate(props.schedule)} */}
               </Text>
-            ) : (
-              <Text style={styles.onDemand}>On Demand</Text>
-            )}
+            </Text>
+            {/* ) : ( */}
+            {/* <Text style={styles.onDemand}>On Demand</Text>
+            )} */}
           </View>
           {/* <View style={styles.actions}>{props.children}</View> */}
           <View style={styles.orderDetails2}>
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontFamily: 'dm-sans-bold',
-    fontSize: 18,
+    fontSize: 19,
     paddingBottom: 5,
     color: Colors.LightColorText,
   },
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     fontFamily: 'dm-sans-regular',
     fontSize: 15,
-    color: Colors.delayRed,
+    color: Colors.LightColorText,
   },
   orderDetails2: {
     paddingRight: 10,

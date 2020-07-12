@@ -189,6 +189,7 @@ const OrdersScreen = (props) => {
               product_name={itemData.item.product_name}
               address_string={itemData.item.address_string}
               time_order_placed={itemData.item.time_order_placed}
+              properTime={itemData.item.proper_time}
               schedule={itemData.item.schedule}
               address_string_2={itemData.item.address_string_2}
               zone={itemData.item.zone}
@@ -220,7 +221,7 @@ export const ordersScreenHeaderOptions = (props) => {
       <Ionicons
         style={styles.headerButtonLeft}
         name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-        color={Platform.OS === 'android' ? 'white' : 'white'}
+        color={Platform.OS === 'android' ? 'white' : 'black'}
         size={25}
         onPress={() => {
           props.navigation.toggleDrawer();
@@ -230,7 +231,7 @@ export const ordersScreenHeaderOptions = (props) => {
     headerRight: () => <OrdersModal style={styles.modalButton} />,
     headerStyle: {
       backgroundColor:
-        Platform.OS === 'android' ? Colors.primaryColor : Colors.primaryColor,
+        Platform.OS === 'android' ? Colors.primaryColor : 'white',
       shadowColor: 'transparent',
       elevation: 0,
     },
