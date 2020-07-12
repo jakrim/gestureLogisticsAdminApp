@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.gesture.logisticsadmin",
-      "buildNumber": "0.0.1",
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "infoPlist": {}
     },
