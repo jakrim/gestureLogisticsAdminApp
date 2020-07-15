@@ -164,7 +164,9 @@ const GRunnersScreen = (props) => {
 
   return (
     <ErrorBoundary>
-      <Search />
+      <View style={styles.searchContainer}>
+        <Search />
+      </View>
       <FlatList
         scrollIndicatorInsets={{ right: 1 }}
         showsVerticalScrollIndicator={false}
@@ -217,7 +219,7 @@ export const gRunnersScreenHeaderOptions = (props) => {
       <Ionicons
         style={styles.headerButtonLeft}
         name={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-        color={Platform.OS === 'android' ? 'white' : 'white'}
+        color={Platform.OS === 'android' ? 'white' : 'black'}
         size={25}
         onPress={() => {
           props.navigation.toggleDrawer();
@@ -227,7 +229,7 @@ export const gRunnersScreenHeaderOptions = (props) => {
     headerRight: () => <GRunnerModal style={styles.modalButton} />,
     headerStyle: {
       backgroundColor:
-        Platform.OS === 'android' ? Colors.primaryColor : Colors.primaryColor,
+        Platform.OS === 'android' ? Colors.primaryColor : 'white',
       shadowColor: 'transparent',
       elevation: 0,
     },
@@ -248,6 +250,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  searchContainer: { backgroundColor: 'white' },
   errorText: {
     textAlign: 'center',
     fontFamily: 'dm-sans-regular',

@@ -248,14 +248,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
   },
-  searchContainer: {
-    backgroundColor: 'white',
-  },
   centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
+  },
+  searchContainer: {
+    backgroundColor: 'white',
   },
   errorText: {
     textAlign: 'center',
