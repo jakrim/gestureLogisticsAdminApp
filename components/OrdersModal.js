@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 15,
     textAlign: 'center',
-    color: Colors.primaryColor,
+    color: Colors.LightColorText,
   },
   cities: {
     width: '100%',

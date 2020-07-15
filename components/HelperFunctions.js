@@ -37,10 +37,11 @@ export const lowercaseLetter = (string) => {
 };
 
 export const properTimeFunc = (ordersArr) => {
+  console.log('properTimeFunc -> ordersArr', ordersArr);
   let properTimeArr = [];
 
-  for (order of ordersArr) {
-    var proper_time = order.proper_time;
+  for (let order of ordersArr) {
+    let proper_time = order.proper_time;
     // if schedule is null
     if (order.schedule === null) {
       // time order placed + 1 hr
@@ -51,14 +52,15 @@ export const properTimeFunc = (ordersArr) => {
     order['proper_time'] = proper_time;
     properTimeArr.push(order);
   }
+  // console.log('properTimeFunc -> order', order);
 
-  return properTimeArr;
+  return properTimeArr.sort((a, b) => b.proper_time - a.proper_time);
 };
 
 export const mapCities = (citiesArr) => {
   let capitalizeCities = [];
 
-  for (var city of citiesArr) {
+  for (let city of citiesArr) {
     capitalizeCities.push(capitalizeLetter(city));
   }
   capitalizeCities.push(

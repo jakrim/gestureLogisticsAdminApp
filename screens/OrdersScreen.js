@@ -171,7 +171,9 @@ const OrdersScreen = (props) => {
   return (
     <ErrorBoundary>
       <View style={styles.screenView}>
-        <Search />
+        <View style={styles.searchContainer}>
+          <Search />
+        </View>
 
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -245,6 +247,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
+  },
+  searchContainer: {
+    backgroundColor: 'white',
   },
   centered: {
     flex: 1,

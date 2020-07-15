@@ -8,7 +8,6 @@ import { createCitySelectorState } from '../components/HelperFunctions';
 
 const CitySelector = (props) => {
   let cities = useSelector((state) => state.orders.cities);
-  console.log('CitySelector -> cities', cities);
   let cityState = createCitySelectorState(cities);
   const [values, setValues] = useState(cityState);
 

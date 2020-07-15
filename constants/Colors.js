@@ -5,7 +5,7 @@ export default {
   lightTeal: '#42B9E7',
   primaryColor: '#8585FF',
   accentColor: '#FDBF2E',
-  backgroundFeed: '#F3F3F3',
+  backgroundFeed: '#fff',
   SignatureFrameDividingHorizontalLine: '#E6E6E6',
   LightColorText: '#000',
   searchGrey: '#E0E0E0',

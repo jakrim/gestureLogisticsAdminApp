@@ -182,23 +182,22 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     overflow: 'hidden',
     marginTop: 6,
-    marginBottom: 5,
+    marginBottom: 2,
     borderRadius: 8,
   },
   inputContainerStyle: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#eee',
     height: 30,
   },
   searchBar: {
     width: windowWidth / 1.4,
-    backgroundColor: '#ddd',
+    backgroundColor: '#eee',
     padding: 4,
   },
   input: {
-    backgroundColor: '#ddd',
-    color: '#000',
+    backgroundColor: '#eee',
+    color: 'black',
   },
-
   searchContainer: {
     flexDirection: 'row',
     width: windowWidth,
@@ -208,11 +207,11 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   orderBox: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#eee',
     borderColor: Platform.OS === 'ios' ? null : '#555',
     borderWidth: 0.5,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 4,
   },
 });

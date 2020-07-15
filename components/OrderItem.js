@@ -25,7 +25,6 @@ const OrderItem = (props) => {
   const B = (props) => (
     <Text style={{ fontFamily: 'dm-sans-bold' }}>{props.children}</Text>
   );
-
   return (
     <Card style={styles.product}>
       <TouchableComp onPress={props.onSelect} useForeground>
@@ -35,7 +34,7 @@ const OrderItem = (props) => {
             <Text style={styles.address}>
               {props.address_string}
               {'\n'}
-              <B>Apt/Extra: </B>
+              Apt/Extra:{' '}
               {props.address_string_2 ? (
                 <Text style={styles.address}>{props.address_string_2}</Text>
               ) : (
@@ -45,7 +44,7 @@ const OrderItem = (props) => {
 
             {/* {props.schedule ? ( */}
             <Text style={styles.scheduled}>
-              <B>Delivery Time: </B>
+              <B>Delivery: </B>
               <Text style={{ color: Colors.delayRed }}>
                 {MillisToDate(props.properTime)}
                 {/* {MillisToDate(props.schedule)} */}

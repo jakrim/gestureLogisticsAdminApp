@@ -14,11 +14,7 @@ export const fetchOrders = (filters) => {
   return async (dispatch) => {
     var _basicUrl = await basicUrl();
     try {
-      const response = await fetch(
-        `${URL}/logistics_orders?${_basicUrl}`
-        // 'https://us-central1-gesture-dev.cloudfunctions.net/logPendingOrders'
-        // `https://us-central1-yourgestureapp.cloudfunctions.net/logistics_orders?${basicUrl}`
-      );
+      const response = await fetch(`${URL}/logistics_orders?${_basicUrl}`);
 
       if (!response.ok) {
         throw new Error('Something went wrong in fetching orders!');
