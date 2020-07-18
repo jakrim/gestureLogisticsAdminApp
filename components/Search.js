@@ -68,12 +68,11 @@ const Search = (props) => {
       var newData = searchableData.filter((item) => {
         let itemData;
 
-        // Abstraction for searching through G Runners
         let pubID = item.public_courier_id
           ? item.public_courier_id.toUpperCase()
           : '';
         let first_name = item.first_name ? item.first_name.toUpperCase() : '';
-        let last_name = item.last_name ? item.last_name.toUpperCase() : '';
+        let last_name = item.last_name ? item.last_name.toUpperCase() : false;
         let current_order = item.current_order
           ? item.current_order.toUpperCase()
           : '';
@@ -83,7 +82,7 @@ const Search = (props) => {
         if (screenContext === 'orders') {
           itemData = `${item.product_name.toUpperCase()}
           ${item.orderID.toUpperCase()}
-          ${item.address_string.toUpperCase()}`;
+          ${item.zone.toUpperCase()}`;
         } else if (screenContext === 'gRunners') {
           itemData = `${pubID} ${first_name} ${last_name} ${current_order}`;
         }
@@ -94,7 +93,6 @@ const Search = (props) => {
       if (screenContext === 'orders') {
         setSearchOrders(newData);
       } else if (screenContext === 'gRunners') {
-        console.log('here in newData');
         setSearchGrunners(newData);
       }
     }
@@ -119,25 +117,17 @@ const Search = (props) => {
     }
   }, [searchValue]);
 
+  useEffect(() => {
+    if (ascending) {
+      setSearchOrders(ordersData.sort((a, b) => a > b));
+    } else if (!ascending) {
+      setSearchOrders(ordersData.sort((a, b) => a < b));
+    }
+  }, [ascending]);
+
   const ascendingOrderButton = () => {
     setAscending(!ascending);
   };
-
-  useEffect(() => {
-    if (ascending) {
-      if (screenContext === 'orders') {
-        setSearchOrders(searchOrders.sort((a, b) => a > b));
-      } else if (screenContext === 'gRunners') {
-        setSearchGrunners(searchGrunners.sort((a, b) => a > b));
-      }
-    } else if (!ascending) {
-      if (screenContext === 'orders') {
-        setSearchOrders(searchOrders.sort((a, b) => a < b));
-      } else if (screenContext === 'gRunners') {
-        setSearchGrunners(searchGrunners.sort((a, b) => a < b));
-      }
-    }
-  }, [ascending]);
 
   return (
     <ErrorBoundary>
