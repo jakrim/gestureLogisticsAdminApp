@@ -261,11 +261,12 @@ const styles = StyleSheet.create({
   resetButtonContainer: {
     paddingTop: 5,
     paddingBottom: 20,
+    backgroundColor: 'white',
+    width: '100%',
+    alignItems: 'center',
   },
   resetButton: {
     alignItems: 'center',
-    backgroundColor: 'white',
-    color: Colors.accentColor,
     fontSize: 20,
     width: 200,
   },
