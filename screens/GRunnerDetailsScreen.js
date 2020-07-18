@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'dm-sans-regular',
     fontSize: 20,
-    color: Colors.primaryColor,
+    color: 'black',
   },
   status: {
     padding: 10,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     fontSize: 18,
     marginHorizontal: 10,
-    color: Colors.primaryColor,
+    color: 'black',
   },
   buttonContainer: {
     paddingVertical: 100,

@@ -116,9 +116,9 @@ export const GRunnerNavigator = ({ navigation }) => (
       component={PaymentHistoryScreen}
       options={{
         headerTitle: 'Payment History',
-        headerTintColor: 'white',
+        headerTintColor: Colors.primaryColor,
         headerStyle: {
-          backgroundColor: Colors.primaryColor,
+          backgroundColor: 'white',
           shadowColor: 'transparent',
           elevation: 0,
         },

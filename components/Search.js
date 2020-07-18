@@ -68,11 +68,12 @@ const Search = (props) => {
       var newData = searchableData.filter((item) => {
         let itemData;
 
+        // Abstraction for searching through G Runners
         let pubID = item.public_courier_id
           ? item.public_courier_id.toUpperCase()
           : '';
         let first_name = item.first_name ? item.first_name.toUpperCase() : '';
-        let last_name = item.last_name ? item.last_name.toUpperCase() : false;
+        let last_name = item.last_name ? item.last_name.toUpperCase() : '';
         let current_order = item.current_order
           ? item.current_order.toUpperCase()
           : '';
@@ -82,13 +83,20 @@ const Search = (props) => {
         if (screenContext === 'orders') {
           itemData = `${item.product_name.toUpperCase()}
           ${item.orderID.toUpperCase()}
-          ${item.zone.toUpperCase()}`;
+          ${item.address_string.toUpperCase()}`;
         } else if (screenContext === 'gRunners') {
           itemData = `${pubID} ${first_name} ${last_name} ${current_order}`;
         }
 
         return itemData.indexOf(textData) > -1;
       });
+
+      if (screenContext === 'orders') {
+        setSearchOrders(newData);
+      } else if (screenContext === 'gRunners') {
+        console.log('here in newData');
+        setSearchGrunners(newData);
+      }
     }
   }, [
     searchValue,
@@ -111,27 +119,25 @@ const Search = (props) => {
     }
   }, [searchValue]);
 
-  useEffect(() => {
-    if (ascending) {
-      console.log('Search -> ascending arrow up', ascending);
-      if (screenContext === 'orders') {
-        setSearchOrders(ordersData.sort((a, b) => a > b));
-      } else if (screenContext === 'gRunners') {
-        setSearchGrunners(gRunnersData.sort((a, b) => a > b));
-      }
-    } else if (!ascending) {
-      console.log('Search -> ascending arrow down', ascending);
-      if (screenContext === 'orders') {
-        setSearchOrders(ordersData.sort((a, b) => a < b));
-      } else if (screenContext === 'gRunners') {
-        setSearchGrunners(gRunnersData.sort((a, b) => a < b));
-      }
-    }
-  }, [ascending, searchOrders, searchGrunners, gRunnersData, ordersData]);
-
   const ascendingOrderButton = () => {
     setAscending(!ascending);
   };
+
+  useEffect(() => {
+    if (ascending) {
+      if (screenContext === 'orders') {
+        setSearchOrders(searchOrders.sort((a, b) => a > b));
+      } else if (screenContext === 'gRunners') {
+        setSearchGrunners(searchGrunners.sort((a, b) => a > b));
+      }
+    } else if (!ascending) {
+      if (screenContext === 'orders') {
+        setSearchOrders(searchOrders.sort((a, b) => a < b));
+      } else if (screenContext === 'gRunners') {
+        setSearchGrunners(searchGrunners.sort((a, b) => a < b));
+      }
+    }
+  }, [ascending]);
 
   return (
     <ErrorBoundary>

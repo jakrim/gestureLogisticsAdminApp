@@ -69,7 +69,6 @@ const AuthScreen = (props) => {
   const dispatch = useDispatch();
 
   let errorMessage = useSelector((state) => state.auth.signInError);
-  // console.log('AuthScreen -> errorMessage', errorMessage);
   let errorMessageJSX = (
     <View>
       {errorMessage ? (

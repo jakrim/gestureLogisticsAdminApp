@@ -33,7 +33,7 @@ const OrderDetailsScreen = (props) => {
       style={styles.gradient}
     >
       <OrderDetails
-        schedule={selectedOrder.schedule}
+        schedule={selectedOrder.schedule ? selectedOrder.schedule : null}
         product_name={selectedOrder.product_name}
         category_name={selectedOrder.category_name}
         recipient_name={selectedOrder.recipient_name}

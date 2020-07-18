@@ -1,15 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  SafeAreaView,
-  Platform,
-  FlatList,
-} from 'react-native';
+import { Text, View, StyleSheet, Platform, FlatList } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector, useDispatch } from 'react-redux';
 import { BallIndicator } from 'react-native-indicators';
@@ -261,16 +251,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'dm-sans-regular',
     fontSize: 18,
-    color: Colors.backgroundFeed,
+    color: Colors.primaryColor,
     padding: 10,
   },
   resetButtonContainer: {
     paddingTop: 5,
     paddingBottom: 20,
+    backgroundColor: 'white',
+    width: '100%',
+    alignItems: 'center',
   },
   resetButton: {
     alignItems: 'center',
-    color: 'white',
     fontSize: 20,
     width: 200,
   },

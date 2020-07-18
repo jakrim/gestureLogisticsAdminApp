@@ -82,7 +82,7 @@ const OrderDetails = (props) => {
         {/* BEGIN RECIPIENT STYLES/VIEW */}
         <Text style={styles.textHeader}>Delivering To</Text>
         <View style={styles.recipientContainer}>
-          <Text style={styles.recipientRow}>
+          <View style={styles.recipientRow}>
             <Ionicons
               name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
               size={24}
@@ -91,18 +91,19 @@ const OrderDetails = (props) => {
             />
             <Text
               style={{
-                color: Colors.primaryColor,
+                color: 'black',
+                fontSize: 18,
               }}
             >
               {'  '}
               {props.recipient_name}
             </Text>
-          </Text>
+          </View>
           <TouchableComp
             onPress={() => makeCall(props.recipient_phone_number)}
             activeOpacity={0.7}
           >
-            <Text style={styles.recipientRow}>
+            <View style={styles.recipientRow}>
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
                 size={24}
@@ -113,7 +114,7 @@ const OrderDetails = (props) => {
                 {'  '}
                 {props.recipient_phone_number}
               </Text>
-            </Text>
+            </View>
           </TouchableComp>
           <TouchableComp
             onPress={() => {
@@ -128,20 +129,25 @@ const OrderDetails = (props) => {
             }}
             activeOpacity={0.7}
           >
-            <Text style={styles.recipientRow}>
+            <View style={styles.recipientRow}>
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
                 size={24}
                 color={Colors.primaryColor}
                 style={styles.callTxt}
               />
-              <Text style={{ color: '#0644AD', fontSize: 18 }}>
+              <Text
+                style={{
+                  color: props.recipient_email === 'none' ? 'black' : '#0644AD',
+                  fontSize: 18,
+                }}
+              >
                 {'  '}
                 {props.recipient_email ? props.recipient_email : 'none'}
               </Text>
-            </Text>
+            </View>
           </TouchableComp>
-          <Text style={styles.recipientRow}>
+          <View style={styles.recipientRow}>
             <Ionicons
               name={Platform.OS === 'android' ? 'md-pin' : 'ios-pin'}
               size={24}
@@ -150,36 +156,38 @@ const OrderDetails = (props) => {
             />
             <Text
               style={{
-                color: Colors.primaryColor,
+                color: 'black',
+                fontSize: 18,
               }}
             >
               {'   '}
               {props.address_string} ~ {props.address_string_2}
             </Text>
-          </Text>
+          </View>
 
-          <Text style={styles.recipientRow}>
+          <View style={styles.recipientRow}>
             <Ionicons
-              name={Platform.OS === 'android' ? 'md-locate' : 'ios-locate'}
+              name={Platform.OS === 'android' ? 'md-document' : 'md-document'}
               size={22}
               color={Colors.primaryColor}
               style={styles.callTxt}
             />
             <Text
               style={{
-                color: Colors.primaryColor,
+                color: 'black',
+                fontSize: 18,
               }}
             >
               {'  '}
               {props.delivery_note ? props.delivery_note : 'none'}
             </Text>
-          </Text>
+          </View>
         </View>
 
         {/* BEGIN SENDER STYLES/VIEW */}
         <Text style={styles.textHeader}>Sender</Text>
         <View style={styles.recipientContainer}>
-          <Text style={styles.recipientRow}>
+          <View style={styles.recipientRow}>
             <Ionicons
               name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
               size={24}
@@ -188,19 +196,20 @@ const OrderDetails = (props) => {
             />
             <Text
               style={{
-                color: Colors.primaryColor,
+                color: 'black',
+                fontSize: 18,
               }}
             >
               {'  '}
               {props.sender_name}
             </Text>
-          </Text>
+          </View>
 
           <TouchableComp
             onPress={() => makeCall(props.sender_phone_number)}
             activeOpacity={0.7}
           >
-            <Text style={styles.recipientRow}>
+            <View style={styles.recipientRow}>
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-call' : 'ios-call'}
                 size={24}
@@ -211,7 +220,7 @@ const OrderDetails = (props) => {
                 {'  '}
                 {props.sender_phone_number}
               </Text>
-            </Text>
+            </View>
           </TouchableComp>
           <TouchableComp
             onPress={() => {
@@ -226,7 +235,7 @@ const OrderDetails = (props) => {
             }}
             activeOpacity={0.7}
           >
-            <Text style={styles.recipientRow}>
+            <View style={styles.recipientRow}>
               <Ionicons
                 name={Platform.OS === 'android' ? 'md-mail' : 'ios-mail'}
                 size={24}
@@ -237,7 +246,7 @@ const OrderDetails = (props) => {
                 {'  '}
                 {props.sender_email ? props.sender_email : 'none'}
               </Text>
-            </Text>
+            </View>
           </TouchableComp>
         </View>
         {/* Order Details */}
@@ -289,7 +298,7 @@ const styles = StyleSheet.create({
   },
   product: {
     fontSize: 18,
-    color: Colors.primaryColor,
+    color: 'black',
     paddingTop: 10,
     fontFamily: 'dm-sans-regular',
   },
@@ -302,12 +311,13 @@ const styles = StyleSheet.create({
   },
   accent: {
     fontFamily: 'dm-sans-bold',
-    color: Colors.primaryColor,
+    color: 'black',
   },
   recipientContainer: {
     padding: 5,
     paddingHorizontal: 10,
     alignItems: 'baseline',
+    justifyContent: 'center',
   },
   recipientRow: {
     flexDirection: 'row',
@@ -320,7 +330,7 @@ const styles = StyleSheet.create({
     fontFamily: 'dm-sans-regular',
     fontSize: 18,
     paddingBottom: 4,
-    color: Colors.primaryColor,
+    color: 'black',
   },
   orderDetailsContainer: {
     paddingTop: 10,

@@ -37,7 +37,6 @@ export const lowercaseLetter = (string) => {
 };
 
 export const properTimeFunc = (ordersArr) => {
-  console.log('properTimeFunc -> ordersArr', ordersArr);
   let properTimeArr = [];
 
   for (let order of ordersArr) {
