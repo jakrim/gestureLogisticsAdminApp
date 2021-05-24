@@ -2,7 +2,7 @@
 
 App that supports Gesture Logistics
 
-\*\*This app was built using the following technologies:
+**This app was built using the following technologies:**
 
 1. React Native + Redux + Firebase
 2. React Navigation v5
