@@ -13,7 +13,7 @@ import {
   AreSearching,
   ScreenContext,
   GRunnersSearchContext,
-  AscendingData,
+  AscendingData
 } from '../components/ApplicationContexts';
 
 const AppNavigator = (props) => {
@@ -26,26 +26,26 @@ const AppNavigator = (props) => {
   const [filters, setFilters] = useState({
     cities: [],
     filter: 'noFilter',
-    isCity: false,
+    isCity: false
   });
   const filterFunction = useMemo(() => ({ filters, setFilters }), [
     filters,
-    setFilters,
+    setFilters
   ]);
   const [gfilters, setGFilters] = useState({
     hasOrder: false,
     isCity: false,
     cities: [],
-    filter: 'noFilter',
+    filter: 'noFilter'
   });
   const gFilterFunction = useMemo(() => ({ gfilters, setGFilters }), [
     gfilters,
-    setGFilters,
+    setGFilters
   ]);
   const [searchOrders, setSearchOrders] = useState([]);
   const searchedOrders = useMemo(() => ({ searchOrders, setSearchOrders }), [
     searchOrders,
-    setSearchOrders,
+    setSearchOrders
   ]);
 
   const [searchGrunners, setSearchGrunners] = useState([]);
@@ -56,7 +56,7 @@ const AppNavigator = (props) => {
   const [areSearching, setAreSearching] = useState(false);
   const isSearching = useMemo(() => ({ areSearching, setAreSearching }), [
     areSearching,
-    setAreSearching,
+    setAreSearching
   ]);
 
   const [screenContext, setScreenContext] = useState('');
@@ -67,7 +67,7 @@ const AppNavigator = (props) => {
   const [ascending, setAscending] = useState('');
   const AscendingDataForSearch = useMemo(() => ({ ascending, setAscending }), [
     ascending,
-    setAscending,
+    setAscending
   ]);
 
   return (

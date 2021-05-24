@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import {
   ScrollView,
   Text,
@@ -8,23 +8,23 @@ import {
   Dimensions,
   Platform,
   StyleSheet,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useSelector, useDispatch } from 'react-redux';
-import { BallIndicator } from 'react-native-indicators';
-import { Ionicons } from '@expo/vector-icons';
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useSelector, useDispatch } from "react-redux";
+import { BallIndicator } from "react-native-indicators";
+import { Ionicons } from "@expo/vector-icons";
 
-import * as gRunnerActions from '../store/actions/gRunner';
-import ErrorBoundry, { throwError } from '../components/ErrorBoundary';
-import Colors from '../constants/Colors';
-import Card from '../components/Card';
-import StyledButton from '../components/StyledButton';
-import { capitalizeLetter } from '../components/HelperFunctions';
+import * as gRunnerActions from "../store/actions/gRunner";
+import ErrorBoundry, { throwError } from "../components/ErrorBoundary";
+import Colors from "../constants/Colors";
+import Card from "../components/Card";
+import StyledButton from "../components/StyledButton";
+import { capitalizeLetter } from "../components/HelperFunctions";
 
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
 const B = (props) => (
-  <Text {...props} style={{ fontFamily: 'dm-sans-bold', ...props.style }}>
+  <Text {...props} style={{ fontFamily: "dm-sans-bold", ...props.style }}>
     {props.children}
   </Text>
 );
@@ -57,7 +57,7 @@ const GRunnerDetailsScreen = (props) => {
   useEffect(() => {
     let mount = true;
     if (mount) {
-      navigation.addListener('focus', loadGrunner);
+      navigation.addListener("focus", loadGrunner);
     }
 
     return () => (mount = false);
@@ -72,7 +72,7 @@ const GRunnerDetailsScreen = (props) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          throwError(new Error('Asynchronous error'));
+          throwError(new Error("Asynchronous error"));
         });
     }
     return () => (effect = false);
@@ -96,7 +96,7 @@ const GRunnerDetailsScreen = (props) => {
             </Text>
             {!isLoading ? (
               <Button
-                title='Try again'
+                title="Try again"
                 onPress={loadGrunner}
                 color={Colors.LightColorText}
               />
@@ -125,14 +125,14 @@ const GRunnerDetailsScreen = (props) => {
   }
 
   const selectItemHandler = (courierId) => {
-    navigation.navigate('PaymentHistoryScreen', {
+    navigation.navigate("PaymentHistoryScreen", {
       courierId,
     });
   };
 
   let full_name =
     capitalizeLetter(gRunner.firstName) +
-    ' ' +
+    " " +
     capitalizeLetter(gRunner.lastName);
 
   return (
@@ -150,13 +150,13 @@ const GRunnerDetailsScreen = (props) => {
               />
             </View>
             <Text style={styles.gRunnerName}>{full_name}</Text>
-            {gRunner.currentStatus === 'online' ? (
+            {gRunner.currentStatus === "online" ? (
               <View style={styles.status}>
                 <Text
                   style={{
-                    color: 'green',
-                    textAlign: 'center',
-                    fontFamily: 'dm-sans-boldItalic',
+                    color: "green",
+                    textAlign: "center",
+                    fontFamily: "dm-sans-boldItalic",
                     paddingTop: 4,
                     fontSize: 18,
                   }}
@@ -164,13 +164,13 @@ const GRunnerDetailsScreen = (props) => {
                   {gRunner.currentStatus}
                 </Text>
               </View>
-            ) : gRunner.currentStatus === 'offline' ? (
+            ) : gRunner.currentStatus === "offline" ? (
               <View style={styles.status}>
                 <Text
                   style={{
-                    color: 'red',
-                    textAlign: 'center',
-                    fontFamily: 'dm-sans-bold',
+                    color: "red",
+                    textAlign: "center",
+                    fontFamily: "dm-sans-bold",
                     paddingTop: 4,
                     fontSize: 18,
                   }}
@@ -183,8 +183,8 @@ const GRunnerDetailsScreen = (props) => {
                 <Text
                   style={{
                     color: Colors.accentColor,
-                    textAlign: 'center',
-                    fontFamily: 'dm-sans-bold',
+                    textAlign: "center",
+                    fontFamily: "dm-sans-bold",
                     paddingTop: 4,
                     fontSize: 18,
                   }}
@@ -195,39 +195,39 @@ const GRunnerDetailsScreen = (props) => {
             )}
             <View
               style={{
-                flexDirection: 'row',
+                flexDirection: "row",
                 paddingLeft: 10,
-                alignItems: 'center',
+                alignItems: "center",
               }}
             >
               {gRunner.isLock ? (
                 <Ionicons
-                  name={Platform.OS === 'android' ? 'md-lock' : 'ios-lock'}
+                  name={Platform.OS === "android" ? "md-lock" : "ios-lock"}
                   size={20}
                   color={Colors.delayRed}
                 />
               ) : (
                 <Ionicons
-                  name={Platform.OS === 'android' ? 'md-unlock' : 'ios-unlock'}
+                  name={Platform.OS === "android" ? "md-unlock" : "ios-unlock"}
                   size={20}
-                  color='green'
+                  color="green"
                 />
               )}
               {gRunner.isLock ? (
                 <Text style={(styles.isLock, { color: Colors.delayRed })}>
-                  {' '}
+                  {" "}
                   Locked
                 </Text>
               ) : (
-                <Text style={(styles.isLock, { color: 'green' })}>
-                  {' '}
+                <Text style={(styles.isLock, { color: "green" })}>
+                  {" "}
                   Unlocked
                 </Text>
               )}
             </View>
             <Text style={styles.description}>
-              <B style={{ color: 'black', fontSize: 14 }}>
-                Public Courier id:{' '}
+              <B style={{ color: "black", fontSize: 14 }}>
+                Public Courier id:{" "}
               </B>
               {gRunner.publicCourierId}
             </Text>
@@ -252,9 +252,9 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
   },
   card: {
     flex: 1,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   imageContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   image: {
     width: windowWidth * 0.7,
@@ -271,33 +271,33 @@ const styles = StyleSheet.create({
     // borderRadius: (Dimensions.get('window').width * 0.7) / 2,
     borderRadius: 10,
     borderWidth: 0.5,
-    borderColor: 'black',
-    overflow: 'hidden',
+    borderColor: "black",
+    overflow: "hidden",
     marginVertical: 10,
   },
   gRunnerName: {
-    textAlign: 'center',
-    fontFamily: 'dm-sans-regular',
+    textAlign: "center",
+    fontFamily: "dm-sans-regular",
     fontSize: 20,
-    color: 'black',
+    color: "black",
   },
   status: {
     padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     flex: 1,
   },
   isLock: {
     fontSize: 18,
-    fontFamily: 'dm-sans-regular',
+    fontFamily: "dm-sans-regular",
     padding: 10,
   },
   description: {
-    fontFamily: 'dm-sans-regular',
+    fontFamily: "dm-sans-regular",
     paddingTop: 5,
     fontSize: 18,
     marginHorizontal: 10,
-    color: 'black',
+    color: "black",
   },
   buttonContainer: {
     paddingVertical: 100,
